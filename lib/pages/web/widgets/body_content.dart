@@ -12,7 +12,7 @@ class BodyContent extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Our Features',
+            'My assurance',
             style: TextStyle(
               fontSize: 28,
               fontWeight: FontWeight.bold,
@@ -25,12 +25,12 @@ class BodyContent extends StatelessWidget {
               FeatureCard(
                 icon: Icons.security,
                 title: 'Security',
-                description: 'Top-notch security for your data',
+                description: 'Top-notch security for your Software',
               ),
               FeatureCard(
                 icon: Icons.speed,
                 title: 'Speed',
-                description: 'Fast and reliable performance',
+                description: 'Fast and reliable Software performance',
               ),
               FeatureCard(
                 icon: Icons.support,

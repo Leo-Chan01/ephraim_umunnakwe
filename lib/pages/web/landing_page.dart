@@ -1,6 +1,5 @@
-import 'package:ephraim_umunnakwe/pages/web/widgets/body_content.dart';
-import 'package:ephraim_umunnakwe/pages/web/widgets/footer.dart';
-import 'package:ephraim_umunnakwe/pages/web/widgets/header.dart';
+import 'package:ephraim_umunnakwe/pages/web/desktop_view.dart';
+import 'package:ephraim_umunnakwe/pages/web/mobile_view.dart';
 import 'package:flutter/material.dart';
 
 class LandingPage extends StatelessWidget {
@@ -8,17 +7,15 @@ class LandingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            Header(),
-            BodyContent(),
-            Align(alignment: Alignment.bottomCenter, child: Footer()),
-          ],
-        ),
-      ),
-    );
+    return LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints constraints) {
+      if (constraints.maxWidth < 600) {
+        return const MobileView(title: 'Mobile Mode');
+      } else {
+        return const DesktopView(
+          title: 'Desktop Mode',
+        );
+      }
+    });
   }
 }

@@ -14,6 +14,7 @@ dependencies:
 
   cupertino_icons: ^1.0.6
   responsive_framework: ^1.4.0
+  provider: ^6.1.2
 
 dev_dependencies:
   flutter_test:
@@ -53,11 +54,11 @@ flutter:
   fonts:
     - family: Avenir
       fonts:
-        - asset: fonts/avenir-lt-pro-cufonfonts/AvenirLTProLight.otf
-        - asset: fonts/avenir-lt-pro-cufonfonts/AvenirLTProMedium.otf
+        - asset: assets/fonts/avenir-lt-pro-cufonfonts/AvenirLTProLight.otf
+        - asset: assets/fonts/avenir-lt-pro-cufonfonts/AvenirLTProMedium.otf
           weight: 400
         # - asset: fonts/Schyler-Italic.ttf
         #   style: italic
     - family: Genome
       fonts:
-        - asset: fonts/genome-cufonfonts/Genome-Thin.otf
+        - asset: assets/fonts/genome-cufonfonts/Genome-Thin.otf
