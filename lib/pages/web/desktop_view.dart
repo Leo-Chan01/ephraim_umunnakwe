@@ -14,7 +14,10 @@ class DesktopView extends StatelessWidget {
           mainAxisSize: MainAxisSize.max,
           children: [
             Header(),
-            BodyContent(),
+            SizedBox(
+              height: 80,
+            ),
+            Align(alignment: Alignment.center, child: BodyContent()),
             Align(alignment: Alignment.bottomCenter, child: Footer()),
           ],
         ),

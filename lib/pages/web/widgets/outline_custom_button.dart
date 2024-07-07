@@ -1,0 +1,97 @@
+import 'package:flutter/material.dart';
+
+class CustomOutlinedButton extends StatelessWidget {
+  final String title;
+  final Widget icon;
+  final String direction;
+  final Color backgroundColor;
+  final Color shadowColor;
+  final MaterialAccentColor outlineColor;
+  final Color textColor;
+
+  const CustomOutlinedButton({
+    super.key,
+    required this.title,
+    required this.icon,
+    required this.direction,
+    required this.backgroundColor,
+    required this.shadowColor,
+    required this.outlineColor,
+    required this.textColor,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    var desktopWidth = MediaQuery.of(context).size.width;
+    bool isMobile = desktopWidth < 600;
+    return isMobile
+        ? SizedBox(
+            width: MediaQuery.of(context).size.width / 3,
+            height: 55,
+            child: Material(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5)),
+              elevation: 0,
+              color: backgroundColor,
+              shadowColor: shadowColor,
+              child: OutlinedButton.icon(
+                onPressed: () {
+                  Navigator.pushNamed(context, direction);
+                },
+                icon: icon,
+                label: Text(
+                  title,
+                  softWrap: true,
+                  textScaler: const TextScaler.linear(0.8),
+                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                        color: textColor,
+                        fontSize: 12,
+                      ),
+                ),
+                style: ButtonStyle(
+                  // elevation: WidgetStateProperty.all(10),
+                  side:
+                      WidgetStateProperty.all(BorderSide(color: outlineColor)),
+                  padding: WidgetStateProperty.all(
+                      const EdgeInsets.symmetric(horizontal: 24)),
+                ),
+              ),
+            ),
+          )
+        : SizedBox(
+            width: 200,
+            height: 100,
+            child: Material(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5)),
+              elevation: 0,
+              color: backgroundColor,
+              shadowColor: shadowColor,
+              child: OutlinedButton.icon(
+                onPressed: () {
+                  Navigator.pushNamed(context, direction);
+                },
+                icon: icon,
+                label: Text(
+                  title,
+                  softWrap: true,
+                  textScaler: const TextScaler.linear(0.8),
+                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                        color: textColor,
+                        fontSize: 12,
+                      ),
+                ),
+                style: ButtonStyle(
+                  // elevation: WidgetStateProperty.all(10),
+                  side:
+                      WidgetStateProperty.all(BorderSide(color: outlineColor)),
+                  padding: WidgetStateProperty.all(
+                      const EdgeInsets.symmetric(horizontal: 24)),
+                  // minimumSize:
+                  //     WidgetStateProperty.all(MediaQuery.of(context).size / 4),
+                ),
+              ),
+            ),
+          );
+  }
+}

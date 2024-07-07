@@ -1,3 +1,4 @@
+import 'package:ephraim_umunnakwe/pages/web/widgets/custom_icon_widget.dart';
 import 'package:flutter/material.dart';
 
 class Header extends StatelessWidget {
@@ -13,24 +14,36 @@ class Header extends StatelessWidget {
           colors: [Colors.blue, Colors.purple],
         ),
       ),
-      child: const Column(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisSize: MainAxisSize.max,
         children: [
-          Text(
-            'Welcome to Our Service',
+          const CircleAvatar(
+              radius: 50,
+              backgroundImage: AssetImage('assets/images/profile_img.jpg')),
+          const Spacer(),
+          const Text(
+            'Ephraim Umunnakwe (King Raym)',
             style: TextStyle(
               fontSize: 32,
               color: Colors.white,
               fontWeight: FontWeight.bold,
             ),
           ),
-          SizedBox(height: 10),
-          Text(
-            'We provide the best solutions for your business',
+          const SizedBox(height: 20),
+          const Text(
+            'Professional Software Engineer',
             style: TextStyle(
               fontSize: 20,
               color: Colors.white70,
             ),
           ),
+          const SizedBox(width: 10),
+          CustomIconWidget(
+              onClick: () {},
+              icon: Icons.dark_mode_rounded,
+              color: Colors.white),
+          const SizedBox(width: 10),
         ],
       ),
     );

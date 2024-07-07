@@ -13,3 +13,8 @@ double getCurrentViewHeight(BuildContext context) {
   var height = MediaQuery.of(context).size.height;
   return height;
 }
+
+double getCurrentViewWidth(BuildContext context) {
+  var width = MediaQuery.of(context).size.height;
+  return width;
+}
