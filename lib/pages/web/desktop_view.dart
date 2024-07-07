@@ -8,18 +8,25 @@ class DesktopView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            Header(),
-            SizedBox(
-              height: 80,
-            ),
-            Align(alignment: Alignment.center, child: BodyContent()),
-            Align(alignment: Alignment.bottomCenter, child: Footer()),
-          ],
+    return  Scaffold(
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+          colors: [Colors.blue, Colors.purple],
+        ),
+        ),
+        child: const SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              Header(),
+              SizedBox(
+                height: 80,
+              ),
+              Align(alignment: Alignment.center, child: BodyContent()),
+              Align(alignment: Alignment.bottomCenter, child: Footer()),
+            ],
+          ),
         ),
       ),
     );

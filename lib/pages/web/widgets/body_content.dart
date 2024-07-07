@@ -13,7 +13,7 @@ class BodyContent extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(20.0),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
             width: getCurrentViewWidth(context),
@@ -29,7 +29,7 @@ class BodyContent extends StatelessWidget {
                       glowColor: const Color.fromARGB(255, 213, 216, 218),
                       glowCount: 2,
                       glowBorderRadius: BorderRadius.circular(
-                          MediaQuery.of(context).size.shortestSide / 5),
+                          MediaQuery.of(context).size.shortestSide / 2),
                       duration: const Duration(milliseconds: 2000),
                       repeat: true,
                       animate: true,
@@ -37,7 +37,7 @@ class BodyContent extends StatelessWidget {
                       curve: Curves.fastOutSlowIn,
                       // repeatPauseDuration: const Duration(milliseconds: 1000),
                       child: Material(
-                        elevation: 8.0,
+                        elevation: 10.0,
                         shape: const CircleBorder(),
                         child: CircleAvatar(
                           backgroundColor: Colors.transparent,
@@ -54,7 +54,7 @@ class BodyContent extends StatelessWidget {
                     ),
                   ),
                 ),
-                const SizedBox(width: 125),
+                const SizedBox(width: 200),
                 const Flexible(flex: 4, child: TextBioWidget()),
               ],
             ),

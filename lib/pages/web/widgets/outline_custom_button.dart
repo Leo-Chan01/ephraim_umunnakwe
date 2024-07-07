@@ -30,7 +30,7 @@ class CustomOutlinedButton extends StatelessWidget {
             height: 55,
             child: Material(
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(5)),
+                  borderRadius: BorderRadius.circular(10)),
               elevation: 0,
               color: backgroundColor,
               shadowColor: shadowColor,
@@ -49,7 +49,7 @@ class CustomOutlinedButton extends StatelessWidget {
                       ),
                 ),
                 style: ButtonStyle(
-                  // elevation: WidgetStateProperty.all(10),
+                  elevation: WidgetStateProperty.all(10),
                   side:
                       WidgetStateProperty.all(BorderSide(color: outlineColor)),
                   padding: WidgetStateProperty.all(
@@ -63,7 +63,7 @@ class CustomOutlinedButton extends StatelessWidget {
             height: 100,
             child: Material(
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(5)),
+                  borderRadius: BorderRadius.circular(0)),
               elevation: 0,
               color: backgroundColor,
               shadowColor: shadowColor,
@@ -78,18 +78,20 @@ class CustomOutlinedButton extends StatelessWidget {
                   textScaler: const TextScaler.linear(0.8),
                   style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                         color: textColor,
-                        fontSize: 12,
+                        fontWeight: FontWeight.bold
                       ),
                 ),
                 style: ButtonStyle(
-                  // elevation: WidgetStateProperty.all(10),
-                  side:
-                      WidgetStateProperty.all(BorderSide(color: outlineColor)),
-                  padding: WidgetStateProperty.all(
-                      const EdgeInsets.symmetric(horizontal: 24)),
-                  // minimumSize:
-                  //     WidgetStateProperty.all(MediaQuery.of(context).size / 4),
-                ),
+                    // elevation: WidgetStateProperty.all(10),
+                    side: WidgetStateProperty.all(
+                        BorderSide(color: outlineColor)),
+                    padding: WidgetStateProperty.all(
+                        const EdgeInsets.symmetric(horizontal: 24)),
+                    shape: const WidgetStatePropertyAll(
+                        RoundedRectangleBorder(borderRadius: BorderRadius.zero))
+                    // minimumSize:
+                    //     WidgetStateProperty.all(MediaQuery.of(context).size / 4),
+                    ),
               ),
             ),
           );

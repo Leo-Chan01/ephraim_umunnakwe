@@ -58,15 +58,15 @@ class CustomButtons extends StatelessWidget {
             textColor: Colors.black,
           ),
           CustomOutlinedButton(
-            title: 'Design',
+            title: 'APIs',
             icon: (desktopWidth < 600)
                 ? const FaIcon(
-                    FontAwesomeIcons.penFancy,
+                    FontAwesomeIcons.gears,
                     color: Colors.black,
                     size: 14,
                   )
                 : const FaIcon(
-                    FontAwesomeIcons.penFancy,
+                    FontAwesomeIcons.gears,
                     color: Colors.black,
                   ),
             direction: '/designs',

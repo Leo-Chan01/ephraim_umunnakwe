@@ -16,27 +16,30 @@ class TextBioWidget extends StatelessWidget {
               softWrap: true,
               textScaler: const TextScaler.linear(0.8),
               text: TextSpan(
-                style: Theme.of(context).textTheme.bodyMedium,
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyLarge!
+                    .copyWith(color: Colors.white),
                 children: [
                   TextSpan(
                     text: 'Hi there, ',
-                    style: Theme.of(context).textTheme.bodyMedium,
+                    // style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   TextSpan(
-                    text: 'my name is ',
-                    style: Theme.of(context).textTheme.bodyMedium,
+                    text: 'my name is \n',
+                    // style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   WidgetSpan(
                     child: AnimatedTextKit(
                       animatedTexts: [
-                        TypewriterAnimatedText(
-                          'Ephraim Umunnakwe',
-                          // textStyle: GoogleFonts.poppins(
-                          //     color: Color.fromRGBO(254, 194, 96, 1),
-                          //     textStyle: TextStyle(fontSize: desktopWidth / 40),
-                          //     fontWeight: FontWeight.bold),
-                          speed: const Duration(milliseconds: 20),
-                        ),
+                        TypewriterAnimatedText('Ephraim Umunnakwe,',
+                            textStyle: Theme.of(context)
+                                .textTheme
+                                .headlineLarge!
+                                .copyWith(color: Colors.yellow),
+                            speed: const Duration(milliseconds: 60),
+                            cursor: "|",
+                            curve: Curves.easeInOut),
                       ],
                       totalRepeatCount: 100,
                       pause: const Duration(milliseconds: 30000),
@@ -45,24 +48,25 @@ class TextBioWidget extends StatelessWidget {
                     ),
                   ),
                   const TextSpan(
-                    text: ', a Mobile Developer with ',
+                    text: "\nI'm a Mobile Developer with ",
                     // style: GoogleFonts.poppins(color: Colors.white, fontSize: 20),
                   ),
-                  const TextSpan(
-                    text: ' over 3 years',
-                  ),
+                  TextSpan(
+                      text: ' over 4 years',
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyLarge!
+                          .copyWith(color: Colors.yellow)),
                   const TextSpan(
                     text:
-                        ' Experience working as a Mobile Developer (Android Native and Flutter).',
-                    // style: GoogleFonts.poppins(color: Colors.white, fontSize: 20),
+                        ' Experience working as a Mobile Developer (Android Native and Flutter)'
+                        ' \nand Backend Engineer (Springboot and Node.js).',
                   ),
-                  const TextSpan(
-                    text: '\n\nThis site was written in flutter',
-                    // style: GoogleFonts.poppins(
-                    //     color: Theme.of(context).colorScheme.secondary,
-                    //     fontSize: 14,
-                    //     fontWeight: FontWeight.bold),
-                  ),
+                  TextSpan(
+                      text:
+                          '\n\nThis site was written with:\nFlutter x Node.js(Express)',
+                      style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                          color: Colors.white, fontWeight: FontWeight.bold)),
                 ],
               ),
             ),

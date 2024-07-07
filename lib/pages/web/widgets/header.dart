@@ -19,7 +19,7 @@ class Header extends StatelessWidget {
         mainAxisSize: MainAxisSize.max,
         children: [
           const CircleAvatar(
-              radius: 50,
+              radius: 40,
               backgroundImage: AssetImage('assets/images/profile_img.jpg')),
           const Spacer(),
           const Text(
