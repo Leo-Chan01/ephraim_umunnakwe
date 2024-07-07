@@ -1,0 +1,63 @@
+name: ephraim_umunnakwe
+description: "Personal Portfolio Website"
+
+publish_to: "none"
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.4.3 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.6
+  responsive_framework: ^1.4.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^3.0.0
+  flutter_launcher_icons: ^0.13.1
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/images/profile_img.jpg"
+  min_sdk_android: 21 # android min sdk min:16, default 21
+  web:
+    generate: true
+    image_path: "assets/images/profile_img.jpg"
+    background_color: "#hexcode"
+    theme_color: "#hexcode"
+  windows:
+    generate: true
+    image_path: "assets/images/profile_img.jpg"
+    icon_size: 48 # min:48, max:256, default: 48
+  macos:
+    generate: true
+    image_path: "assets/images/profile_img.jpg"
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+    - assets/svg/
+    - assets/audio/
+    - assets/video/
+    - assets/fonts/
+
+  fonts:
+    - family: Avenir
+      fonts:
+        - asset: fonts/avenir-lt-pro-cufonfonts/AvenirLTProLight.otf
+        - asset: fonts/avenir-lt-pro-cufonfonts/AvenirLTProMedium.otf
+          weight: 400
+        # - asset: fonts/Schyler-Italic.ttf
+        #   style: italic
+    - family: Genome
+      fonts:
+        - asset: fonts/genome-cufonfonts/Genome-Thin.otf
