@@ -1,0 +1,21 @@
+{
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2"
+  },
+  "name": "portfolio_api",
+  "version": "1.0.0",
+  "description": "My Portfolio API",
+  "main": "server.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [
+    "portfolio"
+  ],
+  "author": "Leo-Chan01",
+  "license": "ISC"
+}
