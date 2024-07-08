@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:ephraim_umunnakwe/pages/web/widgets/custom_buttons.dart';
+import 'package:ephraim_umunnakwe/pages/web/widgets/mobile_widgets.dart/shortbio_mobile.dart';
 import 'package:ephraim_umunnakwe/pages/web/widgets/text_bio_widget.dart';
 import 'package:ephraim_umunnakwe/utils/list_utility.dart';
 import 'package:ephraim_umunnakwe/utils/util_methods.dart';
@@ -24,7 +25,9 @@ class BodyContent extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const MyShortBioSection(),
+            isDesktop
+                ? const MyShortBioSection()
+                : const MyShortBioSectionMobile(),
             const SizedBox(height: 80),
             Text('Cut to the Chase?',
                 style: Theme.of(context)

@@ -1,9 +1,6 @@
-import 'dart:nativewrappers/_internal/vm/lib/ffi_allocation_patch.dart';
-
 import 'package:ephraim_umunnakwe/pages/web/widgets/custom_icon_widget.dart';
 import 'package:ephraim_umunnakwe/pages/web/widgets/gradient_container.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class Header extends StatelessWidget {
@@ -22,27 +19,38 @@ class Header extends StatelessWidget {
         color: Colors.transparent,
       ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         mainAxisSize: MainAxisSize.max,
         children: [
-          const CircleAvatar(
-              radius: 40,
-              backgroundImage: AssetImage('assets/images/profile_img.jpg')),
-          const Spacer(),
-          Text(
-            'Ephraim Umunnakwe (King Raym)',
-            style: TextStyle(
-              fontSize: 32.sp,
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-            ),
+          const Expanded(
+            flex: 1,
+            child: CircleAvatar(
+                radius: 40,
+                backgroundImage: AssetImage('assets/images/profile_img.jpg')),
           ),
-          const SizedBox(height: 20),
-          const Text(
-            'Professional Software Engineer',
-            style: TextStyle(
-              fontSize: 20,
-              color: Colors.white70,
+          const SizedBox(width: 10),
+          Expanded(
+            flex: isDesktop ? 8 : 6,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Ephraim Umunnakwe (King Raym)',
+                  style: TextStyle(
+                    fontSize: isDesktop ? 32 : 16,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 20),
+                Text(
+                  'Professional Software Engineer',
+                  style: TextStyle(
+                    fontSize: isDesktop ? 20 : 14,
+                    color: Colors.white70,
+                  ),
+                ),
+              ],
             ),
           ),
           const SizedBox(width: 10),
@@ -79,7 +87,7 @@ class Header extends StatelessWidget {
                                               .bodyLarge!
                                               .copyWith(color: Colors.white),
                                         ),
-                                        border: OutlineInputBorder(
+                                        border: const OutlineInputBorder(
                                             borderSide: BorderSide(
                                                 color: Colors.white))),
                                     keyboardType: TextInputType.name,
@@ -101,7 +109,7 @@ class Header extends StatelessWidget {
                                               .bodyLarge!
                                               .copyWith(color: Colors.white),
                                         ),
-                                        border: OutlineInputBorder(
+                                        border: const OutlineInputBorder(
                                             borderSide: BorderSide(
                                                 color: Colors.white))),
                                     keyboardType: TextInputType.multiline,

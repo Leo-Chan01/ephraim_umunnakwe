@@ -1,30 +1,27 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 
-class TextBioWidget extends StatelessWidget {
-  const TextBioWidget({
-    super.key,
-  });
+class TextBioMobile extends StatelessWidget {
+  const TextBioMobile({super.key});
 
   @override
   Widget build(BuildContext context) {
-    var desktopWidth = MediaQuery.of(context).size.width;
     return SizedBox(
-      width: desktopWidth,
       child: RichText(
         softWrap: true,
         textScaler: const TextScaler.linear(0.8),
+        textAlign: TextAlign.center,
         text: TextSpan(
           style: Theme.of(context)
               .textTheme
               .bodyLarge!
               .copyWith(color: Colors.white),
           children: [
-            TextSpan(
+            const TextSpan(
               text: 'Hi there, ',
               // style: Theme.of(context).textTheme.bodyMedium,
             ),
-            TextSpan(
+            const TextSpan(
               text: 'my name is \n',
               // style: Theme.of(context).textTheme.bodyMedium,
             ),
