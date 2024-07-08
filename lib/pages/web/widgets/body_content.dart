@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:ephraim_umunnakwe/pages/web/widgets/custom_buttons.dart';
+import 'package:ephraim_umunnakwe/pages/web/widgets/mobile_widgets.dart/custom_buttons_mobile.dart';
 import 'package:ephraim_umunnakwe/pages/web/widgets/mobile_widgets.dart/shortbio_mobile.dart';
 import 'package:ephraim_umunnakwe/pages/web/widgets/text_bio_widget.dart';
 import 'package:ephraim_umunnakwe/utils/list_utility.dart';
@@ -35,7 +36,7 @@ class BodyContent extends StatelessWidget {
                     .titleLarge!
                     .copyWith(color: Colors.white, fontFamily: "Genome")),
             const SizedBox(height: 20),
-            const CustomButtons(),
+            isDesktop ? const CustomButtons() : const CustomButtonsMobile(),
             const SizedBox(height: 80),
             const Divider(),
             const SizedBox(height: 80),
@@ -46,31 +47,56 @@ class BodyContent extends StatelessWidget {
                     .copyWith(color: Colors.white)),
             const SizedBox(height: 20),
             SizedBox(
-              child: Wrap(
-                alignment: WrapAlignment.spaceBetween,
-                runSpacing: 10,
-                children: List.generate(brandPromiseList.length, (index) {
-                  return MouseRegion(
-                    onEnter: (event) {
-                      log("Is hovering now");
-                      siteState.updateHoveringState(
-                          true, brandPromiseList[index].id,
-                          index: index + 1);
-                    },
-                    onExit: (event) {
-                      log("Is not hovering now");
-                      siteState.updateHoveringState(
-                          false, brandPromiseList[index].id,
-                          index: index + 1);
-                    },
-                    child: FeatureCard(
-                        icon: brandPromiseList[index].prandPromiseIcon,
-                        title: brandPromiseList[index].title,
-                        description: brandPromiseList[index].subTitle,
-                        isFocused: siteState.isHovering),
-                  );
-                }),
-              ),
+              child: (isDesktop == true)
+                  ? Wrap(
+                      alignment: WrapAlignment.start,
+                      runSpacing: 10,
+                      children: List.generate(brandPromiseList.length, (index) {
+                        return MouseRegion(
+                          onEnter: (event) {
+                            log("Is hovering now");
+                            siteState.updateHoveringState(
+                                true, brandPromiseList[index].id,
+                                index: index + 1);
+                          },
+                          onExit: (event) {
+                            log("Is not hovering now");
+                            siteState.updateHoveringState(
+                                false, brandPromiseList[index].id,
+                                index: index + 1);
+                          },
+                          child: FeatureCard(
+                              icon: brandPromiseList[index].prandPromiseIcon,
+                              title: brandPromiseList[index].title,
+                              description: brandPromiseList[index].subTitle,
+                              isFocused: siteState.isHovering),
+                        );
+                      }),
+                    )
+                  : Column(
+                      children: List.generate(brandPromiseList.length, (index) {
+                        return MouseRegion(
+                          onEnter: (event) {
+                            log("Is hovering now");
+                            siteState.updateHoveringState(
+                                true, brandPromiseList[index].id,
+                                index: index + 1);
+                          },
+                          onExit: (event) {
+                            log("Is not hovering now");
+                            siteState.updateHoveringState(
+                                false, brandPromiseList[index].id,
+                                index: index + 1);
+                          },
+                          child: FeatureCard(
+                              shouldExpand: true,
+                              icon: brandPromiseList[index].prandPromiseIcon,
+                              title: brandPromiseList[index].title,
+                              description: brandPromiseList[index].subTitle,
+                              isFocused: siteState.isHovering),
+                        );
+                      }),
+                    ),
             ),
             const SizedBox(height: 80),
             const Divider(),
@@ -82,12 +108,18 @@ class BodyContent extends StatelessWidget {
                     .copyWith(color: Colors.white)),
             const SizedBox(height: 5),
             Text('My people say "Show working!", here is a tip of the iceberg',
-                style: Theme.of(context)
-                    .textTheme
-                    .titleLarge!
-                    .copyWith(color: Colors.white, fontFamily: "Genome")),
+                textAlign: TextAlign.center,
+                style: (isDesktop == true)
+                    ? Theme.of(context)
+                        .textTheme
+                        .titleLarge!
+                        .copyWith(color: Colors.white, fontFamily: "Genome")
+                    : Theme.of(context)
+                        .textTheme
+                        .titleSmall!
+                        .copyWith(color: Colors.white, fontFamily: "Genome")),
             const SizedBox(height: 20),
-            const TestimonialCarousel(),
+            TestimonialCarousel(isDesktop: isDesktop),
             const SizedBox(height: 80),
             const Divider(),
             const SizedBox(height: 20),
@@ -104,8 +136,10 @@ class BodyContent extends StatelessWidget {
 }
 
 class TestimonialCarousel extends StatelessWidget {
+  final bool isDesktop;
   const TestimonialCarousel({
     super.key,
+    required this.isDesktop,
   });
 
   @override
@@ -113,46 +147,100 @@ class TestimonialCarousel extends StatelessWidget {
     return CarouselSlider.builder(
       itemCount: 15,
       itemBuilder: (BuildContext context, int itemIndex, int pageViewIndex) {
-        return Container(
-          decoration: BoxDecoration(
-              color: Colors.white, borderRadius: BorderRadius.circular(10)),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: Image.asset("assets/images/profile_img.jpg")),
-              const SizedBox(height: 40),
-              const StarRating(),
-              const SizedBox(height: 20),
-              Text(
-                "Ephraim Umunnakwe",
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-              const SizedBox(height: 5),
-              Text(
-                "(Software Engineer at Raym Universe Ltd)",
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyMedium!
-                    .copyWith(fontStyle: FontStyle.italic),
-              ),
-              const SizedBox(height: 20),
-              Text(
-                'A very fantastic dev to work with',
-                overflow: TextOverflow.ellipsis,
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyLarge!
-                    .copyWith(color: Colors.black, fontWeight: FontWeight.bold),
-              ),
-            ],
-          ),
-        );
+        return (isDesktop == true)
+            ? Container(
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10)),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: Image.asset("assets/images/profile_img.jpg")),
+                    const SizedBox(height: 40),
+                    const StarRating(),
+                    const SizedBox(height: 20),
+                    Text(
+                      "Ephraim Umunnakwe",
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
+                    const SizedBox(height: 5),
+                    Text(
+                      "(Software Engineer at Raym Universe Ltd)",
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyMedium!
+                          .copyWith(fontStyle: FontStyle.italic),
+                    ),
+                    const SizedBox(height: 20),
+                    Text(
+                      'A very fantastic dev to work with',
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                          color: Colors.black, fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+              )
+            : Container(
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10)),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: Image.asset("assets/images/profile_img.jpg")),
+                    const SizedBox(height: 40),
+                    const StarRating(),
+                    const SizedBox(height: 20),
+                    Text(
+                      "Ephraim Umunnakwe",
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
+                    const SizedBox(height: 5),
+                    Text(
+                      "(Software Engineer at Raym Universe Ltd)",
+                      textAlign: TextAlign.center,
+                      style: (isDesktop == true)
+                          ? Theme.of(context)
+                              .textTheme
+                              .bodyMedium!
+                              .copyWith(fontStyle: FontStyle.italic)
+                          : Theme.of(context)
+                              .textTheme
+                              .bodySmall!
+                              .copyWith(fontStyle: FontStyle.italic),
+                    ),
+                    const SizedBox(height: 20),
+                    Text(
+                      'A very fantastic dev to work with',
+                      overflow: TextOverflow.ellipsis,
+                      style: (isDesktop == true)
+                          ? Theme.of(context).textTheme.bodyLarge!.copyWith(
+                              color: Colors.black, fontWeight: FontWeight.bold)
+                          : Theme.of(context)
+                              .textTheme
+                              .titleMedium!
+                              .copyWith(color: Colors.black, fontSize: 12),
+                    ),
+                  ],
+                ),
+              );
       },
-      options: CarouselOptions(
-          autoPlay: true, height: getCurrentViewHeight(context)),
+      options: (isDesktop == true)
+          ? CarouselOptions(
+              autoPlay: true, height: getCurrentViewHeight(context))
+          : CarouselOptions(
+              viewportFraction: 0.7,
+              enlargeCenterPage: true,
+              autoPlay: true,
+              height: getCurrentViewHeight(context) * (55 / 100),
+              enlargeFactor: 0.2),
     );
   }
 }

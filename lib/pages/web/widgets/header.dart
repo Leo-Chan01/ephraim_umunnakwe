@@ -42,7 +42,7 @@ class Header extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 10),
                 Text(
                   'Professional Software Engineer',
                   style: TextStyle(

@@ -49,12 +49,13 @@ class CustomOutlinedButton extends StatelessWidget {
                       ),
                 ),
                 style: ButtonStyle(
-                  elevation: WidgetStateProperty.all(10),
-                  side:
-                      WidgetStateProperty.all(BorderSide(color: outlineColor)),
-                  padding: WidgetStateProperty.all(
-                      const EdgeInsets.symmetric(horizontal: 24)),
-                ),
+                    elevation: WidgetStateProperty.all(10),
+                    side: WidgetStateProperty.all(
+                        BorderSide(color: outlineColor, width: 4)),
+                    padding: WidgetStateProperty.all(
+                        const EdgeInsets.symmetric(horizontal: 24)),
+                    shape: const WidgetStatePropertyAll(RoundedRectangleBorder(
+                        borderRadius: BorderRadius.zero))),
               ),
             ),
           )
