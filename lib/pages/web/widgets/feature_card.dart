@@ -4,17 +4,20 @@ class FeatureCard extends StatelessWidget {
   final IconData icon;
   final String title;
   final String description;
+  final bool isFocused;
 
   const FeatureCard(
       {super.key,
       required this.icon,
       required this.title,
-      required this.description});
+      required this.description,
+      required this.isFocused});
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 1,
+      elevation: isFocused ? 2 : 0,
+      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -23,19 +26,19 @@ class FeatureCard extends StatelessWidget {
             const SizedBox(height: 10),
             Text(
               title,
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
+              style: Theme.of(context)
+                  .textTheme
+                  .titleLarge!
+                  .copyWith(color: Colors.black, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 10),
             Text(
               description,
               textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.grey[600],
-              ),
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyMedium!
+                  .copyWith(color: Colors.black, fontWeight: FontWeight.bold),
             ),
           ],
         ),

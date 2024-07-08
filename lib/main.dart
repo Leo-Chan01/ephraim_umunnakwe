@@ -1,6 +1,7 @@
 import 'package:ephraim_umunnakwe/pages/web/landing_page.dart';
 import 'package:ephraim_umunnakwe/theme/theme.dart';
 import 'package:ephraim_umunnakwe/view_models/providers/projects_provider.dart';
+import 'package:ephraim_umunnakwe/view_models/providers/site_state_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -9,7 +10,9 @@ Future<void> main() async {
 
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider<ProjectsProvider>(
-        create: (context) => ProjectsProvider())
+        create: (context) => ProjectsProvider()),
+    ChangeNotifierProvider<SiteStateProvider>(
+        create: (context) => SiteStateProvider())
   ], child: const MyApp()));
 }
 
@@ -19,6 +22,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Ephraim Umunnakwe',
       theme: customTheme,
       initialRoute: '/home',

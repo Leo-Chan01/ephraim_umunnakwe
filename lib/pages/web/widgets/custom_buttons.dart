@@ -12,88 +12,104 @@ class CustomButtons extends StatelessWidget {
   Widget build(BuildContext context) {
     var desktopWidth = MediaQuery.of(context).size.width;
     return Center(
-      child: Wrap(
-        spacing: 24,
-        runSpacing: 24,
-        children: [
-          GestureDetector(
-            onTap: () async {
-              await launchUrl(Uri.parse('https://github.com/Leo-Chan01'));
-            },
-            child: CustomOutlinedButton(
-              title: 'More Info.',
-              icon: (desktopWidth < 600)
-                  ? const FaIcon(
-                      FontAwesomeIcons.user,
-                      color: Colors.black,
-                      size: 14,
-                    )
-                  : const FaIcon(
-                      FontAwesomeIcons.user,
-                      color: Colors.black,
-                    ),
-              direction: '/roadmap',
-              backgroundColor: Colors.white,
-              shadowColor: Colors.orange,
-              outlineColor: Colors.orangeAccent,
-              textColor: Colors.black,
+      child: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Colors.grey.withOpacity(0.1),
+              Colors.grey.withOpacity(0.3),
+            ],
+          ),
+        ),
+        width: desktopWidth * .7,
+        child: Padding(
+          padding: const EdgeInsets.all(22.2),
+          child: Center(
+            child: Wrap(
+              spacing: 24,
+              runSpacing: 24,
+              children: [
+                GestureDetector(
+                  onTap: () async {
+                    await launchUrl(Uri.parse('https://github.com/Leo-Chan01'));
+                  },
+                  child: CustomOutlinedButton(
+                    title: 'More Info.',
+                    icon: (desktopWidth < 600)
+                        ? const FaIcon(
+                            FontAwesomeIcons.user,
+                            color: Colors.black,
+                            size: 14,
+                          )
+                        : const FaIcon(
+                            FontAwesomeIcons.user,
+                            color: Colors.black,
+                          ),
+                    direction: '/roadmap',
+                    backgroundColor: Colors.white,
+                    shadowColor: Colors.orange,
+                    outlineColor: Colors.orangeAccent,
+                    textColor: Colors.black,
+                  ),
+                ),
+                CustomOutlinedButton(
+                  title: 'Apps',
+                  icon: (desktopWidth < 600)
+                      ? const FaIcon(
+                          FontAwesomeIcons.code,
+                          color: Colors.black,
+                          size: 14,
+                        )
+                      : const FaIcon(
+                          FontAwesomeIcons.code,
+                          color: Colors.black,
+                        ),
+                  direction: '/dev-gigs',
+                  backgroundColor: Colors.white,
+                  shadowColor: Colors.blue,
+                  outlineColor: Colors.blueAccent,
+                  textColor: Colors.black,
+                ),
+                CustomOutlinedButton(
+                  title: 'APIs',
+                  icon: (desktopWidth < 600)
+                      ? const FaIcon(
+                          FontAwesomeIcons.gears,
+                          color: Colors.black,
+                          size: 14,
+                        )
+                      : const FaIcon(
+                          FontAwesomeIcons.gears,
+                          color: Colors.black,
+                        ),
+                  direction: '/designs',
+                  backgroundColor: Colors.white,
+                  shadowColor: Colors.white,
+                  outlineColor: Colors.greenAccent,
+                  textColor: Colors.black,
+                ),
+                CustomOutlinedButton(
+                  title: 'Hire me',
+                  icon: (desktopWidth < 600)
+                      ? const FaIcon(
+                          FontAwesomeIcons.handshake,
+                          color: Colors.black,
+                          size: 14,
+                        )
+                      : const FaIcon(
+                          FontAwesomeIcons.handshake,
+                          color: Colors.black,
+                        ),
+                  direction: '/roadmap',
+                  backgroundColor: Colors.white,
+                  shadowColor: Colors.greenAccent,
+                  outlineColor: Colors.greenAccent,
+                  textColor: Colors.black,
+                ),
+              ],
             ),
           ),
-          CustomOutlinedButton(
-            title: 'Apps',
-            icon: (desktopWidth < 600)
-                ? const FaIcon(
-                    FontAwesomeIcons.code,
-                    color: Colors.black,
-                    size: 14,
-                  )
-                : const FaIcon(
-                    FontAwesomeIcons.code,
-                    color: Colors.black,
-                  ),
-            direction: '/dev-gigs',
-            backgroundColor: Colors.white,
-            shadowColor: Colors.blue,
-            outlineColor: Colors.blueAccent,
-            textColor: Colors.black,
-          ),
-          CustomOutlinedButton(
-            title: 'APIs',
-            icon: (desktopWidth < 600)
-                ? const FaIcon(
-                    FontAwesomeIcons.gears,
-                    color: Colors.black,
-                    size: 14,
-                  )
-                : const FaIcon(
-                    FontAwesomeIcons.gears,
-                    color: Colors.black,
-                  ),
-            direction: '/designs',
-            backgroundColor: Colors.white,
-            shadowColor: Colors.white,
-            outlineColor: Colors.greenAccent,
-            textColor: Colors.black,
-          ),
-          CustomOutlinedButton(
-            title: 'Hire me',
-            icon: (desktopWidth < 600)
-                ? const FaIcon(
-                    FontAwesomeIcons.handshake,
-                    color: Colors.black,
-                    size: 14,
-                  )
-                : const FaIcon(
-                    FontAwesomeIcons.handshake,
-                    color: Colors.black,
-                  ),
-            direction: '/roadmap',
-            backgroundColor: Colors.white,
-            shadowColor: Colors.greenAccent,
-            outlineColor: Colors.greenAccent,
-            textColor: Colors.black,
-          ),
-        ],
+        ),
       ),
     );
   }

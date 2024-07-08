@@ -76,22 +76,19 @@ class CustomOutlinedButton extends StatelessWidget {
                   title,
                   softWrap: true,
                   textScaler: const TextScaler.linear(0.8),
-                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                        color: textColor,
-                        fontWeight: FontWeight.bold
-                      ),
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyLarge!
+                      .copyWith(color: textColor, fontWeight: FontWeight.bold),
                 ),
                 style: ButtonStyle(
-                    // elevation: WidgetStateProperty.all(10),
+                    elevation: WidgetStateProperty.all(10),
                     side: WidgetStateProperty.all(
-                        BorderSide(color: outlineColor)),
+                        BorderSide(color: outlineColor, width: 4)),
                     padding: WidgetStateProperty.all(
                         const EdgeInsets.symmetric(horizontal: 24)),
-                    shape: const WidgetStatePropertyAll(
-                        RoundedRectangleBorder(borderRadius: BorderRadius.zero))
-                    // minimumSize:
-                    //     WidgetStateProperty.all(MediaQuery.of(context).size / 4),
-                    ),
+                    shape: const WidgetStatePropertyAll(RoundedRectangleBorder(
+                        borderRadius: BorderRadius.zero))),
               ),
             ),
           );
