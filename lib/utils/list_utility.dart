@@ -34,3 +34,5 @@ var brandPromiseList = [
       subTitle: "Never get left in the dark, with periodic updates",
       prandPromiseIcon: Icons.support_agent_rounded)
 ];
+
+var colorList = [Colors.green, Colors.white, Colors.orange, Colors.red];

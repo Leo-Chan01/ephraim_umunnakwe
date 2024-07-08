@@ -1,14 +1,14 @@
 import 'package:ephraim_umunnakwe/pages/web/widgets/gradient_container.dart';
 import 'package:flutter/material.dart';
 
-class AboutMe extends StatelessWidget {
-  const AboutMe({super.key});
+class HireMeScreen extends StatelessWidget {
+  const HireMeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
       body: GradientContainer(
-        child: Center(child: Text("Learn About me")),
+        child: Center(child: Text("Hire Me")),
       ),
     );
   }

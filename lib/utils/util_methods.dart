@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 bool areWeMobile(BuildContext context) {
@@ -17,4 +19,8 @@ double getCurrentViewHeight(BuildContext context) {
 double getCurrentViewWidth(BuildContext context) {
   var width = MediaQuery.of(context).size.height;
   return width;
+}
+
+int getRandomSelection({required int limit}) {
+  return Random().nextInt(limit);
 }

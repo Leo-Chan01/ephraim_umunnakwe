@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class Footer extends StatelessWidget {
   const Footer({super.key});
@@ -11,7 +12,7 @@ class Footer extends StatelessWidget {
       child: const Column(
         children: [
           Text(
-            'Contact Us',
+            'Contact Me',
             style: TextStyle(
               fontSize: 20,
               color: Colors.white,
@@ -20,7 +21,7 @@ class Footer extends StatelessWidget {
           ),
           SizedBox(height: 10),
           Text(
-            'Email: info@ourservice.com',
+            'Email: ephraimleo16@gmail.com',
             style: TextStyle(
               fontSize: 16,
               color: Colors.white70,
@@ -28,7 +29,7 @@ class Footer extends StatelessWidget {
           ),
           SizedBox(height: 5),
           Text(
-            'Phone: +123 456 7890',
+            'Phone: +234 811 636 9105',
             style: TextStyle(
               fontSize: 16,
               color: Colors.white70,
@@ -38,11 +39,13 @@ class Footer extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              FaIcon(FontAwesomeIcons.xTwitter, color: Colors.white),
+              SizedBox(width: 10),
+              FaIcon(FontAwesomeIcons.instagram, color: Colors.white),
+              SizedBox(width: 10),
               Icon(Icons.facebook, color: Colors.white),
               SizedBox(width: 10),
-              Icon(Icons.abc, color: Colors.white),
-              SizedBox(width: 10),
-              Icon(Icons.link, color: Colors.white),
+              FaIcon(FontAwesomeIcons.hashnode, color: Colors.white),
             ],
           ),
         ],

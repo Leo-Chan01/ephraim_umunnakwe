@@ -1,3 +1,4 @@
+import 'package:ephraim_umunnakwe/pages/web/routes/app_routes.dart';
 import 'package:ephraim_umunnakwe/pages/web/widgets/outline_custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -45,7 +46,7 @@ class CustomButtons extends StatelessWidget {
                             FontAwesomeIcons.user,
                             color: Colors.black,
                           ),
-                    direction: '/roadmap',
+                    direction: AppRoutes.aboutMe,
                     backgroundColor: Colors.white,
                     shadowColor: Colors.orange,
                     outlineColor: Colors.orangeAccent,
@@ -64,7 +65,7 @@ class CustomButtons extends StatelessWidget {
                           FontAwesomeIcons.code,
                           color: Colors.black,
                         ),
-                  direction: '/dev-gigs',
+                  direction: AppRoutes.myAppsPage,
                   backgroundColor: Colors.white,
                   shadowColor: Colors.blue,
                   outlineColor: Colors.blueAccent,
@@ -82,7 +83,7 @@ class CustomButtons extends StatelessWidget {
                           FontAwesomeIcons.gears,
                           color: Colors.black,
                         ),
-                  direction: '/designs',
+                  direction: AppRoutes.myApiPages,
                   backgroundColor: Colors.white,
                   shadowColor: Colors.white,
                   outlineColor: Colors.greenAccent,
@@ -100,7 +101,7 @@ class CustomButtons extends StatelessWidget {
                           FontAwesomeIcons.handshake,
                           color: Colors.black,
                         ),
-                  direction: '/roadmap',
+                  direction: AppRoutes.aboutMe,
                   backgroundColor: Colors.white,
                   shadowColor: Colors.greenAccent,
                   outlineColor: Colors.greenAccent,

@@ -1,5 +1,10 @@
 import 'package:ephraim_umunnakwe/pages/web/landing_page.dart';
+import 'package:ephraim_umunnakwe/pages/web/routes/about_me.dart';
+import 'package:ephraim_umunnakwe/pages/web/routes/api_projects.dart';
+import 'package:ephraim_umunnakwe/pages/web/routes/app_projects.dart';
+import 'package:ephraim_umunnakwe/pages/web/routes/app_routes.dart';
 import 'package:ephraim_umunnakwe/theme/theme.dart';
+import 'package:ephraim_umunnakwe/view_models/providers/gradient_notifier.dart';
 import 'package:ephraim_umunnakwe/view_models/providers/projects_provider.dart';
 import 'package:ephraim_umunnakwe/view_models/providers/site_state_provider.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +17,9 @@ Future<void> main() async {
     ChangeNotifierProvider<ProjectsProvider>(
         create: (context) => ProjectsProvider()),
     ChangeNotifierProvider<SiteStateProvider>(
-        create: (context) => SiteStateProvider())
+        create: (context) => SiteStateProvider()),
+    ChangeNotifierProvider<GradientNotifier>(
+        create: (context) => GradientNotifier())
   ], child: const MyApp()));
 }
 
@@ -28,9 +35,9 @@ class MyApp extends StatelessWidget {
       initialRoute: '/home',
       routes: {
         '/home': (context) => const LandingPage(),
-        // '/roadmap': (context) => MyRoadMap(),
-        // '/dev-gigs': (context) => AppsPage(),
-        // '/designs': (context) => DesignsPage()
+        AppRoutes.aboutMe: (context) => const AboutMe(),
+        AppRoutes.myAppsPage: (context) => const AppProjects(),
+        AppRoutes.myApiPages: (context) => const ApiProjects()
       },
     );
   }
