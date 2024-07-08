@@ -1,3 +1,4 @@
+import 'package:ephraim_umunnakwe/pages/splash_screen.dart';
 import 'package:ephraim_umunnakwe/pages/web/landing_page.dart';
 import 'package:ephraim_umunnakwe/pages/web/routes/about_me.dart';
 import 'package:ephraim_umunnakwe/pages/web/routes/api_projects.dart';
@@ -40,9 +41,10 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             title: 'Ephraim Umunnakwe',
             theme: customTheme,
-            initialRoute: '/home',
+            initialRoute: '/',
             routes: {
-              '/home': (context) => const LandingPage(),
+              '/': (context) => const SplashScreen(),
+              AppRoutes.homePage: (context) => const LandingPage(),
               AppRoutes.aboutMe: (context) => const AboutMe(),
               AppRoutes.myAppsPage: (context) => const AppProjects(),
               AppRoutes.myApiPages: (context) => const ApiProjects()
