@@ -1,4 +1,5 @@
 import 'package:ephraim_umunnakwe/pages/web/widgets/custom_icon_widget.dart';
+import 'package:ephraim_umunnakwe/pages/web/widgets/expanding_text_widget.dart';
 import 'package:ephraim_umunnakwe/pages/web/widgets/gradient_container.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -39,6 +40,7 @@ class AppProjects extends StatelessWidget {
                     crossAxisCount: 3),
                 itemCount: 5,
                 padding: const EdgeInsets.all(22),
+                physics: const BouncingScrollPhysics(),
                 itemBuilder: (context, index) {
                   return Card(
                     elevation: 0,
@@ -115,7 +117,7 @@ class AppProjects extends StatelessWidget {
                                       fontFamily: 'Avenir'),
                             )),
                         Expanded(
-                            flex: 4,
+                            flex: 6,
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Container(
@@ -124,9 +126,19 @@ class AppProjects extends StatelessWidget {
                                       border: Border.all(
                                           color: Colors.grey, width: 2),
                                       borderRadius: BorderRadius.circular(10)),
-                                  child: const Padding(
-                                    padding: EdgeInsets.all(8.0),
-                                    child: Text("This is a FintTech App"),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: ExpandingTextWidget(
+                                        truncationLength: 50,
+                                        text: "This is a FintTech App, "
+                                            "This is a FintTech App, This is a FintTech App, "
+                                            "This is a FintTech App",
+                                        widgetStyle: Theme.of(context)
+                                            .textTheme
+                                            .bodySmall!
+                                            .copyWith(
+                                                color: Colors.black,
+                                                fontFamily: 'Avenir')),
                                   )),
                             )),
                       ],

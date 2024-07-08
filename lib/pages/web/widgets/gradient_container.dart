@@ -10,7 +10,8 @@ class GradientContainer extends StatefulWidget {
   _GradientContainerState createState() => _GradientContainerState();
 }
 
-class _GradientContainerState extends State<GradientContainer> with SingleTickerProviderStateMixin {
+class _GradientContainerState extends State<GradientContainer>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<Color?> _colorAnimation1;
   late Animation<Color?> _colorAnimation2;
@@ -23,8 +24,10 @@ class _GradientContainerState extends State<GradientContainer> with SingleTicker
       vsync: this,
     );
 
-    _colorAnimation1 = ColorTween(begin: Colors.blue, end: Colors.red).animate(_controller);
-    _colorAnimation2 = ColorTween(begin: Colors.red, end: Colors.blue).animate(_controller);
+    _colorAnimation1 =
+        ColorTween(begin: Colors.blue.shade900, end: Colors.red).animate(_controller);
+    _colorAnimation2 =
+        ColorTween(begin: Colors.red.shade900, end: Colors.blue.shade900).animate(_controller);
 
     _controller.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
