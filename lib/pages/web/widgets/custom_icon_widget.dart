@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomIconWidget extends StatelessWidget {
   final Function()? onClick;
@@ -33,7 +34,7 @@ class CustomIconWidget extends StatelessWidget {
                 child: Icon(
                   icon,
                   color: color,
-                  size: 24,
+                  size: 24.sp,
                 ),
               ),
             ),

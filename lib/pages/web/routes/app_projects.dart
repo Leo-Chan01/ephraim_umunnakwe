@@ -1,6 +1,7 @@
 import 'package:ephraim_umunnakwe/pages/web/widgets/custom_icon_widget.dart';
 import 'package:ephraim_umunnakwe/pages/web/widgets/expanding_text_widget.dart';
 import 'package:ephraim_umunnakwe/pages/web/widgets/gradient_container.dart';
+import 'package:ephraim_umunnakwe/utils/util_methods.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -36,8 +37,9 @@ class AppProjects extends StatelessWidget {
               const SizedBox(height: 40),
               Expanded(
                   child: GridView.builder(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3),
+                gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                    maxCrossAxisExtent:
+                        getCurrentViewWidth(context) * (70 / 100)),
                 itemCount: 5,
                 padding: const EdgeInsets.all(22),
                 physics: const BouncingScrollPhysics(),

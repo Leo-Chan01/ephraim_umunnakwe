@@ -13,7 +13,8 @@ import 'package:provider/provider.dart';
 import 'feature_card.dart';
 
 class BodyContent extends StatelessWidget {
-  const BodyContent({super.key});
+  final bool isDesktop;
+  const BodyContent({super.key, required this.isDesktop});
 
   @override
   Widget build(BuildContext context) {

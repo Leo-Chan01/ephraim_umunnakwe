@@ -8,6 +8,7 @@ import 'package:ephraim_umunnakwe/view_models/providers/gradient_notifier.dart';
 import 'package:ephraim_umunnakwe/view_models/providers/projects_provider.dart';
 import 'package:ephraim_umunnakwe/view_models/providers/site_state_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 Future<void> main() async {
@@ -28,17 +29,25 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Ephraim Umunnakwe',
-      theme: customTheme,
-      initialRoute: '/home',
-      routes: {
-        '/home': (context) => const LandingPage(),
-        AppRoutes.aboutMe: (context) => const AboutMe(),
-        AppRoutes.myAppsPage: (context) => const AppProjects(),
-        AppRoutes.myApiPages: (context) => const ApiProjects()
-      },
-    );
+    return ScreenUtilInit(
+        // designSize: const Size(360, 690),
+        designSize: const Size(1920, 800),
+        minTextAdapt: true,
+        splitScreenMode: false,
+        ensureScreenSize: true,
+        builder: (context, child) {
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: 'Ephraim Umunnakwe',
+            theme: customTheme,
+            initialRoute: '/home',
+            routes: {
+              '/home': (context) => const LandingPage(),
+              AppRoutes.aboutMe: (context) => const AboutMe(),
+              AppRoutes.myAppsPage: (context) => const AppProjects(),
+              AppRoutes.myApiPages: (context) => const ApiProjects()
+            },
+          );
+        });
   }
 }

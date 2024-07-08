@@ -1,10 +1,14 @@
+import 'dart:nativewrappers/_internal/vm/lib/ffi_allocation_patch.dart';
+
 import 'package:ephraim_umunnakwe/pages/web/widgets/custom_icon_widget.dart';
 import 'package:ephraim_umunnakwe/pages/web/widgets/gradient_container.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class Header extends StatelessWidget {
-  const Header({super.key});
+  final bool isDesktop;
+  const Header({super.key, required this.isDesktop});
 
   static final reviewMessageCtrl = TextEditingController();
   static final reviewerNameCtrl = TextEditingController();
@@ -15,9 +19,6 @@ class Header extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(20),
       decoration: const BoxDecoration(
-        // gradient: LinearGradient(
-        //   colors: [Colors.blue, Colors.purple],
-        // ),
         color: Colors.transparent,
       ),
       child: Row(
@@ -28,10 +29,10 @@ class Header extends StatelessWidget {
               radius: 40,
               backgroundImage: AssetImage('assets/images/profile_img.jpg')),
           const Spacer(),
-          const Text(
+          Text(
             'Ephraim Umunnakwe (King Raym)',
             style: TextStyle(
-              fontSize: 32,
+              fontSize: 32.sp,
               color: Colors.white,
               fontWeight: FontWeight.bold,
             ),

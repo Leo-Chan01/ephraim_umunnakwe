@@ -15,12 +15,14 @@ class DesktopView extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.max,
             children: [
-              Header(),
-              SizedBox(
-                height: 80,
-              ),
-              Align(alignment: Alignment.center, child: BodyContent()),
-              Align(alignment: Alignment.bottomCenter, child: Footer()),
+              Header(isDesktop: true),
+              SizedBox(height: 80),
+              Align(
+                  alignment: Alignment.center,
+                  child: BodyContent(isDesktop: true)),
+              Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Footer(isDesktop: true)),
             ],
           ),
         ),
