@@ -30,7 +30,7 @@ class BodyContent extends StatelessWidget {
                 ? const MyShortBioSection()
                 : const MyShortBioSectionMobile(),
             const SizedBox(height: 80),
-            Text('Cut to the Chase?',
+            SelectableText('Cut to the Chase?',
                 style: Theme.of(context)
                     .textTheme
                     .titleLarge!
@@ -46,14 +46,14 @@ class BodyContent extends StatelessWidget {
                     spacing: getCurrentViewWidth(context) * (20 / 100),
                     children: [
                         Column(children: [
-                          Text(
+                          SelectableText(
                             "Happy Clients",
                             style: Theme.of(context)
                                 .textTheme
                                 .headlineSmall!
                                 .copyWith(color: Colors.white),
                           ),
-                          Text(
+                          SelectableText(
                             "50+",
                             style: Theme.of(context)
                                 .textTheme
@@ -64,14 +64,14 @@ class BodyContent extends StatelessWidget {
                           ),
                         ]),
                         Column(children: [
-                          Text(
+                          SelectableText(
                             "Companies worked for",
                             style: Theme.of(context)
                                 .textTheme
                                 .headlineSmall!
                                 .copyWith(color: Colors.white),
                           ),
-                          Text(
+                          SelectableText(
                             "6+",
                             style: Theme.of(context)
                                 .textTheme
@@ -82,14 +82,14 @@ class BodyContent extends StatelessWidget {
                           ),
                         ]),
                         Column(children: [
-                          Text(
+                          SelectableText(
                             "Live Personal Projects",
                             style: Theme.of(context)
                                 .textTheme
                                 .headlineSmall!
                                 .copyWith(color: Colors.white),
                           ),
-                          Text(
+                          SelectableText(
                             "2+",
                             style: Theme.of(context)
                                 .textTheme
@@ -102,14 +102,14 @@ class BodyContent extends StatelessWidget {
                       ])
                 : Column(children: [
                     Column(children: [
-                      Text(
+                      SelectableText(
                         "Happy Clients",
                         style: Theme.of(context)
                             .textTheme
                             .headlineSmall!
                             .copyWith(color: Colors.white),
                       ),
-                      Text(
+                      SelectableText(
                         "50+",
                         style: Theme.of(context)
                             .textTheme
@@ -121,14 +121,14 @@ class BodyContent extends StatelessWidget {
                     ]),
                     const SizedBox(height: 10),
                     Column(children: [
-                      Text(
+                      SelectableText(
                         "Companies worked for",
                         style: Theme.of(context)
                             .textTheme
                             .headlineSmall!
                             .copyWith(color: Colors.white),
                       ),
-                      Text(
+                      SelectableText(
                         "6+",
                         style: Theme.of(context)
                             .textTheme
@@ -140,14 +140,14 @@ class BodyContent extends StatelessWidget {
                     ]),
                     const SizedBox(height: 10),
                     Column(children: [
-                      Text(
+                      SelectableText(
                         "Live Personal Projects",
                         style: Theme.of(context)
                             .textTheme
                             .headlineSmall!
                             .copyWith(color: Colors.white),
                       ),
-                      Text(
+                      SelectableText(
                         "2+",
                         style: Theme.of(context)
                             .textTheme
@@ -161,7 +161,7 @@ class BodyContent extends StatelessWidget {
             const SizedBox(height: 80),
             const Divider(),
             const SizedBox(height: 80),
-            Text('My Brand Promise',
+            SelectableText('My Brand Promise',
                 style: Theme.of(context)
                     .textTheme
                     .headlineMedium!
@@ -222,13 +222,13 @@ class BodyContent extends StatelessWidget {
             const SizedBox(height: 80),
             const Divider(),
             const SizedBox(height: 20),
-            Text('What my Clients say',
+            SelectableText('What my Clients say',
                 style: Theme.of(context)
                     .textTheme
                     .headlineMedium!
                     .copyWith(color: Colors.white)),
             const SizedBox(height: 5),
-            Text('My people say "Show working!", here is a tip of the iceberg',
+            SelectableText('My people say "Show working!", here is a tip of the iceberg',
                 textAlign: TextAlign.center,
                 style: (isDesktop == true)
                     ? Theme.of(context)
@@ -244,7 +244,7 @@ class BodyContent extends StatelessWidget {
             const SizedBox(height: 80),
             const Divider(),
             const SizedBox(height: 20),
-            Text('Click here to learn more or hire me',
+            SelectableText('Click here to learn more or hire me',
                 style: Theme.of(context)
                     .textTheme
                     .titleLarge!
@@ -283,12 +283,12 @@ class TestimonialCarousel extends StatelessWidget {
                     const SizedBox(height: 40),
                     const StarRating(),
                     const SizedBox(height: 20),
-                    Text(
+                    SelectableText(
                       "Ephraim Umunnakwe",
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
                     const SizedBox(height: 5),
-                    Text(
+                    SelectableText(
                       "(Software Engineer at Raym Universe Ltd)",
                       style: Theme.of(context)
                           .textTheme
@@ -296,9 +296,9 @@ class TestimonialCarousel extends StatelessWidget {
                           .copyWith(fontStyle: FontStyle.italic),
                     ),
                     const SizedBox(height: 20),
-                    Text(
+                    SelectableText(
                       'A very fantastic dev to work with',
-                      overflow: TextOverflow.ellipsis,
+                      // overflow: TextOverflow.ellipsis,
                       style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                           color: Colors.black, fontWeight: FontWeight.bold),
                     ),
@@ -319,12 +319,12 @@ class TestimonialCarousel extends StatelessWidget {
                     const SizedBox(height: 40),
                     const StarRating(),
                     const SizedBox(height: 20),
-                    Text(
+                    SelectableText(
                       "Ephraim Umunnakwe",
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
                     const SizedBox(height: 5),
-                    Text(
+                    SelectableText(
                       "(Software Engineer at Raym Universe Ltd)",
                       textAlign: TextAlign.center,
                       style: (isDesktop == true)
@@ -338,9 +338,9 @@ class TestimonialCarousel extends StatelessWidget {
                               .copyWith(fontStyle: FontStyle.italic),
                     ),
                     const SizedBox(height: 20),
-                    Text(
+                    SelectableText(
                       'A very fantastic dev to work with',
-                      overflow: TextOverflow.ellipsis,
+                      // overflow: TextOverflow.ellipsis,
                       style: (isDesktop == true)
                           ? Theme.of(context).textTheme.bodyLarge!.copyWith(
                               color: Colors.black, fontWeight: FontWeight.bold)

@@ -39,14 +39,14 @@ class CustomOutlinedButton extends StatelessWidget {
                   Navigator.pushNamed(context, direction);
                 },
                 icon: icon,
-                label: Text(
+                label: SelectableText(
                   title,
-                  softWrap: true,
                   textScaler: const TextScaler.linear(0.8),
                   style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                        color: textColor,
-                        fontSize: 12,
-                      ),
+                      color: textColor,
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Avenir'),
                 ),
                 style: ButtonStyle(
                     elevation: WidgetStateProperty.all(10),
@@ -73,14 +73,13 @@ class CustomOutlinedButton extends StatelessWidget {
                   Navigator.pushNamed(context, direction);
                 },
                 icon: icon,
-                label: Text(
+                label: SelectableText(
                   title,
-                  softWrap: true,
                   textScaler: const TextScaler.linear(0.8),
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyLarge!
-                      .copyWith(color: textColor, fontWeight: FontWeight.bold),
+                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                      color: textColor,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Avenir'),
                 ),
                 style: ButtonStyle(
                     elevation: WidgetStateProperty.all(10),

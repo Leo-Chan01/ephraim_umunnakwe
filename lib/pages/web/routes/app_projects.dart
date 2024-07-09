@@ -18,7 +18,7 @@ class AppProjects extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
+              SelectableText(
                 "App Projects",
                 style: Theme.of(context)
                     .textTheme
@@ -26,7 +26,7 @@ class AppProjects extends StatelessWidget {
                     .copyWith(color: Colors.white, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 20),
-              Text(
+              SelectableText(
                 "Explore my expanding gallery of work, published and unpublished, "
                 "click on each to view little details about them, or go straight to installation",
                 style: Theme.of(context)
@@ -109,7 +109,7 @@ class AppProjects extends StatelessWidget {
                         const SizedBox(height: 20),
                         Expanded(
                             flex: 1,
-                            child: Text(
+                            child: SelectableText(
                               "Azaman",
                               style: Theme.of(context)
                                   .textTheme

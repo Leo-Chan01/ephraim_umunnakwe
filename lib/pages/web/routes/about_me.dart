@@ -8,7 +8,7 @@ class AboutMe extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Scaffold(
       body: GradientContainer(
-        child: Center(child: Text("Learn About me")),
+        child: Center(child: SelectableText("Learn About me")),
       ),
     );
   }

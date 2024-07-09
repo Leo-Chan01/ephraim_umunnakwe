@@ -8,7 +8,7 @@ class HireMeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Scaffold(
       body: GradientContainer(
-        child: Center(child: Text("Hire Me")),
+        child: Center(child: SelectableText("Hire Me")),
       ),
     );
   }

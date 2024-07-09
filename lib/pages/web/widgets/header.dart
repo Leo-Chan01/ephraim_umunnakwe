@@ -34,7 +34,7 @@ class Header extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                SelectableText(
                   'Ephraim Umunnakwe (King Raym)',
                   style: TextStyle(
                     fontSize: isDesktop ? 32 : 16,
@@ -43,7 +43,7 @@ class Header extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 10),
-                Text(
+                SelectableText(
                   'Professional Software Engineer',
                   style: TextStyle(
                     fontSize: isDesktop ? 20 : 14,
@@ -70,7 +70,7 @@ class Header extends StatelessWidget {
                               child: Column(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  Text(
+                                  SelectableText(
                                     "Write me a review",
                                     style: Theme.of(context)
                                         .textTheme
@@ -80,7 +80,7 @@ class Header extends StatelessWidget {
                                   const SizedBox(height: 20),
                                   TextField(
                                     decoration: InputDecoration(
-                                        label: Text(
+                                        label: SelectableText(
                                           "Your name",
                                           style: Theme.of(context)
                                               .textTheme
@@ -102,7 +102,7 @@ class Header extends StatelessWidget {
                                   TextField(
                                     cursorColor: Colors.white,
                                     decoration: InputDecoration(
-                                        label: Text(
+                                        label: SelectableText(
                                           "Your review",
                                           style: Theme.of(context)
                                               .textTheme
@@ -128,7 +128,7 @@ class Header extends StatelessWidget {
                                         elevation: 0,
                                         onPressed: () {},
                                         color: Colors.white,
-                                        child: Text(
+                                        child: SelectableText(
                                           "Submit",
                                           style: Theme.of(context)
                                               .textTheme
@@ -149,7 +149,7 @@ class Header extends StatelessWidget {
                                           Navigator.pop(context);
                                         },
                                         color: Colors.red,
-                                        child: Text(
+                                        child: SelectableText(
                                           "Cancel",
                                           style: Theme.of(context)
                                               .textTheme

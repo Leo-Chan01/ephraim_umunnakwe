@@ -37,7 +37,7 @@ class _ExpandingTextWidgetState extends State<ExpandingTextWidget> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text(
+        SelectableText(
           _isExpanded ? (firstHalf + secondHalf) : ('$firstHalf...'),
           style: (widget.widgetStyle != null)
               ? widget.widgetStyle
@@ -47,7 +47,7 @@ class _ExpandingTextWidgetState extends State<ExpandingTextWidget> {
         secondHalf.isEmpty
             ? Container()
             : InkWell(
-                child: Text(
+                child: SelectableText(
                   _isExpanded ? "See Less" : "See More",
                   style: Theme.of(context)
                       .textTheme

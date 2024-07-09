@@ -31,7 +31,7 @@ class FeatureCard extends StatelessWidget {
             children: [
               Icon(icon, size: 50, color: Colors.blue),
               const SizedBox(height: 10),
-              Text(
+              SelectableText(
                 title,
                 style: Theme.of(context)
                     .textTheme
@@ -39,7 +39,7 @@ class FeatureCard extends StatelessWidget {
                     .copyWith(color: Colors.black, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 10),
-              Text(
+              SelectableText(
                 description,
                 textAlign: TextAlign.center,
                 style: Theme.of(context)

@@ -12,7 +12,7 @@ class Footer extends StatelessWidget {
       color: Colors.blueGrey[900],
       child: const Column(
         children: [
-          Text(
+          SelectableText(
             'Contact Me',
             style: TextStyle(
               fontSize: 20,
@@ -21,7 +21,7 @@ class Footer extends StatelessWidget {
             ),
           ),
           SizedBox(height: 10),
-          Text(
+          SelectableText(
             'Email: ephraimleo16@gmail.com',
             style: TextStyle(
               fontSize: 16,
@@ -29,7 +29,7 @@ class Footer extends StatelessWidget {
             ),
           ),
           SizedBox(height: 5),
-          Text(
+          SelectableText(
             'Phone: +234 811 636 9105',
             style: TextStyle(
               fontSize: 16,

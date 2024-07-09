@@ -8,7 +8,7 @@ class ApiProjects extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Scaffold(
       body: GradientContainer(
-        child: Center(child: Text("My API Projects")),
+        child: Center(child: SelectableText("My API Projects")),
       ),
     );
   }
