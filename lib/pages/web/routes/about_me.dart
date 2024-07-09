@@ -1,4 +1,5 @@
 import 'package:ephraim_umunnakwe/pages/web/routes/app_routes.dart';
+import 'package:ephraim_umunnakwe/pages/web/widgets/footer.dart';
 import 'package:ephraim_umunnakwe/pages/web/widgets/gradient_container.dart';
 import 'package:ephraim_umunnakwe/utils/util_methods.dart';
 import 'package:flutter/gestures.dart';
@@ -44,7 +45,7 @@ class AboutMe extends StatelessWidget {
                                 SelectableText.rich(
                                   textAlign: TextAlign.start,
                                   TextSpan(
-                                      text: 'My name is ',
+                                      text: "Hi, I'm ",
                                       spellOut: true,
                                       style: Theme.of(context)
                                           .textTheme
@@ -61,7 +62,9 @@ class AboutMe extends StatelessWidget {
                                                   fontWeight: FontWeight.bold,
                                                   fontFamily: 'Avenir'),
                                         ),
-                                        const TextSpan(text: ', I hail from  '),
+                                        const TextSpan(
+                                            text:
+                                                ", but you can call me King Raym, which is a nickname I've embraced with pride. I hail from  "),
                                         TextSpan(
                                           text: 'Imo State, Nigeria. ',
                                           style: Theme.of(context)
@@ -73,11 +76,22 @@ class AboutMe extends StatelessWidget {
                                                   fontFamily: 'Avenir'),
                                         ),
                                         const TextSpan(
-                                            text: 'My friends call me Leo.'),
+                                            text:
+                                                "\n\nMy friends often call me Leo, a name that reflects both my strength and leadership qualities."
+                                                "I'm passionate about technology and software development, particularly in the realm of mobile applications."
+                                                " My expertise lies in Flutter, where I leverage Provider for state management to build efficient, scalable, and high-performing apps."
+                                                " My journey in the tech world has been fueled by a relentless curiosity and a desire to innovate and solve real-world problems through code."
+                                                "Beyond my professional life, I find joy in continuous learning and self-improvement. Whether it's exploring new programming paradigms,"
+                                                " keeping up with the latest industry trends, or diving into a good book, I'm always on the lookout for opportunities to expand my knowledge and skills."
+                                                "In my free time, I enjoy connecting with friends and family, cherishing the moments we share and the bonds we strengthen. "
+                                                "These relationships are a cornerstone of my life, providing support and inspiration in everything I do."
+                                                " I aim to leave a positive impact on the world, one line of code at a time."
+                                                " My journey is a testament to perseverance, creativity, and the belief that with dedication and passion, we can achieve great things."),
                                         const TextSpan(
-                                            text: '\n\nI own a new Startup '),
+                                            text:
+                                                '\n\nIn 2023, I founded a Startup '),
                                         TextSpan(
-                                          text: 'Raym Universe Limited',
+                                          text: '"Raym Universe Limited". ',
                                           recognizer: gestureRecogniser
                                             ..onTap = () async {
                                               await openLink(
@@ -91,19 +105,81 @@ class AboutMe extends StatelessWidget {
                                                   fontWeight: FontWeight.bold,
                                                   fontFamily: 'Avenir'),
                                         ),
+                                        const TextSpan(
+                                            text:
+                                                "A dynamic and innovative company dedicated to transforming ideas"
+                                                " into reality through cutting-edge technology and creative solutions. "
+                                                "Although with my focus on Robotics we at the meantime specialize in software development. "
+                                                "The company so far, excels in building high-quality mobile and web applications tailored to meet the unique needs of its clients."
+                                                " Beyond software, the company is also at the forefront of robotic innovations and research, exploring new frontiers in automation and"
+                                                " intelligent systems. With a focus on user experience, functionality, and technological advancement, Raym Universe Limited leverages the"
+                                                " latest tools and methodologies to deliver exceptional products that drive business growth and efficiency. Explore more about our services "
+                                                "and projects at"),
+                                        TextSpan(
+                                          text: "it's official website. ",
+                                          recognizer: gestureRecogniser
+                                            ..onTap = () async {
+                                              await openLink(
+                                                  'https://theraymuniverse.com');
+                                            },
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyMedium!
+                                              .copyWith(
+                                                  color: Colors.yellow,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontFamily: 'Avenir'),
+                                        ),
                                       ]),
-                                )
+                                ),
                               ],
                             ),
                           ),
+                          const SizedBox(width: 8),
                           Expanded(
                               flex: 2,
-                              child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(50),
-                                  child: Image.asset(
-                                      fit: BoxFit.cover,
-                                      'assets/images/profile_img.jpg')))
-                        ])
+                              child: Column(
+                                children: [
+                                  ClipRRect(
+                                      borderRadius: BorderRadius.circular(50),
+                                      child: Image.asset(
+                                          fit: BoxFit.cover,
+                                          'assets/images/profile_img.jpg')),
+                                  const SizedBox(height: 20),
+                                  SelectableText("Core Technologies/Stack",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium!
+                                          .copyWith(
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white,
+                                              fontFamily: 'Avenir')),
+                                  const SizedBox(height: 20),
+                                  const Wrap(
+                                      alignment: WrapAlignment.center,
+                                      children: [
+                                        FaIcon(FontAwesomeIcons.android,
+                                            color: Colors.green),
+                                        SizedBox(width: 10),
+                                        FaIcon(FontAwesomeIcons.apple,
+                                            color: Colors.grey),
+                                        SizedBox(width: 10),
+                                        FaIcon(FontAwesomeIcons.nodeJs,
+                                            color: Colors.yellow),
+                                        SizedBox(width: 10),
+                                        FaIcon(FontAwesomeIcons.java,
+                                            color: Colors.red),
+                                        SizedBox(width: 10),
+                                        FaIcon(FontAwesomeIcons.c,
+                                            color: Colors.white),
+                                      ])
+                                ],
+                              ))
+                        ]),
+                    const SizedBox(height: 80),
+                    const Divider(),
+                    const SizedBox(height: 80),
+                    const Footer(isDesktop: true),
                   ],
                 ),
               ),
