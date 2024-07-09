@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 bool areWeMobile(BuildContext context) {
   var width = MediaQuery.of(context).size.width;
@@ -23,4 +24,16 @@ double getCurrentViewWidth(BuildContext context) {
 
 int getRandomSelection({required int limit}) {
   return Random().nextInt(limit);
+}
+
+openLink(String? url) async {
+  if (url != null) {
+    if (await canLaunchUrl(Uri.parse(url))) {
+      await launchUrl(Uri.parse(url));
+    } else {
+      await launchUrl(Uri.parse('https://thephenomenalephraim.web.app'));
+    }
+  } else {
+    await launchUrl(Uri.parse(url ?? 'https://thephenomenalephraim.web.app'));
+  }
 }

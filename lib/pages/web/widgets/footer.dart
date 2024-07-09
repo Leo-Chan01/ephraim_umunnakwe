@@ -1,3 +1,4 @@
+import 'package:ephraim_umunnakwe/utils/util_methods.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -10,9 +11,9 @@ class Footer extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(20),
       color: Colors.blueGrey[900],
-      child: const Column(
+      child: Column(
         children: [
-          SelectableText(
+          const SelectableText(
             'Contact Me',
             style: TextStyle(
               fontSize: 20,
@@ -20,33 +21,49 @@ class Footer extends StatelessWidget {
               fontWeight: FontWeight.bold,
             ),
           ),
-          SizedBox(height: 10),
-          SelectableText(
+          const SizedBox(height: 10),
+          const SelectableText(
             'Email: ephraimleo16@gmail.com',
             style: TextStyle(
               fontSize: 16,
               color: Colors.white70,
             ),
           ),
-          SizedBox(height: 5),
-          SelectableText(
+          const SizedBox(height: 5),
+          const SelectableText(
             'Phone: +234 811 636 9105',
             style: TextStyle(
               fontSize: 16,
               color: Colors.white70,
             ),
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              FaIcon(FontAwesomeIcons.xTwitter, color: Colors.white),
-              SizedBox(width: 10),
-              FaIcon(FontAwesomeIcons.instagram, color: Colors.white),
-              SizedBox(width: 10),
-              Icon(Icons.facebook, color: Colors.white),
-              SizedBox(width: 10),
-              FaIcon(FontAwesomeIcons.hashnode, color: Colors.white),
+              InkWell(
+                  onTap: () async {
+                    await openLink('https://x.com/yfdtweets');
+                  },
+                  child:
+                      const FaIcon(FontAwesomeIcons.xTwitter, color: Colors.white)),
+              const SizedBox(width: 10),
+              InkWell(
+                  onTap: () async {
+                    await openLink(
+                        'https://instagram.com/your.favourite.developer');
+                  },
+                  child:
+                      const FaIcon(FontAwesomeIcons.instagram, color: Colors.white)),
+              const SizedBox(width: 10),
+              const InkWell(child: Icon(Icons.facebook, color: Colors.white)),
+              const SizedBox(width: 10),
+              InkWell(
+                  onTap: () async {
+                    await openLink('https://kingraym.hashnode.dev/');
+                  },
+                  child:
+                      const FaIcon(FontAwesomeIcons.hashnode, color: Colors.white)),
             ],
           ),
         ],

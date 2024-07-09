@@ -45,7 +45,7 @@ class MyApp extends StatelessWidget {
             routes: {
               '/': (context) => const SplashScreen(),
               AppRoutes.homePage: (context) => const LandingPage(),
-              AppRoutes.aboutMe: (context) => const AboutMe(),
+              AppRoutes.aboutMe: (context) => AboutMe(),
               AppRoutes.myAppsPage: (context) => const AppProjects(),
               AppRoutes.myApiPages: (context) => const ApiProjects()
             },

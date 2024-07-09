@@ -228,7 +228,8 @@ class BodyContent extends StatelessWidget {
                     .headlineMedium!
                     .copyWith(color: Colors.white)),
             const SizedBox(height: 5),
-            SelectableText('My people say "Show working!", here is a tip of the iceberg',
+            SelectableText(
+                'My people say "Show working!", here is a tip of the iceberg',
                 textAlign: TextAlign.center,
                 style: (isDesktop == true)
                     ? Theme.of(context)
@@ -360,7 +361,7 @@ class TestimonialCarousel extends StatelessWidget {
               viewportFraction: 0.7,
               enlargeCenterPage: true,
               autoPlay: true,
-              height: getCurrentViewHeight(context) * (55 / 100),
+              height: getCurrentViewHeight(context) * (60 / 100),
               enlargeFactor: 0.2),
     );
   }
