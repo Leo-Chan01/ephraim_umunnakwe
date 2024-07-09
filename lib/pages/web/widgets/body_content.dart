@@ -40,6 +40,127 @@ class BodyContent extends StatelessWidget {
             const SizedBox(height: 80),
             const Divider(),
             const SizedBox(height: 80),
+            isDesktop
+                ? Wrap(
+                    alignment: WrapAlignment.center,
+                    spacing: getCurrentViewWidth(context) * (20 / 100),
+                    children: [
+                        Column(children: [
+                          Text(
+                            "Happy Clients",
+                            style: Theme.of(context)
+                                .textTheme
+                                .headlineSmall!
+                                .copyWith(color: Colors.white),
+                          ),
+                          Text(
+                            "50+",
+                            style: Theme.of(context)
+                                .textTheme
+                                .headlineLarge!
+                                .copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.green),
+                          ),
+                        ]),
+                        Column(children: [
+                          Text(
+                            "Companies worked for",
+                            style: Theme.of(context)
+                                .textTheme
+                                .headlineSmall!
+                                .copyWith(color: Colors.white),
+                          ),
+                          Text(
+                            "6+",
+                            style: Theme.of(context)
+                                .textTheme
+                                .headlineLarge!
+                                .copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white),
+                          ),
+                        ]),
+                        Column(children: [
+                          Text(
+                            "Live Personal Projects",
+                            style: Theme.of(context)
+                                .textTheme
+                                .headlineSmall!
+                                .copyWith(color: Colors.white),
+                          ),
+                          Text(
+                            "2+",
+                            style: Theme.of(context)
+                                .textTheme
+                                .headlineLarge!
+                                .copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white),
+                          ),
+                        ]),
+                      ])
+                : Column(children: [
+                    Column(children: [
+                      Text(
+                        "Happy Clients",
+                        style: Theme.of(context)
+                            .textTheme
+                            .headlineSmall!
+                            .copyWith(color: Colors.white),
+                      ),
+                      Text(
+                        "50+",
+                        style: Theme.of(context)
+                            .textTheme
+                            .headlineLarge!
+                            .copyWith(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.green),
+                      ),
+                    ]),
+                    const SizedBox(height: 10),
+                    Column(children: [
+                      Text(
+                        "Companies worked for",
+                        style: Theme.of(context)
+                            .textTheme
+                            .headlineSmall!
+                            .copyWith(color: Colors.white),
+                      ),
+                      Text(
+                        "6+",
+                        style: Theme.of(context)
+                            .textTheme
+                            .headlineLarge!
+                            .copyWith(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
+                      ),
+                    ]),
+                    const SizedBox(height: 10),
+                    Column(children: [
+                      Text(
+                        "Live Personal Projects",
+                        style: Theme.of(context)
+                            .textTheme
+                            .headlineSmall!
+                            .copyWith(color: Colors.white),
+                      ),
+                      Text(
+                        "2+",
+                        style: Theme.of(context)
+                            .textTheme
+                            .headlineLarge!
+                            .copyWith(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
+                      ),
+                    ]),
+                  ]),
+            const SizedBox(height: 80),
+            const Divider(),
+            const SizedBox(height: 80),
             Text('My Brand Promise',
                 style: Theme.of(context)
                     .textTheme
