@@ -1,6 +1,7 @@
 import 'package:ephraim_umunnakwe/pages/web/routes/app_routes.dart';
 import 'package:ephraim_umunnakwe/pages/web/widgets/footer.dart';
 import 'package:ephraim_umunnakwe/pages/web/widgets/gradient_container.dart';
+import 'package:ephraim_umunnakwe/pages/web/widgets/journey_map.dart';
 import 'package:ephraim_umunnakwe/utils/util_methods.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -78,10 +79,10 @@ class AboutMe extends StatelessWidget {
                                         const TextSpan(
                                             text:
                                                 "\n\nMy friends often call me Leo, a name that reflects both my strength and leadership qualities."
-                                                "I'm passionate about technology and software development, particularly in the realm of mobile applications."
+                                                " I'm passionate about technology and software development, particularly in the realm of mobile applications."
                                                 " My expertise lies in Flutter, where I leverage Provider for state management to build efficient, scalable, and high-performing apps."
                                                 " My journey in the tech world has been fueled by a relentless curiosity and a desire to innovate and solve real-world problems through code."
-                                                "Beyond my professional life, I find joy in continuous learning and self-improvement. Whether it's exploring new programming paradigms,"
+                                                " Beyond my professional life, I find joy in continuous learning and self-improvement. Whether it's exploring new programming paradigms,"
                                                 " keeping up with the latest industry trends, or diving into a good book, I'm always on the lookout for opportunities to expand my knowledge and skills."
                                                 "In my free time, I enjoy connecting with friends and family, cherishing the moments we share and the bonds we strengthen. "
                                                 "These relationships are a cornerstone of my life, providing support and inspiration in everything I do."
@@ -114,9 +115,9 @@ class AboutMe extends StatelessWidget {
                                                 " Beyond software, the company is also at the forefront of robotic innovations and research, exploring new frontiers in automation and"
                                                 " intelligent systems. With a focus on user experience, functionality, and technological advancement, Raym Universe Limited leverages the"
                                                 " latest tools and methodologies to deliver exceptional products that drive business growth and efficiency. Explore more about our services "
-                                                "and projects at"),
+                                                "and projects at it's official "),
                                         TextSpan(
-                                          text: "it's official website. ",
+                                          text: "website. ",
                                           recognizer: gestureRecogniser
                                             ..onTap = () async {
                                               await openLink(
@@ -136,6 +137,8 @@ class AboutMe extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(width: 8),
+                          const VerticalDivider(
+                              width: 2, thickness: 2, color: Colors.yellow),
                           Expanded(
                               flex: 2,
                               child: Column(
@@ -172,10 +175,66 @@ class AboutMe extends StatelessWidget {
                                         SizedBox(width: 10),
                                         FaIcon(FontAwesomeIcons.c,
                                             color: Colors.white),
-                                      ])
+                                      ]),
+                                  const SizedBox(height: 20),
+                                  SelectableText(
+                                      "I write too \n@hasnode, twitter and dev.to \nwith name KingRaym(YFD) or kingraym's eureka",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium!
+                                          .copyWith(
+                                              color: Colors.white,
+                                              fontFamily: 'Genome')),
+                                  const SizedBox(height: 20),
+                                  ClipRRect(
+                                      borderRadius: BorderRadius.circular(50),
+                                      child: Image.asset(
+                                          fit: BoxFit.cover,
+                                          'assets/images/kingseurekalogo.png')),
+                                  SelectableText(
+                                      "This is my personal brand logo",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodySmall!
+                                          .copyWith(
+                                              color: Colors.white,
+                                              fontFamily: 'Avenir')),
+                                  const SizedBox(height: 20),
+                                  Container(
+                                      width: getCurrentViewWidth(context) * 20,
+                                      height: 100,
+                                      decoration: BoxDecoration(
+                                          color: Colors.white.withOpacity(0.2),
+                                          borderRadius:
+                                              BorderRadius.circular(10)),
+                                      child: Center(
+                                          child: Text(
+                                              "Scroll Down to see my Journey",
+                                              textAlign: TextAlign.center,
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyMedium!
+                                                  .copyWith(
+                                                      color: Colors.white))))
                                 ],
                               ))
                         ]),
+                    const SizedBox(height: 80),
+                    const Divider(),
+                    const SizedBox(height: 80),
+                    SelectableText("My Journey so far",
+                        style: Theme.of(context)
+                            .textTheme
+                            .headlineMedium!
+                            .copyWith(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                                fontFamily: 'Avenir')),
+                    SelectableText("This highlights the most notable parts of my journey and not everything, so you don't get bored on those details...",
+                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                              color: Colors.white,
+                            )),
+                    const JourneyMap(),
                     const SizedBox(height: 80),
                     const Divider(),
                     const SizedBox(height: 80),

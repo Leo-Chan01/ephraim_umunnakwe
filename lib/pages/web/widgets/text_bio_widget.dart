@@ -20,13 +20,11 @@ class TextBioWidget extends StatelessWidget {
               .bodyLarge!
               .copyWith(color: Colors.white),
           children: [
-            TextSpan(
+            const TextSpan(
               text: 'Hi there, ',
-              // style: Theme.of(context).textTheme.bodyMedium,
             ),
-            TextSpan(
+            const TextSpan(
               text: 'my name is \n',
-              // style: Theme.of(context).textTheme.bodyMedium,
             ),
             WidgetSpan(
               child: AnimatedTextKit(

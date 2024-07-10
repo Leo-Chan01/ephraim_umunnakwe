@@ -21,8 +21,8 @@ class FeatureCard extends StatelessWidget {
       width: (shouldExpand != null) ? double.infinity : null,
       child: Card(
         margin: (shouldExpand != null)
-            ? EdgeInsets.symmetric(horizontal: 10, vertical: 4)
-            : EdgeInsets.all(4),
+            ? const EdgeInsets.symmetric(horizontal: 10, vertical: 4)
+            : const EdgeInsets.all(4),
         elevation: isFocused ? 2 : 0,
         shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
         child: Padding(
