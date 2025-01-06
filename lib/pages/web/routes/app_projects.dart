@@ -53,9 +53,13 @@ class _AppProjectsState extends State<AppProjects> {
                   ? Center(child: CustomLoadingWidget())
                   : Expanded(
                       child: GridView.builder(
-                      gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                          maxCrossAxisExtent:
-                              getCurrentViewWidth(context) * (70 / 100)),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                              // crossAxisCount: _getCrossAxisCount(context),
+                              crossAxisCount: 2,
+                              childAspectRatio: 0.75,
+                              crossAxisSpacing: 16,
+                              mainAxisSpacing: 16),
                       itemCount:
                           context.watch<ProjectsProvider>().projects.length,
                       padding: const EdgeInsets.all(22),
@@ -66,23 +70,42 @@ class _AppProjectsState extends State<AppProjects> {
                             .projects[index];
                         return Card(
                           elevation: 0,
-                          child: Column(
-                            children: [
-                              Expanded(
-                                flex: 10,
-                                child: Padding(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              children: [
+                                Padding(
                                   padding: EdgeInsets.all(8.sp),
                                   child: Row(
                                     children: [
                                       Expanded(
                                         flex: 5,
-                                        child: ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            child: Image.asset(
-                                              "assets/images/profile_img.jpg",
-                                              fit: BoxFit.cover,
-                                            )),
+                                        child: Column(
+                                          children: [
+                                            ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                child: Image.asset(
+                                                  "assets/images/profile_img.jpg",
+                                                  fit: BoxFit.cover,
+                                                )),
+                                            const SizedBox(height: 20),
+                                            Align(
+                                              alignment: Alignment.centerLeft,
+                                              child: SelectableText(
+                                                project.name ?? "N/A",
+                                                textAlign: TextAlign.start,
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .bodyLarge!
+                                                    .copyWith(
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontFamily: 'Avenir'),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                       const Expanded(
                                         flex: 1,
@@ -98,8 +121,7 @@ class _AppProjectsState extends State<AppProjects> {
                                               ),
                                               SizedBox(height: 10),
                                               CustomIconWidget(
-                                                icon: FontAwesomeIcons
-                                                    .appStore,
+                                                icon: FontAwesomeIcons.appStore,
                                                 color: Colors.grey,
                                                 radius: 100,
                                               ),
@@ -122,44 +144,107 @@ class _AppProjectsState extends State<AppProjects> {
                                     ],
                                   ),
                                 ),
-                              ),
-                              const SizedBox(height: 20),
-                              SelectableText(
-                                project.name ?? "N/A",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyLarge!
-                                    .copyWith(
-                                        fontWeight: FontWeight.bold,
-                                        fontFamily: 'Avenir'),
-                              ),
-                              const SizedBox(height: 15),
-                              Expanded(
-                                  flex: 8,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Container(
-                                        width: double.infinity,
-                                        decoration: BoxDecoration(
-                                            border: Border.all(
-                                                color: Colors.grey, width: 2),
-                                            borderRadius:
-                                                BorderRadius.circular(10)),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: ExpandingTextWidget(
-                                              truncationLength: 50,
+                                const SizedBox(height: 15),
+                                Container(
+                                    width: double.infinity,
+                                    decoration: BoxDecoration(
+                                        border: Border.all(
+                                            color: Colors.grey, width: 2),
+                                        borderRadius:
+                                            BorderRadius.circular(10)),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text("See more details",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodySmall!
+                                              .copyWith(
+                                                  color: Colors.black,
+                                                  fontFamily: 'Avenir')),
+                                      // child: ExpandingTextWidget(
+                                      //     truncationLength: 50,
+                                      //     text:
+                                      //         project.description ?? 'N/A',
+                                      //     widgetStyle: Theme.of(context)
+                                      //         .textTheme
+                                      //         .bodySmall!
+                                      //         .copyWith(
+                                      //             color: Colors.black,
+                                      //             fontFamily: 'Avenir')),
+                                    )),
+                                const SizedBox(height: 15),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: RichText(
+                                        text: TextSpan(
+                                          text: "Status: ",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodySmall,
+                                          children: [
+                                            TextSpan(
+                                              text: project.status,
+                                              style: TextStyle(
+                                                  color: project.status ==
+                                                          "In Progress"
+                                                      ? Colors.orange
+                                                      : project.status ==
+                                                              "Planning"
+                                                          ? Colors.blue
+                                                          : project.status ==
+                                                                  "Completed"
+                                                              ? Colors.green
+                                                              : Colors.black,
+                                                  fontWeight: FontWeight.w900),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(height: 10),
+                                    Wrap(
+                                      spacing: 8.0,
+                                      runSpacing: 4.0,
+                                      children: project.technologies!
+                                          .map<Widget>((tech) {
+                                        return Chip(
+                                          label: Text(tech),
+                                          backgroundColor: Colors.blueAccent,
+                                          side: BorderSide.none,
+                                          labelStyle: const TextStyle(
+                                              color: Colors.white),
+                                        );
+                                      }).toList(),
+                                    ),
+                                    const SizedBox(height: 10),
+                                    // Use the start and end date to get the duration in months
+                                    Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: RichText(
+                                        text: TextSpan(
+                                          text: "Duration: ",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodySmall,
+                                          children: [
+                                            TextSpan(
                                               text:
-                                                  project.description ?? 'N/A',
-                                              widgetStyle: Theme.of(context)
-                                                  .textTheme
-                                                  .bodySmall!
-                                                  .copyWith(
-                                                      color: Colors.black,
-                                                      fontFamily: 'Avenir')),
-                                        )),
-                                  )),
-                            ],
+                                                  " ${calculateDurationInMonths(project.startDate, project.endDate)} months.",
+                                              style: const TextStyle(
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.w900),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
                         );
                       },
@@ -173,6 +258,28 @@ class _AppProjectsState extends State<AppProjects> {
 
   Future<void> getAllProjectList() async {
     await Provider.of<ProjectsProvider>(context, listen: false).fetchProjects();
+  }
+
+  int _getCrossAxisCount(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    if (width > 900) {
+      return 4;
+    } else if (width > 600) {
+      return 3;
+    } else {
+      return 2;
+    }
+  }
+
+  int calculateDurationInMonths(DateTime? startDate, DateTime? endDate) {
+    if (startDate == null || endDate == null) {
+      return 0;
+    }
+
+    int yearsDifference = endDate.year - startDate.year;
+    int monthsDifference = endDate.month - startDate.month;
+
+    return yearsDifference * 12 + monthsDifference;
   }
 }
 
