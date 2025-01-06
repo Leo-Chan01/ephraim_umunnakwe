@@ -51,204 +51,177 @@ class _AppProjectsState extends State<AppProjects> {
               const SizedBox(height: 40),
               context.watch<ProjectsProvider>().isLoading
                   ? Center(child: CustomLoadingWidget())
-                  : Expanded(
-                      child: GridView.builder(
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                              // crossAxisCount: _getCrossAxisCount(context),
-                              crossAxisCount: 2,
-                              childAspectRatio: 0.75,
-                              crossAxisSpacing: 16,
-                              mainAxisSpacing: 16),
-                      itemCount:
-                          context.watch<ProjectsProvider>().projects.length,
-                      padding: const EdgeInsets.all(22),
-                      physics: const BouncingScrollPhysics(),
-                      itemBuilder: (context, index) {
-                        var project = Provider.of<ProjectsProvider>(context,
-                                listen: false)
-                            .projects[index];
-                        return Card(
+                    : Expanded(
+                      child: Center(
+                      child: Container(
+                        constraints: const BoxConstraints(maxWidth: 800),
+                        child: ListView.builder(
+                        itemCount: context.watch<ProjectsProvider>().projects.length,
+                        padding: const EdgeInsets.all(22),
+                        physics: const BouncingScrollPhysics(),
+                        itemBuilder: (context, index) {
+                          var project = Provider.of<ProjectsProvider>(context, listen: false).projects[index];
+                          return Card(
                           elevation: 0,
+                          margin: const EdgeInsets.symmetric(vertical: 10),
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Column(
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.all(8.sp),
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                        flex: 5,
-                                        child: Column(
-                                          children: [
-                                            ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(10),
-                                                child: Image.asset(
-                                                  "assets/images/profile_img.jpg",
-                                                  fit: BoxFit.cover,
-                                                )),
-                                            const SizedBox(height: 20),
-                                            Align(
-                                              alignment: Alignment.centerLeft,
-                                              child: SelectableText(
-                                                project.name ?? "N/A",
-                                                textAlign: TextAlign.start,
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .bodyLarge!
-                                                    .copyWith(
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontFamily: 'Avenir'),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      const Expanded(
-                                        flex: 1,
-                                        child: Padding(
-                                          padding: EdgeInsets.all(8.0),
-                                          child: Column(
-                                            children: [
-                                              CustomIconWidget(
-                                                icon:
-                                                    FontAwesomeIcons.googlePlay,
-                                                color: Colors.green,
-                                                radius: 100,
-                                              ),
-                                              SizedBox(height: 10),
-                                              CustomIconWidget(
-                                                icon: FontAwesomeIcons.appStore,
-                                                color: Colors.grey,
-                                                radius: 100,
-                                              ),
-                                              SizedBox(height: 10),
-                                              CustomIconWidget(
-                                                icon: FontAwesomeIcons.globe,
-                                                color: Colors.blue,
-                                                radius: 100,
-                                              ),
-                                              SizedBox(height: 10),
-                                              CustomIconWidget(
-                                                icon: FontAwesomeIcons.code,
-                                                color: Colors.black,
-                                                radius: 100,
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                                const SizedBox(height: 15),
-                                Container(
-                                    width: double.infinity,
-                                    decoration: BoxDecoration(
-                                        border: Border.all(
-                                            color: Colors.grey, width: 2),
-                                        borderRadius:
-                                            BorderRadius.circular(10)),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text("See more details",
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodySmall!
-                                              .copyWith(
-                                                  color: Colors.black,
-                                                  fontFamily: 'Avenir')),
-                                      // child: ExpandingTextWidget(
-                                      //     truncationLength: 50,
-                                      //     text:
-                                      //         project.description ?? 'N/A',
-                                      //     widgetStyle: Theme.of(context)
-                                      //         .textTheme
-                                      //         .bodySmall!
-                                      //         .copyWith(
-                                      //             color: Colors.black,
-                                      //             fontFamily: 'Avenir')),
-                                    )),
-                                const SizedBox(height: 15),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                              padding: EdgeInsets.all(8.sp),
+                              child: Stack(
+                                children: [
+                                Expanded(
+                                  flex: 5,
+                                  child: Column(
                                   children: [
-                                    Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: RichText(
-                                        text: TextSpan(
-                                          text: "Status: ",
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodySmall,
-                                          children: [
-                                            TextSpan(
-                                              text: project.status,
-                                              style: TextStyle(
-                                                  color: project.status ==
-                                                          "In Progress"
-                                                      ? Colors.orange
-                                                      : project.status ==
-                                                              "Planning"
-                                                          ? Colors.blue
-                                                          : project.status ==
-                                                                  "Completed"
-                                                              ? Colors.green
-                                                              : Colors.black,
-                                                  fontWeight: FontWeight.w900),
-                                            ),
-                                          ],
-                                        ),
+                                    SizedBox(
+                                    width: MediaQuery.sizeOf(context).width,
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(10),
+                                      child: Image.asset(
+                                      "assets/images/profile_img.jpg",
+                                      fit: BoxFit.cover,
                                       ),
                                     ),
-                                    const SizedBox(height: 10),
-                                    Wrap(
-                                      spacing: 8.0,
-                                      runSpacing: 4.0,
-                                      children: project.technologies!
-                                          .map<Widget>((tech) {
-                                        return Chip(
-                                          label: Text(tech),
-                                          backgroundColor: Colors.blueAccent,
-                                          side: BorderSide.none,
-                                          labelStyle: const TextStyle(
-                                              color: Colors.white),
-                                        );
-                                      }).toList(),
                                     ),
-                                    const SizedBox(height: 10),
-                                    // Use the start and end date to get the duration in months
+                                    const SizedBox(height: 20),
                                     Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: RichText(
-                                        text: TextSpan(
-                                          text: "Duration: ",
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodySmall,
-                                          children: [
-                                            TextSpan(
-                                              text:
-                                                  " ${calculateDurationInMonths(project.startDate, project.endDate)} months.",
-                                              style: const TextStyle(
-                                                  color: Colors.black,
-                                                  fontWeight: FontWeight.w900),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
+                                    alignment: Alignment.centerLeft,
+                                    child: SelectableText(
+                                      project.name ?? "N/A",
+                                      textAlign: TextAlign.start,
+                                      style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: 'Avenir'),
+                                    ),
                                     ),
                                   ],
+                                  ),
+                                ),
+                                const Align(
+                                  alignment: Alignment.topRight,
+                                  child: Padding(
+                                  padding: EdgeInsets.all(8.0),
+                                  child: SizedBox(
+                                    width: 100,
+                                    child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      CustomIconWidget(
+                                      icon: FontAwesomeIcons.googlePlay,
+                                      color: Colors.green,
+                                      radius: 100,
+                                      ),
+                                      SizedBox(height: 10),
+                                      CustomIconWidget(
+                                      icon: FontAwesomeIcons.appStore,
+                                      color: Colors.grey,
+                                      radius: 100,
+                                      ),
+                                      SizedBox(height: 10),
+                                      CustomIconWidget(
+                                      icon: FontAwesomeIcons.globe,
+                                      color: Colors.blue,
+                                      radius: 100,
+                                      ),
+                                      SizedBox(height: 10),
+                                      CustomIconWidget(
+                                      icon: FontAwesomeIcons.code,
+                                      color: Colors.black,
+                                      radius: 100,
+                                      ),
+                                    ],
+                                    ),
+                                  ),
+                                  ),
+                                )
+                                ],
+                              ),
+                              ),
+                              const SizedBox(height: 15),
+                              Container(
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.grey, width: 2),
+                                  borderRadius: BorderRadius.circular(10)),
+                                child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text("See more details",
+                                  style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                                    color: Colors.black,
+                                    fontFamily: 'Avenir')),
+                                )),
+                              const SizedBox(height: 15),
+                              Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Align(
+                                alignment: Alignment.centerLeft,
+                                child: RichText(
+                                  text: TextSpan(
+                                  text: "Status: ",
+                                  style: Theme.of(context).textTheme.bodySmall,
+                                  children: [
+                                    TextSpan(
+                                    text: project.status,
+                                    style: TextStyle(
+                                      color: project.status == "In Progress"
+                                        ? Colors.orange
+                                        : project.status == "Planning"
+                                          ? Colors.blue
+                                          : project.status == "Completed"
+                                            ? Colors.green
+                                            : Colors.black,
+                                      fontWeight: FontWeight.w900),
+                                    ),
+                                  ],
+                                  ),
+                                ),
+                                ),
+                                const SizedBox(height: 10),
+                                Wrap(
+                                spacing: 8.0,
+                                runSpacing: 4.0,
+                                children: project.technologies!.map<Widget>((tech) {
+                                  return Chip(
+                                  label: Text(tech),
+                                  backgroundColor: Colors.blueAccent,
+                                  side: BorderSide.none,
+                                  labelStyle: const TextStyle(color: Colors.white),
+                                  );
+                                }).toList(),
+                                ),
+                                const SizedBox(height: 10),
+                                Align(
+                                alignment: Alignment.centerLeft,
+                                child: RichText(
+                                  text: TextSpan(
+                                  text: "Duration: ",
+                                  style: Theme.of(context).textTheme.bodySmall,
+                                  children: [
+                                    TextSpan(
+                                    text: " ${calculateDurationInMonths(project.startDate, project.endDate)} months.",
+                                    style: const TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w900),
+                                    ),
+                                  ],
+                                  ),
+                                ),
                                 ),
                               ],
+                              ),
+                            ],
                             ),
                           ),
-                        );
-                      },
-                    ))
+                          );
+                        },
+                        ),
+                      ),
+                      ),
+                    )
             ],
           ),
         )),
@@ -295,7 +268,7 @@ class CustomLoadingWidget extends StatelessWidget {
             width: 100,
             height: 100,
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 10),
           const Text(
             'Loading...',
             style: TextStyle(color: Colors.white, fontSize: 16),

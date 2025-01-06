@@ -1,4 +1,5 @@
 import 'package:ephraim_umunnakwe/pages/web/landing_page.dart';
+import 'package:ephraim_umunnakwe/pages/web/routes/app_projects.dart';
 import 'package:ephraim_umunnakwe/pages/web/widgets/gradient_container.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
@@ -46,9 +47,17 @@ class _SplashScreenState extends State<SplashScreen>
     return Scaffold(
       body: GradientContainer(
         child: Center(
-          child: ScaleTransition(
-            scale: _animation,
-            child: Image.asset('assets/images/profile_img.jpg', height: 50),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              ScaleTransition(
+                scale: _animation,
+                child: Image.asset('assets/images/profile_img.jpg', height: 50),
+              ),
+               const SizedBox(height: 10),
+              CustomLoadingWidget(),
+            ],
           ),
         ),
       ),
