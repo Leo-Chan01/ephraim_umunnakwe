@@ -1,7 +1,7 @@
 # ephraim_umunnakwe
 
 My personal portfolio
-Last Updated : 7th July, 2024
+Last Updated : 6th January, 2025
 
 ## Getting Started
 

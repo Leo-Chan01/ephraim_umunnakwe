@@ -17,6 +17,7 @@ class CustomIconWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: 30.h,
       decoration: BoxDecoration(
           border: Border.all(color: color, width: 2),
           borderRadius:
@@ -27,17 +28,10 @@ class CustomIconWidget extends StatelessWidget {
             if (value = true) {}
           },
           onTap: (onClick != null) ? onClick : null,
-          child: Center(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Center(
-                child: Icon(
-                  icon,
-                  color: color,
-                  size: 24.sp,
-                ),
-              ),
-            ),
+          child: Icon(
+            icon,
+            color: color,
+            size: 24.sp,
           ),
         ),
       ),

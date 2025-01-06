@@ -1,0 +1,38 @@
+{
+    "projects": [
+        {
+            "id": 1,
+            "name": "E-commerce Platform",
+            "preview_image": "",
+            "description": "Developed an online retail platform with shopping cart and payment integration.",
+            "status": "In Progress",
+            "startDate": "2024-01-01",
+            "endDate": "2024-06-30",
+            "priority": "High",
+            "technologies": ["React", "Node.js", "MongoDB"],
+            "role": "Full Stack Developer"
+        },
+        {
+            "id": 2,
+            "name": "Mobile App Development",
+            "description": "Created a cross-platform mobile application for iOS and Android.",
+            "status": "Planning",
+            "startDate": "2024-03-01",
+            "endDate": "2024-09-30",
+            "priority": "Medium",
+            "technologies": ["Flutter", "Firebase"],
+            "role": "Mobile Developer"
+        },
+        {
+            "id": 3,
+            "name": "Data Analytics Dashboard",
+            "description": "Built a real-time analytics dashboard with visualization tools.",
+            "status": "Completed",
+            "startDate": "2023-09-01",
+            "endDate": "2023-12-31",
+            "priority": "Low",
+            "technologies": ["Python", "Django", "Tableau"],
+            "role": "Data Scientist"
+        }
+    ]
+}
