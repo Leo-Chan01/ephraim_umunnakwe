@@ -2,37 +2,37 @@
     "projects": [
         {
             "id": 1,
-            "name": "E-commerce Platform",
+            "name": "Ahiaoma App and Reseller",
             "preview_image": "",
             "description": "Developed an online retail platform with shopping cart and payment integration.",
             "status": "In Progress",
             "startDate": "2024-01-01",
-            "endDate": "2024-06-30",
+            "endDate": "2025-08-30",
             "priority": "High",
-            "technologies": ["React", "Node.js", "MongoDB"],
+            "technologies": ["Flutter", "Typescript", "Supabase"],
             "role": "Full Stack Developer"
         },
         {
             "id": 2,
-            "name": "Mobile App Development",
+            "name": "BrillXChange App",
             "description": "Created a cross-platform mobile application for iOS and Android.",
-            "status": "Planning",
+            "status": "In Progress",
             "startDate": "2024-03-01",
-            "endDate": "2024-09-30",
+            "endDate": "2025-10-30",
             "priority": "Medium",
-            "technologies": ["Flutter", "Firebase"],
+            "technologies": ["Flutter", "Rest API"],
             "role": "Mobile Developer"
         },
         {
             "id": 3,
-            "name": "Data Analytics Dashboard",
+            "name": "Xeno App",
             "description": "Built a real-time analytics dashboard with visualization tools.",
             "status": "Completed",
             "startDate": "2023-09-01",
             "endDate": "2023-12-31",
             "priority": "Low",
-            "technologies": ["Python", "Django", "Tableau"],
-            "role": "Data Scientist"
+            "technologies": ["Flutter", "Rest API", "Flutter Flame"],
+            "role": "Mobile Developer"
         }
     ]
 }

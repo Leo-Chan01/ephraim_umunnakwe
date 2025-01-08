@@ -271,7 +271,7 @@ class _AppProjectsState extends State<AppProjects> {
   }
 
   Future<void> getAllProjectList() async {
-    await Provider.of<ProjectsProvider>(context, listen: false).fetchProjects();
+    await Provider.of<ProjectsProvider>(context, listen: false).getProjects();
   }
 
   int calculateDurationInMonths(DateTime? startDate, DateTime? endDate) {

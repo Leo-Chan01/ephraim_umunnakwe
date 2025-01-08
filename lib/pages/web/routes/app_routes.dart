@@ -14,7 +14,8 @@ class AppRoutes {
   static String myAppsPage = '/app-gigs';
   static String myApiPages = '/api-gigs';
 
-  static final GoRouter router = GoRouter(routes: [
+  static final GoRouter router = GoRouter(
+    routes: [
     GoRoute(
         path: AppRoutes.splashScreenRoute,
         builder: (context, state) => const SplashScreen()),
