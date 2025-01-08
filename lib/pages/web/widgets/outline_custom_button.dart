@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class CustomOutlinedButton extends StatelessWidget {
   final String title;
@@ -36,7 +37,7 @@ class CustomOutlinedButton extends StatelessWidget {
               shadowColor: shadowColor,
               child: OutlinedButton.icon(
                 onPressed: () {
-                  Navigator.pushNamed(context, direction);
+                  context.push(direction);
                 },
                 icon: icon,
                 label: SelectableText(
@@ -70,7 +71,7 @@ class CustomOutlinedButton extends StatelessWidget {
               shadowColor: shadowColor,
               child: OutlinedButton.icon(
                 onPressed: () {
-                  Navigator.pushNamed(context, direction);
+                  context.push(direction);
                 },
                 icon: icon,
                 label: SelectableText(

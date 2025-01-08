@@ -6,6 +6,7 @@ import 'package:ephraim_umunnakwe/utils/util_methods.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 
 class AboutMe extends StatelessWidget {
   AboutMe({super.key});
@@ -230,7 +231,8 @@ class AboutMe extends StatelessWidget {
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white,
                                 fontFamily: 'Avenir')),
-                    SelectableText("This highlights the most notable parts of my journey and not everything, so you don't get bored on those details...",
+                    SelectableText(
+                        "This highlights the most notable parts of my journey and not everything, so you don't get bored on those details...",
                         style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                               color: Colors.white,
                             )),
@@ -244,7 +246,7 @@ class AboutMe extends StatelessWidget {
               ),
             ),
             CustomBackButton(clickAction: () {
-              Navigator.pushNamed(context, AppRoutes.homePage);
+              context.pushNamed(AppRoutes.homePage);
             })
           ],
         ),

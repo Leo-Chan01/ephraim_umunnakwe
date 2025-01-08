@@ -1,8 +1,10 @@
-import 'package:ephraim_umunnakwe/pages/web/landing_page.dart';
-import 'package:ephraim_umunnakwe/pages/web/routes/app_projects.dart';
+import 'package:ephraim_umunnakwe/pages/web/routes/app_routes.dart';
+import 'package:ephraim_umunnakwe/pages/web/widgets/customloading_widget.dart';
 import 'package:ephraim_umunnakwe/pages/web/widgets/gradient_container.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
+
+import 'package:go_router/go_router.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -30,9 +32,7 @@ class _SplashScreenState extends State<SplashScreen>
     ));
 
     Timer(const Duration(seconds: 5), () {
-      Navigator.of(context).pushReplacement(
-        FadeTransitionRoute(page: const LandingPage()),
-      );
+      context.pushReplacement(AppRoutes.homePage);
     });
   }
 
@@ -55,8 +55,8 @@ class _SplashScreenState extends State<SplashScreen>
                 scale: _animation,
                 child: Image.asset('assets/images/profile_img.jpg', height: 50),
               ),
-               const SizedBox(height: 10),
-              CustomLoadingWidget(),
+              const SizedBox(height: 10),
+              const CustomLoadingWidget(),
             ],
           ),
         ),

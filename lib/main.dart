@@ -1,8 +1,3 @@
-import 'package:ephraim_umunnakwe/pages/splash_screen.dart';
-import 'package:ephraim_umunnakwe/pages/web/landing_page.dart';
-import 'package:ephraim_umunnakwe/pages/web/routes/about_me.dart';
-import 'package:ephraim_umunnakwe/pages/web/routes/api_projects.dart';
-import 'package:ephraim_umunnakwe/pages/web/routes/app_projects.dart';
 import 'package:ephraim_umunnakwe/pages/web/routes/app_routes.dart';
 import 'package:ephraim_umunnakwe/theme/theme.dart';
 import 'package:ephraim_umunnakwe/view_models/providers/gradient_notifier.dart';
@@ -13,6 +8,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 Future<void> main() async {
+  // usePath();
+  // GoRouter.optionURLReflectsImperativeAPIs = true;
   WidgetsFlutterBinding.ensureInitialized();
 
   runApp(MultiProvider(providers: [
@@ -26,29 +23,22 @@ Future<void> main() async {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key}); 
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-        // designSize: const Size(360, 690),
         designSize: const Size(1920, 800),
         minTextAdapt: true,
         splitScreenMode: false,
         ensureScreenSize: true,
         builder: (context, child) {
-          return MaterialApp(
+          return MaterialApp.router(
+           
             debugShowCheckedModeBanner: false,
             title: 'Ephraim Umunnakwe',
             theme: customTheme,
-            initialRoute: '/',
-            routes: {
-              '/': (context) => const SplashScreen(),
-              AppRoutes.homePage: (context) => const LandingPage(),
-              AppRoutes.aboutMe: (context) => AboutMe(),
-              AppRoutes.myAppsPage: (context) => const AppProjects(),
-              AppRoutes.myApiPages: (context) => const ApiProjects()
-            },
+            routerConfig: AppRoutes.router,
           );
         });
   }

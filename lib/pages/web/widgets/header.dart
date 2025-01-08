@@ -2,6 +2,7 @@ import 'package:ephraim_umunnakwe/pages/web/widgets/custom_icon_widget.dart';
 import 'package:ephraim_umunnakwe/pages/web/widgets/gradient_container.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 
 class Header extends StatelessWidget {
   final bool isDesktop;
@@ -146,7 +147,7 @@ class Header extends StatelessWidget {
                                     child: MaterialButton(
                                         elevation: 0,
                                         onPressed: () {
-                                          Navigator.pop(context);
+                                          context.pop(context);
                                         },
                                         color: Colors.red,
                                         child: SelectableText(
