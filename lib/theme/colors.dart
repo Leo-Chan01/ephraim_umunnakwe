@@ -15,11 +15,13 @@ class AppColors {
   static const Color accentGold = Color(0xFFFFD700);
   static const Color accentOrange = Color(0xFFFF6B35);
   static const Color accentTeal = Color(0xFF14B8A6);
+  static const Color secondaryPurple = Color(0xFF8B5CF6);
 
   // Neutral Colors
   static const Color surfaceLight = Color(0xFFFFFFFF);
   static const Color surfaceDark = Color(0xFF1F2937);
   static const Color cardGlass = Color(0x1AFFFFFF);
+  static const Color borderColor = Color(0xFF374151);
   static const Color textPrimary = Color(0xFFFFFFFF);
   static const Color textSecondary = Color(0xFFE5E7EB);
   static const Color textMuted = Color(0xFF9CA3AF);
