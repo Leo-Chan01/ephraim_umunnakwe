@@ -6,9 +6,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 
-class Header extends StatelessWidget {
+class ModernHeader extends StatelessWidget {
   final bool isDesktop;
-  const Header({super.key, required this.isDesktop});
+  const ModernHeader({super.key, required this.isDesktop});
 
   static final reviewMessageCtrl = TextEditingController();
   static final reviewerNameCtrl = TextEditingController();
@@ -18,10 +18,12 @@ class Header extends StatelessWidget {
     return Container(
       width: double.infinity,
       padding: EdgeInsets.symmetric(
-        horizontal: 20, 
+        horizontal: 20,
         vertical: isDesktop ? 30 : 20,
       ),
-      child: isDesktop ? _buildDesktopHeader(context) : _buildMobileHeader(context),
+      child: isDesktop
+          ? _buildDesktopHeader(context)
+          : _buildMobileHeader(context),
     );
   }
 
@@ -30,14 +32,14 @@ class Header extends StatelessWidget {
       children: [
         // Logo/Avatar Section
         _buildAvatarSection(context),
-        
+
         const Spacer(),
-        
+
         // Navigation Menu
         _buildNavigationMenu(context),
-        
+
         const SizedBox(width: 30),
-        
+
         // Action Buttons
         _buildActionButtons(context),
       ],
@@ -80,13 +82,14 @@ class Header extends StatelessWidget {
             backgroundColor: AppColors.cardGlass,
             child: CircleAvatar(
               radius: isDesktop ? 32 : 27,
-              backgroundImage: const AssetImage('assets/images/profile_img.jpg'),
+              backgroundImage:
+                  const AssetImage('assets/images/profile_img.jpg'),
             ),
           ),
         ),
-        
+
         const SizedBox(width: 16),
-        
+
         // Name and Title with Animation
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -117,12 +120,13 @@ class Header extends StatelessWidget {
                 ),
               ),
             ),
-            
+
             const SizedBox(height: 4),
-            
+
             // Professional Title with Gradient
             ShaderMask(
-              shaderCallback: (bounds) => AppGradients.accentGradient.createShader(bounds),
+              shaderCallback: (bounds) =>
+                  AppGradients.accentGradient.createShader(bounds),
               child: Text(
                 'Flutter Developer & Tech Innovator',
                 style: TextStyle(
@@ -163,12 +167,13 @@ class Header extends StatelessWidget {
   }
 
   Widget _buildNavItem(BuildContext context, String label, String route) {
-    final isActive = GoRouter.of(context).location == route;
-    
+    final currentRoute = GoRouterState.of(context).uri.path;
+    final isActive = currentRoute == route;
+
     return MouseRegion(
       cursor: SystemMouseCursors.click,
       child: GestureDetector(
-        onTap: () => context.pushNamed(route),
+        onTap: () => context.push(route),
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
           margin: const EdgeInsets.symmetric(horizontal: 4),
@@ -200,16 +205,16 @@ class Header extends StatelessWidget {
           size: const Size(140, 45),
           onPressed: () => _showReviewDialog(context),
         ),
-        
+
         const SizedBox(width: 12),
-        
+
         // Contact Button
         GlassButton(
           text: 'Contact',
           icon: FontAwesomeIcons.envelope,
           color: AppColors.accentOrange,
           size: const Size(120, 45),
-          onPressed: () => context.pushNamed(AppRoutes.hireMe),
+          onPressed: () => context.push(AppRoutes.hireMe),
         ),
       ],
     );
@@ -229,18 +234,24 @@ class Header extends StatelessWidget {
       scrollDirection: Axis.horizontal,
       child: Row(
         children: [
-          _buildMobileNavChip(context, 'Home', AppRoutes.homePage, FontAwesomeIcons.home),
-          _buildMobileNavChip(context, 'About', AppRoutes.aboutMe, FontAwesomeIcons.user),
-          _buildMobileNavChip(context, 'Projects', AppRoutes.myAppsPage, FontAwesomeIcons.code),
-          _buildMobileNavChip(context, 'Hire', AppRoutes.hireMe, FontAwesomeIcons.handshake),
+          _buildMobileNavChip(
+              context, 'Home', AppRoutes.homePage, FontAwesomeIcons.home),
+          _buildMobileNavChip(
+              context, 'About', AppRoutes.aboutMe, FontAwesomeIcons.user),
+          _buildMobileNavChip(
+              context, 'Projects', AppRoutes.myAppsPage, FontAwesomeIcons.code),
+          _buildMobileNavChip(
+              context, 'Hire', AppRoutes.hireMe, FontAwesomeIcons.handshake),
         ],
       ),
     );
   }
 
-  Widget _buildMobileNavChip(BuildContext context, String label, String route, IconData icon) {
-    final isActive = GoRouter.of(context).location == route;
-    
+  Widget _buildMobileNavChip(
+      BuildContext context, String label, String route, IconData icon) {
+    final currentRoute = GoRouterState.of(context).uri.path;
+    final isActive = currentRoute == route;
+
     return Container(
       margin: const EdgeInsets.only(right: 8),
       child: GlassButton(
@@ -249,7 +260,7 @@ class Header extends StatelessWidget {
         color: isActive ? AppColors.primaryBlue : AppColors.cardGlass,
         isOutlined: !isActive,
         size: const Size(100, 40),
-        onPressed: () => context.pushNamed(route),
+        onPressed: () => context.push(route),
       ),
     );
   }
@@ -280,13 +291,12 @@ class Header extends StatelessWidget {
                   const Spacer(),
                   IconButton(
                     onPressed: () => Navigator.pop(context),
-                    icon: const Icon(Icons.close, color: AppColors.textSecondary),
+                    icon:
+                        const Icon(Icons.close, color: AppColors.textSecondary),
                   ),
                 ],
               ),
-              
               const SizedBox(height: 24),
-              
               TextField(
                 controller: reviewerNameCtrl,
                 decoration: const InputDecoration(
@@ -294,9 +304,7 @@ class Header extends StatelessWidget {
                   prefixIcon: Icon(FontAwesomeIcons.user, size: 16),
                 ),
               ),
-              
               const SizedBox(height: 16),
-              
               TextField(
                 controller: reviewMessageCtrl,
                 maxLines: 4,
@@ -308,9 +316,7 @@ class Header extends StatelessWidget {
                   ),
                 ),
               ),
-              
               const SizedBox(height: 24),
-              
               Row(
                 children: [
                   Expanded(
@@ -356,12 +362,20 @@ class Header extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            _buildMobileMenuItem(context, 'Home', AppRoutes.homePage, FontAwesomeIcons.home),
-            _buildMobileMenuItem(context, 'About Me', AppRoutes.aboutMe, FontAwesomeIcons.user),
-            _buildMobileMenuItem(context, 'My Projects', AppRoutes.myAppsPage, FontAwesomeIcons.code),
-            _buildMobileMenuItem(context, 'Hire Me', AppRoutes.hireMe, FontAwesomeIcons.handshake),
+            _buildMobileMenuItem(
+                context, 'Home', AppRoutes.homePage, FontAwesomeIcons.home),
+            _buildMobileMenuItem(
+                context, 'About Me', AppRoutes.aboutMe, FontAwesomeIcons.user),
+            _buildMobileMenuItem(context, 'My Projects', AppRoutes.myAppsPage,
+                FontAwesomeIcons.code),
+            _buildMobileMenuItem(context, 'Hire Me', AppRoutes.hireMe,
+                FontAwesomeIcons.handshake),
             const Divider(color: AppColors.textMuted),
-            _buildMobileMenuItem(context, 'Write Review', '', FontAwesomeIcons.star, 
+            _buildMobileMenuItem(
+              context,
+              'Write Review',
+              '',
+              FontAwesomeIcons.star,
               onTap: () {
                 Navigator.pop(context);
                 _showReviewDialog(context);
@@ -374,9 +388,9 @@ class Header extends StatelessWidget {
   }
 
   Widget _buildMobileMenuItem(
-    BuildContext context, 
-    String title, 
-    String route, 
+    BuildContext context,
+    String title,
+    String route,
     IconData icon, {
     VoidCallback? onTap,
   }) {
@@ -386,91 +400,13 @@ class Header extends StatelessWidget {
         title,
         style: Theme.of(context).textTheme.bodyLarge,
       ),
-      onTap: onTap ?? () {
-        Navigator.pop(context);
-        if (route.isNotEmpty) {
-          context.pushNamed(route);
-        }
-      },
-    );
-  }
-}
-                                  ),
-                                  const SizedBox(height: 10),
-                                  TextField(
-                                    cursorColor: Colors.white,
-                                    decoration: InputDecoration(
-                                        label: SelectableText(
-                                          "Your review",
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodyLarge!
-                                              .copyWith(color: Colors.white),
-                                        ),
-                                        border: const OutlineInputBorder(
-                                            borderSide: BorderSide(
-                                                color: Colors.white))),
-                                    keyboardType: TextInputType.multiline,
-                                    maxLength: 500,
-                                    controller: reviewMessageCtrl,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyLarge!
-                                        .copyWith(color: Colors.white),
-                                  ),
-                                  const SizedBox(height: 40),
-                                  SizedBox(
-                                    height: 55,
-                                    width: double.infinity,
-                                    child: MaterialButton(
-                                        elevation: 0,
-                                        onPressed: () {},
-                                        color: Colors.white,
-                                        child: SelectableText(
-                                          "Submit",
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodyLarge!
-                                              .copyWith(
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Colors.green,
-                                                  fontFamily: 'Avenir'),
-                                        )),
-                                  ),
-                                  const SizedBox(height: 10),
-                                  SizedBox(
-                                    height: 55,
-                                    width: double.infinity,
-                                    child: MaterialButton(
-                                        elevation: 0,
-                                        onPressed: () {
-                                          context.pop(context);
-                                        },
-                                        color: Colors.red,
-                                        child: SelectableText(
-                                          "Cancel",
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodyLarge!
-                                              .copyWith(
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Colors.white,
-                                                  fontFamily: 'Avenir'),
-                                        )),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      );
-                    });
-              },
-              icon: FontAwesomeIcons.star,
-              color: Colors.white),
-          const SizedBox(width: 10),
-        ],
-      ),
+      onTap: onTap ??
+          () {
+            Navigator.pop(context);
+            if (route.isNotEmpty) {
+              context.push(route);
+            }
+          },
     );
   }
 }

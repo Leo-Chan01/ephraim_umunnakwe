@@ -1,7 +1,7 @@
-import 'package:ephraim_umunnakwe/pages/web/widgets/body_content.dart';
-import 'package:ephraim_umunnakwe/pages/web/widgets/footer.dart';
+import 'package:ephraim_umunnakwe/pages/web/widgets/modern_body_content.dart';
+import 'package:ephraim_umunnakwe/pages/web/widgets/modern_footer.dart';
 import 'package:ephraim_umunnakwe/pages/web/widgets/gradient_container.dart';
-import 'package:ephraim_umunnakwe/pages/web/widgets/header.dart';
+import 'package:ephraim_umunnakwe/pages/web/widgets/modern_header.dart';
 import 'package:flutter/material.dart';
 
 class DesktopView extends StatelessWidget {
@@ -11,18 +11,20 @@ class DesktopView extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Scaffold(
       body: GradientContainer(
+        includeStars: true,
         child: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.max,
             children: [
-              Header(isDesktop: true),
-              SizedBox(height: 80),
+              ModernHeader(isDesktop: true),
+              SizedBox(height: 40),
               Align(
                   alignment: Alignment.center,
-                  child: BodyContent(isDesktop: true)),
+                  child: ModernBodyContent(isDesktop: true)),
+              SizedBox(height: 40),
               Align(
                   alignment: Alignment.bottomCenter,
-                  child: Footer(isDesktop: true)),
+                  child: ModernFooter(isDesktop: true)),
             ],
           ),
         ),

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ephraim_umunnakwe/pages/web/widgets/glass_card.dart';
 import 'package:ephraim_umunnakwe/theme/colors.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class FeatureCard extends StatefulWidget {
   final IconData icon;
@@ -68,7 +67,7 @@ class _FeatureCardState extends State<FeatureCard>
   @override
   Widget build(BuildContext context) {
     final accentColor = widget.accentColor ?? AppColors.primaryBlue;
-    
+
     return MouseRegion(
       onEnter: (_) {
         setState(() => _isHovered = true);
@@ -111,49 +110,44 @@ class _FeatureCardState extends State<FeatureCard>
                       child: Icon(
                         widget.icon,
                         size: 40,
-                        color: _isHovered ? accentColor : AppColors.textSecondary,
+                        color:
+                            _isHovered ? accentColor : AppColors.textSecondary,
                       ),
                     ),
                   ),
-                  
+
                   const SizedBox(height: 16),
-                  
+
                   // Title with gradient text
                   ShaderMask(
                     shaderCallback: (bounds) {
                       return LinearGradient(
-                        colors: _isHovered 
+                        colors: _isHovered
                             ? [accentColor, accentColor.withOpacity(0.7)]
                             : [AppColors.textPrimary, AppColors.textSecondary],
                       ).createShader(bounds);
                     },
                     child: SelectableText(
                       widget.title,
-                      style: Theme.of(context)
-                          .textTheme
-                          .titleMedium!
-                          .copyWith(
+                      style: Theme.of(context).textTheme.titleMedium!.copyWith(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
                           ),
                     ),
                   ),
-                  
+
                   const SizedBox(height: 12),
-                  
+
                   // Description
                   SelectableText(
                     widget.description,
                     textAlign: TextAlign.center,
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyMedium!
-                        .copyWith(
+                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                           color: AppColors.textSecondary,
                           height: 1.5,
                         ),
                   ),
-                  
+
                   // Hover indicator
                   AnimatedContainer(
                     duration: const Duration(milliseconds: 200),
@@ -222,8 +216,9 @@ class _StatsCardState extends State<StatsCard>
 
     // Extract number from value string for animation
     final numberMatch = RegExp(r'\d+').firstMatch(widget.value);
-    final targetValue = numberMatch != null ? int.parse(numberMatch.group(0)!) : 0;
-    
+    final targetValue =
+        numberMatch != null ? int.parse(numberMatch.group(0)!) : 0;
+
     _counterAnimation = IntTween(
       begin: 0,
       end: targetValue,
@@ -275,43 +270,34 @@ class _StatsCardState extends State<StatsCard>
                     size: 28,
                   ),
                 ),
-                
+
                 const SizedBox(height: 16),
-                
+
                 // Animated Value
                 Text(
                   '${_counterAnimation.value}${widget.value.replaceFirst(RegExp(r'\d+'), '')}',
-                  style: Theme.of(context)
-                      .textTheme
-                      .headlineMedium!
-                      .copyWith(
+                  style: Theme.of(context).textTheme.headlineMedium!.copyWith(
                         color: widget.color,
                         fontWeight: FontWeight.bold,
                       ),
                 ),
-                
+
                 const SizedBox(height: 8),
-                
+
                 // Title
                 Text(
                   widget.title,
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyLarge!
-                      .copyWith(
+                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                         color: AppColors.textPrimary,
                         fontWeight: FontWeight.w600,
                       ),
                 ),
-                
+
                 if (widget.subtitle != null) ...[
                   const SizedBox(height: 4),
                   Text(
                     widget.subtitle!,
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodySmall!
-                        .copyWith(
+                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
                           color: AppColors.textMuted,
                         ),
                   ),
@@ -321,12 +307,6 @@ class _StatsCardState extends State<StatsCard>
           ),
         );
       },
-    );
-  }
-}
-          ),
-        ),
-      ),
     );
   }
 }
