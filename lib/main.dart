@@ -13,11 +13,11 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Supabase.initialize(
-    url: "https://pshdmjovbpszjeqhlbrj.supabase.co",
-    anonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3"
-        "MiOiJzdXBhYmFzZSIsInJlZiI6InBzaGRtam92YnBzemplcWhsY"
-        "nJqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzYzNDkzMTgsImV4cCI6"
-        "MjA1MTkyNTMxOH0.85Cf25KlmnwRADZaiGBCFmIjo_BuI2r3cjkfLjstXrA",
+    url: "https://cecsvrwibdvncrxbbctr.supabase.co",
+    anonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOi"
+        "JzdXBhYmFzZSIsInJlZiI6ImNlY3N2cndpYmR2bmNyeGJiY3RyIiwi"
+        "cm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1MjA3ODEsImV4cCI6MjA3MDA5"
+        "Njc4MX0.dqSqaL37yCozA39pb61rnVzHmU0Jo_RH8vfisACAqS4",
   );
 
   runApp(MultiProvider(providers: [
