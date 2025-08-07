@@ -18,8 +18,25 @@
 
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="Learn and hire a phenomal talent for you Software and Robotic needs">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <meta name="description" content="Ephraim Umunnakwe - Full Stack Developer, Mobile App Developer, and Software Engineer specializing in Flutter, React, and modern web technologies.">
+  <meta name="keywords" content="Flutter Developer, Mobile App Developer, Full Stack Developer, Web Developer, Software Engineer, Portfolio">
   <meta name="google-site-verification" content="y4_DMP1m1qMtrkzSeC2WneGGD3ghzNPwS4QkcPhBG5o" />
+  
+  <!-- Performance optimizations -->
+  <meta http-equiv="Cache-Control" content="public, max-age=31536000">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://pshdmjovbpszjeqhlbrj.supabase.co">
+  <link rel="dns-prefetch" href="//fonts.gstatic.com">
+  
+  <!-- Social Media Meta Tags -->
+  <meta property="og:title" content="Ephraim Umunnakwe - Full Stack Developer">
+  <meta property="og:description" content="Professional portfolio showcasing modern web and mobile applications built with Flutter, React, and cutting-edge technologies.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="icons/Icon-512.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Ephraim Umunnakwe - Full Stack Developer">
+  <meta name="twitter:description" content="Professional portfolio showcasing modern web and mobile applications.">'
 
   <!-- iOS meta tags & icons -->
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -30,10 +47,68 @@
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="favicon.png"/>
 
-  <title>Ephraim Umunnakwe</title>
+  <title>Ephraim Umunnakwe - Full Stack Developer</title>
   <link rel="manifest" href="manifest.json">
+  
+  <style>
+    /* Loading screen for better perceived performance */
+    .loading {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #0F0C29 0%, #24243e 50%, #2E1B5D 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    .spinner {
+      width: 60px;
+      height: 60px;
+      border: 4px solid rgba(255,255,255,0.1);
+      border-left: 4px solid #1E40AF;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    .loading-text {
+      color: white;
+      margin-top: 20px;
+      font-size: 16px;
+      opacity: 0.8;
+    }
+    
+    /* Hide loading when Flutter is ready */
+    .flutter-ready .loading {
+      display: none;
+    }
+  </style>
 </head>
 <body>
+  <!-- Loading screen -->
+  <div class="loading">
+    <div>
+      <div class="spinner"></div>
+      <div class="loading-text">Loading Portfolio...</div>
+    </div>
+  </div>
+  
   <script src="flutter_bootstrap.js" async></script>
+  
+  <script>
+    // Hide loading screen when Flutter is ready
+    window.addEventListener('flutter-first-frame', function () {
+      document.body.classList.add('flutter-ready');
+    });
+  </script>
 </body>
 </html>

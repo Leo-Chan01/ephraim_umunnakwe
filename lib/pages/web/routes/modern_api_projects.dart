@@ -3,6 +3,7 @@ import 'package:ephraim_umunnakwe/pages/web/widgets/gradient_container.dart';
 import 'package:ephraim_umunnakwe/pages/web/widgets/modern_footer.dart';
 import 'package:ephraim_umunnakwe/pages/web/routes/app_routes.dart';
 import 'package:ephraim_umunnakwe/theme/colors.dart';
+import 'package:ephraim_umunnakwe/utils/responsive_util.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
@@ -70,9 +71,6 @@ class _ModernApiProjectsState extends State<ModernApiProjects>
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final isDesktop = screenWidth > 768;
-
     return Scaffold(
       body: GradientContainer(
         includeStars: true,
@@ -80,26 +78,23 @@ class _ModernApiProjectsState extends State<ModernApiProjects>
           children: [
             SingleChildScrollView(
               child: Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: isDesktop ? 40 : 20,
-                  vertical: 20,
-                ),
+                padding: context.responsivePadding,
                 child: Column(
                   children: [
                     const SizedBox(height: 100),
 
                     // Header Section
-                    _buildHeaderSection(context, isDesktop),
+                    _buildHeaderSection(context),
 
                     const SizedBox(height: 60),
 
                     // APIs Grid
-                    _buildApisSection(context, isDesktop),
+                    _buildApisSection(context),
 
                     const SizedBox(height: 80),
 
                     // Footer
-                    ModernFooter(isDesktop: isDesktop),
+                    ModernFooter(isDesktop: context.isDesktopOrLarger),
                   ],
                 ),
               ),
@@ -113,7 +108,7 @@ class _ModernApiProjectsState extends State<ModernApiProjects>
     );
   }
 
-  Widget _buildHeaderSection(BuildContext context, bool isDesktop) {
+  Widget _buildHeaderSection(BuildContext context) {
     return AnimatedBuilder(
       animation: _headerAnimation,
       builder: (context, child) {
@@ -129,7 +124,13 @@ class _ModernApiProjectsState extends State<ModernApiProjects>
                       AppGradients.accentGradient.createShader(bounds),
                   child: DefaultTextStyle(
                     style: Theme.of(context).textTheme.headlineLarge!.copyWith(
-                          fontSize: isDesktop ? 48 : 36,
+                          fontSize: ResponsiveUtil.getResponsiveFontSize(
+                            context,
+                            mobile: 28,
+                            tablet: 36,
+                            desktop: 48,
+                            largeDesktop: 56,
+                          ),
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
                         ),
@@ -149,7 +150,13 @@ class _ModernApiProjectsState extends State<ModernApiProjects>
 
                 Container(
                   constraints: BoxConstraints(
-                    maxWidth: isDesktop ? 600 : double.infinity,
+                    maxWidth: ResponsiveUtil.getResponsiveWidth(
+                      context,
+                      mobile: double.infinity,
+                      tablet: 500,
+                      desktop: 600,
+                      largeDesktop: 700,
+                    ),
                   ),
                   child: Text(
                     'Explore my collection of RESTful APIs, microservices, and backend solutions. '
@@ -158,6 +165,12 @@ class _ModernApiProjectsState extends State<ModernApiProjects>
                     style: Theme.of(context).textTheme.titleMedium!.copyWith(
                           color: AppColors.textSecondary,
                           height: 1.6,
+                          fontSize: ResponsiveUtil.getResponsiveFontSize(
+                            context,
+                            mobile: 14,
+                            tablet: 16,
+                            desktop: 18,
+                          ),
                         ),
                   ),
                 ),
@@ -165,15 +178,15 @@ class _ModernApiProjectsState extends State<ModernApiProjects>
                 const SizedBox(height: 30),
 
                 // API Stats
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                Wrap(
+                  spacing: 20,
+                  runSpacing: 10,
+                  alignment: WrapAlignment.center,
                   children: [
                     _buildStatChip('8+', 'APIs', FontAwesomeIcons.server,
                         AppColors.primaryBlue),
-                    const SizedBox(width: 20),
                     _buildStatChip('99.9%', 'Uptime',
                         FontAwesomeIcons.checkCircle, AppColors.success),
-                    const SizedBox(width: 20),
                     _buildStatChip('1000+', 'Requests/Day',
                         FontAwesomeIcons.chartLine, AppColors.accentOrange),
                   ],
@@ -226,7 +239,7 @@ class _ModernApiProjectsState extends State<ModernApiProjects>
     );
   }
 
-  Widget _buildApisSection(BuildContext context, bool isDesktop) {
+  Widget _buildApisSection(BuildContext context) {
     return AnimatedBuilder(
       animation: _apisAnimation,
       builder: (context, child) {
@@ -234,22 +247,25 @@ class _ModernApiProjectsState extends State<ModernApiProjects>
           scale: _apisAnimation.value,
           child: Opacity(
             opacity: _apisAnimation.value,
-            child: _buildApiGrid(context, isDesktop),
+            child: _buildApiGrid(context),
           ),
         );
       },
     );
   }
 
-  Widget _buildApiGrid(BuildContext context, bool isDesktop) {
+  Widget _buildApiGrid(BuildContext context) {
     final apis = _getSampleApis();
 
     return LayoutBuilder(
       builder: (context, constraints) {
-        int crossAxisCount = 1;
-        if (isDesktop) {
-          crossAxisCount = constraints.maxWidth > 1200 ? 3 : 2;
-        }
+        final crossAxisCount = ResponsiveUtil.getGridCrossAxisCount(
+          context,
+          mobile: 1,
+          tablet: 2,
+          desktop: 3,
+          largeDesktop: 4,
+        );
 
         return GridView.builder(
           shrinkWrap: true,
@@ -258,7 +274,13 @@ class _ModernApiProjectsState extends State<ModernApiProjects>
             crossAxisCount: crossAxisCount,
             crossAxisSpacing: 20,
             mainAxisSpacing: 20,
-            childAspectRatio: isDesktop ? 1.1 : 0.9,
+            childAspectRatio: ResponsiveUtil.responsive(
+              context,
+              mobile: 0.8,
+              tablet: 0.9,
+              desktop: 1.0,
+              largeDesktop: 1.1,
+            ),
           ),
           itemCount: apis.length,
           itemBuilder: (context, index) {
