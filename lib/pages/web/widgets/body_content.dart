@@ -5,6 +5,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:ephraim_umunnakwe/pages/web/widgets/custom_buttons.dart';
 import 'package:ephraim_umunnakwe/pages/web/widgets/mobile_widgets.dart/custom_buttons_mobile.dart';
 import 'package:ephraim_umunnakwe/pages/web/widgets/mobile_widgets.dart/shortbio_mobile.dart';
+import 'package:ephraim_umunnakwe/pages/web/widgets/modern_feature_card.dart';
 import 'package:ephraim_umunnakwe/pages/web/widgets/text_bio_widget.dart';
 import 'package:ephraim_umunnakwe/utils/list_utility.dart';
 import 'package:ephraim_umunnakwe/utils/util_methods.dart';
@@ -12,7 +13,6 @@ import 'package:ephraim_umunnakwe/view_models/providers/site_state_provider.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_stars/flutter_rating_stars.dart';
 import 'package:provider/provider.dart';
-import 'feature_card.dart';
 
 class BodyContent extends StatelessWidget {
   final bool isDesktop;
