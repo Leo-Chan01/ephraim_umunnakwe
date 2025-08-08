@@ -50,7 +50,7 @@ class _AppProjectsState extends State<AppProjects> {
                     .copyWith(color: Colors.white, fontFamily: 'Genome'),
               ),
               const SizedBox(height: 40),
-              context.watch<ProjectsProvider>().isLoading
+              context.watch<PortfolioDataProvider>().isLoading
                   ? const Center(child: CustomLoadingWidget())
                   : Expanded(
                       child: Center(
@@ -58,13 +58,13 @@ class _AppProjectsState extends State<AppProjects> {
                           constraints: const BoxConstraints(maxWidth: 800),
                           child: ListView.builder(
                             itemCount: context
-                                .watch<ProjectsProvider>()
+                                .watch<PortfolioDataProvider>()
                                 .projects
                                 .length,
                             padding: const EdgeInsets.all(22),
                             physics: const BouncingScrollPhysics(),
                             itemBuilder: (context, index) {
-                              var project = Provider.of<ProjectsProvider>(
+                              var project = Provider.of<PortfolioDataProvider>(
                                       context,
                                       listen: false)
                                   .projects[index];
@@ -271,7 +271,8 @@ class _AppProjectsState extends State<AppProjects> {
   }
 
   Future<void> getAllProjectList() async {
-    await Provider.of<ProjectsProvider>(context, listen: false).getProjects();
+    await Provider.of<PortfolioDataProvider>(context, listen: false)
+        .fetchProjectsRemote();
   }
 
   int calculateDurationInMonths(DateTime? startDate, DateTime? endDate) {

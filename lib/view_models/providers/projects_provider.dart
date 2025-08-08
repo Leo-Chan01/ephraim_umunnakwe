@@ -1,68 +1,136 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:ephraim_umunnakwe/models/project_model.dart';
+import 'package:ephraim_umunnakwe/models/testimonial_model.dart';
 import 'package:ephraim_umunnakwe/view_models/api_service/projects_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class ProjectsProvider extends ChangeNotifier {
-  SupabaseProjectsService _projectsService;
+class PortfolioDataProvider extends ChangeNotifier {
+  final SupabaseProjectsService _projectsService;
+
+  PortfolioDataProvider(this._projectsService);
+
   bool _isLoading = false;
   bool get isLoading => _isLoading;
 
+  // Projects
   List<Project> _projects = [];
   List<Project> get projects => _projects;
 
-  ProjectsProvider(this._projectsService);
+  // Testimonials
+  List<Testimonial> _testimonials = [];
+  List<Testimonial> get testimonials => _testimonials;
 
-  Future<void> getProjects() async {
+  // Links (social / external)
+  Map<String, String> _links = {};
+  Map<String, String> get links => _links;
+
+  Future<void> loadAll() async {
     _isLoading = true;
     notifyListeners();
+    try {
+      await Future.wait([
+        _fetchProjectsLocal(),
+        _fetchTestimonialsLocal(),
+        _loadLinksLocal(),
+      ]);
+    } catch (e, st) {
+      log('LoadAll error: $e\n$st');
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  // -------- Projects ---------
+  Future<void> fetchProjectsRemote() async {
     try {
       final response = await _projectsService.getProjects();
-      log("Response from Supabase is $response");
-      List<Project> parsedProjects =
-          (response as List).map((data) => Project.fromJson(data)).toList();
-      _projects = parsedProjects;
+      _projects = (response as List).map((e) => Project.fromJson(e)).toList();
       notifyListeners();
     } catch (e) {
-      log("Error fetching projects: $e");
-    } finally {
-      _isLoading = false;
-      notifyListeners();
+      log('Remote projects error: $e');
     }
   }
 
-  Future<List<Project>> fetchProjects() async {
-    _isLoading = true;
-    notifyListeners();
-
+  Future<void> _fetchProjectsLocal() async {
     try {
-      final String contents = await _readJsonFile();
-
-      log('JSON contents: $contents');
-
-      final Map<String, dynamic> jsonData = jsonDecode(contents);
-
-      await Future.delayed(const Duration(seconds: 2));
-
-      List<Project> projects = (jsonData['projects'] as List)
-          .map((data) => Project.fromJson(data))
+      final contents = await rootBundle.loadString('assets/json/projects.json');
+      final jsonData = jsonDecode(contents) as Map<String, dynamic>;
+      _projects = (jsonData['projects'] as List)
+          .map((e) => Project.fromJson(e))
           .toList();
-
-      _projects = projects;
-      notifyListeners();
-      return projects;
     } catch (e) {
-      log('Error reading JSON file: $e');
-      return [];
-    } finally {
-      _isLoading = false;
-      notifyListeners();
+      log('Local projects error: $e');
     }
   }
 
-  Future<String> _readJsonFile() async {
-    return await rootBundle.loadString('assets/json/projects.json');
+  void addOrUpdateProject(Project p) {
+    final idx = _projects.indexWhere((e) => e.id == p.id);
+    if (idx == -1) {
+      _projects.add(p);
+    } else {
+      _projects[idx] = p;
+    }
+    notifyListeners();
   }
+
+  void deleteProject(int id) {
+    _projects.removeWhere((e) => e.id == id);
+    notifyListeners();
+  }
+
+  // -------- Testimonials ---------
+  Future<void> _fetchTestimonialsLocal() async {
+    try {
+      final contents =
+          await rootBundle.loadString('assets/json/testimonials.json');
+      final jsonData = jsonDecode(contents) as Map<String, dynamic>;
+      _testimonials = (jsonData['testimonials'] as List)
+          .map((e) => Testimonial.fromJson(e))
+          .toList();
+    } catch (e) {
+      log('Testimonials load error: $e');
+    }
+  }
+
+  void addOrUpdateTestimonial(Testimonial t) {
+    final idx = _testimonials.indexWhere((e) => e.id == t.id);
+    if (idx == -1) {
+      _testimonials.add(t);
+    } else {
+      _testimonials[idx] = t;
+    }
+    notifyListeners();
+  }
+
+  void deleteTestimonial(int id) {
+    _testimonials.removeWhere((e) => e.id == id);
+    notifyListeners();
+  }
+
+  // -------- Links ---------
+  Future<void> _loadLinksLocal() async {
+    // Placeholder: could load from a json file later
+    _links = {
+      'github': 'https://github.com/your-handle',
+      'linkedin': 'https://linkedin.com/in/your-handle',
+      'twitter': 'https://twitter.com/your-handle',
+      'email': 'mailto:ephraim@example.com'
+    };
+  }
+
+  void updateLink(String key, String value) {
+    _links[key] = value;
+    notifyListeners();
+  }
+
+  // Generate next IDs (simple incremental for local edits)
+  int nextProjectId() =>
+      (_projects.map((e) => e.id ?? 0).fold<int>(0, (p, c) => c > p ? c : p)) +
+      1;
+  int nextTestimonialId() =>
+      (_testimonials.map((e) => e.id).fold<int>(0, (p, c) => c > p ? c : p)) +
+      1;
 }

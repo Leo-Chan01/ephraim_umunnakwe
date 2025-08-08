@@ -237,17 +237,18 @@ class _ModernAppProjectsState extends State<ModernAppProjects>
           scale: _projectsAnimation.value,
           child: Opacity(
             opacity: _projectsAnimation.value,
-            child: Consumer<ProjectsProvider>(
-              builder: (context, projectsProvider, child) {
-                if (projectsProvider.isLoading) {
+            child: Consumer<PortfolioDataProvider>(
+              builder: (context, PortfolioDataProvider, child) {
+                if (PortfolioDataProvider.isLoading) {
                   return _buildLoadingState(context);
                 }
 
-                if (projectsProvider.projects.isEmpty) {
+                if (PortfolioDataProvider.projects.isEmpty) {
                   return _buildEmptyState(context);
                 }
 
-                return _buildProjectsGrid(context, projectsProvider, isDesktop);
+                return _buildProjectsGrid(
+                    context, PortfolioDataProvider, isDesktop);
               },
             ),
           ),
@@ -313,7 +314,7 @@ class _ModernAppProjectsState extends State<ModernAppProjects>
   }
 
   Widget _buildProjectsGrid(
-      BuildContext context, ProjectsProvider provider, bool isDesktop) {
+      BuildContext context, PortfolioDataProvider provider, bool isDesktop) {
     return LayoutBuilder(
       builder: (context, constraints) {
         int crossAxisCount = 1;
@@ -560,6 +561,7 @@ class _ModernAppProjectsState extends State<ModernAppProjects>
   }
 
   Future<void> getAllProjectList() async {
-    await Provider.of<ProjectsProvider>(context, listen: false).getProjects();
+    await Provider.of<PortfolioDataProvider>(context, listen: false)
+        .fetchProjectsRemote();
   }
 }

@@ -21,8 +21,8 @@ Future<void> main() async {
   );
 
   runApp(MultiProvider(providers: [
-    ChangeNotifierProvider<ProjectsProvider>(
-        create: (context) => ProjectsProvider(SupabaseProjectsService())),
+    ChangeNotifierProvider<PortfolioDataProvider>(
+        create: (context) => PortfolioDataProvider(SupabaseProjectsService())),
     ChangeNotifierProvider<SiteStateProvider>(
         create: (context) => SiteStateProvider()),
     ChangeNotifierProvider<GradientNotifier>(

@@ -1,0 +1,16 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Run Admin Dashboard",
+			"type": "shell",
+			"command": "flutter run -d chrome --web-port=8081",
+			"group": "build",
+			"isBackground": false,
+			"args": [],
+			"problemMatcher": [
+				"$flutter"
+			]
+		}
+	]
+}

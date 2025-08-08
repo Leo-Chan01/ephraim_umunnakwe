@@ -1,0 +1,31 @@
+{
+  "testimonials": [
+    {
+      "id": 1,
+      "author": "Chinedu Okafor",
+      "role": "Product Manager, Ahiaoma",
+      "message": "Ephraim is a rare talent. He delivered complex features ahead of schedule and brought clarity to our product direction.",
+      "rating": 5,
+      "avatarUrl": "",
+      "createdAt": "2025-06-01T12:00:00.000Z"
+    },
+    {
+      "id": 2,
+      "author": "Sarah Johnson",
+      "role": "CTO, BrillXChange",
+      "message": "His attention to detail and commitment to performance optimization significantly improved our app stability.",
+      "rating": 4.5,
+      "avatarUrl": "",
+      "createdAt": "2025-07-10T15:30:00.000Z"
+    },
+    {
+      "id": 3,
+      "author": "Michael Chen",
+      "role": "Founding Engineer, Xeno",
+      "message": "From architecture to pixel-perfect UI, Ephraim handled everything with excellence.",
+      "rating": 5,
+      "avatarUrl": "",
+      "createdAt": "2025-05-22T09:15:00.000Z"
+    }
+  ]
+}
