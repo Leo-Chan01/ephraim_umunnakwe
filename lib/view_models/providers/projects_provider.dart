@@ -3,11 +3,13 @@ import 'dart:developer';
 import 'package:ephraim_umunnakwe/models/project_model.dart';
 import 'package:ephraim_umunnakwe/models/testimonial_model.dart';
 import 'package:ephraim_umunnakwe/view_models/api_service/projects_service.dart';
+import 'package:ephraim_umunnakwe/services/portfolio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class PortfolioDataProvider extends ChangeNotifier {
   final SupabaseProjectsService _projectsService;
+  final PortfolioService _portfolioService = PortfolioService();
 
   PortfolioDataProvider(this._projectsService);
 
@@ -31,15 +33,52 @@ class PortfolioDataProvider extends ChangeNotifier {
     notifyListeners();
     try {
       await Future.wait([
+        _fetchProjectsFromSupabase(),
+        _fetchTestimonialsFromSupabase(),
+        _loadLinksFromSupabase(),
+      ]);
+    } catch (e, st) {
+      log('LoadAll error: $e\n$st');
+      // Fallback to local data if Supabase fails
+      await Future.wait([
         _fetchProjectsLocal(),
         _fetchTestimonialsLocal(),
         _loadLinksLocal(),
       ]);
-    } catch (e, st) {
-      log('LoadAll error: $e\n$st');
     } finally {
       _isLoading = false;
       notifyListeners();
+    }
+  }
+
+  // -------- Supabase Methods ---------
+  Future<void> _fetchProjectsFromSupabase() async {
+    try {
+      _projects = await _portfolioService.getProjects();
+      notifyListeners();
+    } catch (e) {
+      log('Error fetching projects from Supabase: $e');
+      throw e;
+    }
+  }
+
+  Future<void> _fetchTestimonialsFromSupabase() async {
+    try {
+      _testimonials = await _portfolioService.getTestimonials();
+      notifyListeners();
+    } catch (e) {
+      log('Error fetching testimonials from Supabase: $e');
+      throw e;
+    }
+  }
+
+  Future<void> _loadLinksFromSupabase() async {
+    try {
+      _links = await _portfolioService.getSocialLinks();
+      notifyListeners();
+    } catch (e) {
+      log('Error fetching links from Supabase: $e');
+      throw e;
     }
   }
 

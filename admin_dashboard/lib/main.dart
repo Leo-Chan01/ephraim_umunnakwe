@@ -2,9 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'providers/admin_provider.dart';
 import 'screens/dashboard_screen.dart';
+import 'services/supabase_config.dart';
 import 'theme/admin_theme.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize Supabase
+  await SupabaseConfig.initialize();
+
   runApp(const PortfolioAdminApp());
 }
 

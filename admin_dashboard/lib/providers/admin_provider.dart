@@ -4,8 +4,11 @@ import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/portfolio_data.dart';
+import '../services/supabase_service.dart';
 
 class AdminProvider extends ChangeNotifier {
+  final SupabaseService _supabaseService = SupabaseService();
+
   List<Project> _projects = [];
   List<Testimonial> _testimonials = [];
   List<SocialLink> _socialLinks = [];
@@ -13,6 +16,7 @@ class AdminProvider extends ChangeNotifier {
 
   bool _isLoading = false;
   String? _lastSavedPath;
+  String? _errorMessage;
 
   // Getters
   List<Project> get projects => _projects;
@@ -21,9 +25,10 @@ class AdminProvider extends ChangeNotifier {
   PersonalInfo? get personalInfo => _personalInfo;
   bool get isLoading => _isLoading;
   String? get lastSavedPath => _lastSavedPath;
+  String? get errorMessage => _errorMessage;
 
   AdminProvider() {
-    _loadInitialData();
+    _loadDataFromSupabase();
   }
 
   void _setLoading(bool loading) {
@@ -31,9 +36,48 @@ class AdminProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Initialize with sample data
-  void _loadInitialData() {
-    _personalInfo = PersonalInfo(
+  void _setError(String? error) {
+    _errorMessage = error;
+    notifyListeners();
+  }
+
+  // Load data from Supabase
+  Future<void> _loadDataFromSupabase() async {
+    _setLoading(true);
+    _setError(null);
+
+    try {
+      // Load all data in parallel
+      final results = await Future.wait([
+        _supabaseService.getProjects(),
+        _supabaseService.getTestimonials(),
+        _supabaseService.getSocialLinks(),
+        _supabaseService.getPersonalInfo(),
+      ]);
+
+      _projects = results[0] as List<Project>;
+      _testimonials = results[1] as List<Testimonial>;
+      _socialLinks = results[2] as List<SocialLink>;
+      _personalInfo = results[3] as PersonalInfo?;
+
+      // If no data exists, initialize with sample data
+      if (_projects.isEmpty &&
+          _testimonials.isEmpty &&
+          _socialLinks.isEmpty &&
+          _personalInfo == null) {
+        await _initializeWithSampleData();
+      }
+    } catch (e) {
+      _setError('Failed to load data: $e');
+      print('Error loading data from Supabase: $e');
+    } finally {
+      _setLoading(false);
+    }
+  }
+
+  // Initialize with sample data and save to Supabase
+  Future<void> _initializeWithSampleData() async {
+    final personalInfo = PersonalInfo(
       name: 'Ephraim Umunnakwe',
       title: 'Full Stack Developer',
       email: 'ephraim@example.com',
@@ -43,7 +87,7 @@ class AdminProvider extends ChangeNotifier {
           'Passionate developer specializing in Flutter, React, and modern web technologies.',
     );
 
-    _socialLinks = [
+    final socialLinks = [
       SocialLink(platform: 'github', url: 'https://github.com/your-handle'),
       SocialLink(
           platform: 'linkedin', url: 'https://linkedin.com/in/your-handle'),
@@ -51,9 +95,8 @@ class AdminProvider extends ChangeNotifier {
       SocialLink(platform: 'email', url: 'mailto:ephraim@example.com'),
     ];
 
-    _projects = [
+    final projects = [
       Project(
-        id: 1,
         name: 'Ahiaoma App and Reseller',
         description:
             'Developed an online retail platform with shopping cart and payment integration.',
@@ -65,7 +108,6 @@ class AdminProvider extends ChangeNotifier {
         role: 'Full Stack Developer',
       ),
       Project(
-        id: 2,
         name: 'BrillXChange App',
         description:
             'Created a cross-platform mobile application for iOS and Android.',
@@ -78,9 +120,8 @@ class AdminProvider extends ChangeNotifier {
       ),
     ];
 
-    _testimonials = [
+    final testimonials = [
       Testimonial(
-        id: 1,
         author: 'Chinedu Okafor',
         role: 'Product Manager, Ahiaoma',
         message:
@@ -89,7 +130,6 @@ class AdminProvider extends ChangeNotifier {
         createdAt: DateTime(2025, 6, 1),
       ),
       Testimonial(
-        id: 2,
         author: 'Sarah Johnson',
         role: 'CTO, BrillXChange',
         message:
@@ -99,85 +139,211 @@ class AdminProvider extends ChangeNotifier {
       ),
     ];
 
-    notifyListeners();
+    // Save to Supabase
+    try {
+      await _supabaseService.upsertPersonalInfo(personalInfo);
+      for (final link in socialLinks) {
+        await _supabaseService.upsertSocialLink(link);
+      }
+      for (final project in projects) {
+        await _supabaseService.addProject(project);
+      }
+      for (final testimonial in testimonials) {
+        await _supabaseService.addTestimonial(testimonial);
+      }
+
+      // Update local state
+      _personalInfo = personalInfo;
+      _socialLinks = socialLinks;
+      _projects = projects;
+      _testimonials = testimonials;
+    } catch (e) {
+      print('Error initializing sample data: $e');
+    }
+  }
+
+  // Refresh data from Supabase
+  Future<void> refreshData() async {
+    await _loadDataFromSupabase();
   }
 
   // Projects CRUD
-  void addProject(Project project) {
-    final newId = _projects.isNotEmpty
-        ? _projects.map((p) => p.id ?? 0).reduce((a, b) => a > b ? a : b) + 1
-        : 1;
-    final newProject = project.copyWith(id: newId);
-    _projects.add(newProject);
-    notifyListeners();
-  }
+  Future<void> addProject(Project project) async {
+    _setLoading(true);
+    _setError(null);
 
-  void updateProject(Project project) {
-    final index = _projects.indexWhere((p) => p.id == project.id);
-    if (index != -1) {
-      _projects[index] = project;
-      notifyListeners();
+    try {
+      final newProject = await _supabaseService.addProject(project);
+      if (newProject != null) {
+        _projects.add(newProject);
+        notifyListeners();
+      }
+    } catch (e) {
+      _setError('Failed to add project: $e');
+    } finally {
+      _setLoading(false);
     }
   }
 
-  void deleteProject(int id) {
-    _projects.removeWhere((p) => p.id == id);
-    notifyListeners();
+  Future<void> updateProject(Project project) async {
+    _setLoading(true);
+    _setError(null);
+
+    try {
+      final updatedProject = await _supabaseService.updateProject(project);
+      if (updatedProject != null) {
+        final index = _projects.indexWhere((p) => p.id == project.id);
+        if (index != -1) {
+          _projects[index] = updatedProject;
+          notifyListeners();
+        }
+      }
+    } catch (e) {
+      _setError('Failed to update project: $e');
+    } finally {
+      _setLoading(false);
+    }
+  }
+
+  Future<void> deleteProject(int id) async {
+    _setLoading(true);
+    _setError(null);
+
+    try {
+      final success = await _supabaseService.deleteProject(id);
+      if (success) {
+        _projects.removeWhere((p) => p.id == id);
+        notifyListeners();
+      }
+    } catch (e) {
+      _setError('Failed to delete project: $e');
+    } finally {
+      _setLoading(false);
+    }
   }
 
   // Testimonials CRUD
-  void addTestimonial(Testimonial testimonial) {
-    final newId = _testimonials.isNotEmpty
-        ? _testimonials.map((t) => t.id ?? 0).reduce((a, b) => a > b ? a : b) +
-            1
-        : 1;
-    final newTestimonial = testimonial.copyWith(id: newId);
-    _testimonials.add(newTestimonial);
-    notifyListeners();
-  }
+  Future<void> addTestimonial(Testimonial testimonial) async {
+    _setLoading(true);
+    _setError(null);
 
-  void updateTestimonial(Testimonial testimonial) {
-    final index = _testimonials.indexWhere((t) => t.id == testimonial.id);
-    if (index != -1) {
-      _testimonials[index] = testimonial;
-      notifyListeners();
+    try {
+      final newTestimonial = await _supabaseService.addTestimonial(testimonial);
+      if (newTestimonial != null) {
+        _testimonials.add(newTestimonial);
+        notifyListeners();
+      }
+    } catch (e) {
+      _setError('Failed to add testimonial: $e');
+    } finally {
+      _setLoading(false);
     }
   }
 
-  void deleteTestimonial(int id) {
-    _testimonials.removeWhere((t) => t.id == id);
-    notifyListeners();
+  Future<void> updateTestimonial(Testimonial testimonial) async {
+    _setLoading(true);
+    _setError(null);
+
+    try {
+      final updatedTestimonial =
+          await _supabaseService.updateTestimonial(testimonial);
+      if (updatedTestimonial != null) {
+        final index = _testimonials.indexWhere((t) => t.id == testimonial.id);
+        if (index != -1) {
+          _testimonials[index] = updatedTestimonial;
+          notifyListeners();
+        }
+      }
+    } catch (e) {
+      _setError('Failed to update testimonial: $e');
+    } finally {
+      _setLoading(false);
+    }
+  }
+
+  Future<void> deleteTestimonial(int id) async {
+    _setLoading(true);
+    _setError(null);
+
+    try {
+      final success = await _supabaseService.deleteTestimonial(id);
+      if (success) {
+        _testimonials.removeWhere((t) => t.id == id);
+        notifyListeners();
+      }
+    } catch (e) {
+      _setError('Failed to delete testimonial: $e');
+    } finally {
+      _setLoading(false);
+    }
   }
 
   // Social Links CRUD
-  void updateSocialLink(String platform, String url) {
-    final index = _socialLinks.indexWhere((s) => s.platform == platform);
-    if (index != -1) {
-      _socialLinks[index] = _socialLinks[index].copyWith(url: url);
-    } else {
-      _socialLinks.add(SocialLink(platform: platform, url: url));
+  Future<void> updateSocialLink(String platform, String url) async {
+    _setLoading(true);
+    _setError(null);
+
+    try {
+      final socialLink = SocialLink(platform: platform, url: url);
+      final updatedLink = await _supabaseService.upsertSocialLink(socialLink);
+      if (updatedLink != null) {
+        final index = _socialLinks.indexWhere((s) => s.platform == platform);
+        if (index != -1) {
+          _socialLinks[index] = updatedLink;
+        } else {
+          _socialLinks.add(updatedLink);
+        }
+        notifyListeners();
+      }
+    } catch (e) {
+      _setError('Failed to update social link: $e');
+    } finally {
+      _setLoading(false);
     }
-    notifyListeners();
   }
 
-  void toggleSocialLinkVisibility(String platform) {
+  Future<void> toggleSocialLinkVisibility(String platform) async {
     final index = _socialLinks.indexWhere((s) => s.platform == platform);
     if (index != -1) {
-      _socialLinks[index] = _socialLinks[index]
-          .copyWith(isVisible: !_socialLinks[index].isVisible);
-      notifyListeners();
+      final link = _socialLinks[index];
+      final updatedLink = link.copyWith(isVisible: !link.isVisible);
+      await updateSocialLink(platform, updatedLink.url);
     }
   }
 
-  void deleteSocialLink(String platform) {
-    _socialLinks.removeWhere((s) => s.platform == platform);
-    notifyListeners();
+  Future<void> deleteSocialLink(String platform) async {
+    _setLoading(true);
+    _setError(null);
+
+    try {
+      final success = await _supabaseService.deleteSocialLink(platform);
+      if (success) {
+        _socialLinks.removeWhere((s) => s.platform == platform);
+        notifyListeners();
+      }
+    } catch (e) {
+      _setError('Failed to delete social link: $e');
+    } finally {
+      _setLoading(false);
+    }
   }
 
   // Personal Info
-  void updatePersonalInfo(PersonalInfo info) {
-    _personalInfo = info;
-    notifyListeners();
+  Future<void> updatePersonalInfo(PersonalInfo info) async {
+    _setLoading(true);
+    _setError(null);
+
+    try {
+      final updatedInfo = await _supabaseService.upsertPersonalInfo(info);
+      if (updatedInfo != null) {
+        _personalInfo = updatedInfo;
+        notifyListeners();
+      }
+    } catch (e) {
+      _setError('Failed to update personal info: $e');
+    } finally {
+      _setLoading(false);
+    }
   }
 
   // Export data to JSON files
