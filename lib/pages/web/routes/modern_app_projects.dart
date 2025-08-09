@@ -52,10 +52,9 @@ class _ModernAppProjectsState extends State<ModernAppProjects>
       end: 1.0,
     ).animate(CurvedAnimation(
       parent: _projectsController,
-      curve: Curves.easeOutCubic, // Changed from easeOutBack to easeOutCubic
+      curve: Curves.easeOutCubic,
     ));
 
-    // Load projects and start animations
     WidgetsBinding.instance.addPostFrameCallback((_) {
       getAllProjectList();
       _headerController.forward();
@@ -219,7 +218,7 @@ class _ModernAppProjectsState extends State<ModernAppProjects>
               ),
               Text(
                 label,
-                style: TextStyle(
+                style: const TextStyle(
                   color: AppColors.textMuted,
                   fontSize: 12,
                 ),
@@ -251,7 +250,18 @@ class _ModernAppProjectsState extends State<ModernAppProjects>
                   return _buildEmptyState(context);
                 }
 
-                return _buildProjectsGrid(context, provider, isDesktop);
+                return Column(
+                  children: [
+                    // Connection status indicator (only shown when offline)
+                    if (!provider.isOnline) _buildOfflineIndicator(context),
+
+                    // Error indicator (only shown when there's an error)
+                    if (provider.lastError != null)
+                      _buildErrorIndicator(context, provider),
+
+                    _buildProjectsGrid(context, provider, isDesktop),
+                  ],
+                );
               },
             ),
           ),
@@ -269,7 +279,7 @@ class _ModernAppProjectsState extends State<ModernAppProjects>
           Container(
             width: 60,
             height: 60,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               gradient: AppGradients.buttonGradient,
               shape: BoxShape.circle,
             ),
@@ -280,8 +290,15 @@ class _ModernAppProjectsState extends State<ModernAppProjects>
           ),
           const SizedBox(height: 20),
           Text(
-            'Loading amazing projects...',
+            'Syncing with Supabase...',
             style: Theme.of(context).textTheme.titleMedium,
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'Loading your amazing projects',
+            style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                  color: AppColors.textMuted,
+                ),
           ),
         ],
       ),
@@ -294,7 +311,7 @@ class _ModernAppProjectsState extends State<ModernAppProjects>
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
+          const Icon(
             FontAwesomeIcons.folderOpen,
             size: 60,
             color: AppColors.textMuted,
@@ -310,6 +327,100 @@ class _ModernAppProjectsState extends State<ModernAppProjects>
             style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                   color: AppColors.textMuted,
                 ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildOfflineIndicator(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 16),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      decoration: BoxDecoration(
+        color: AppColors.accentOrange.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: AppColors.accentOrange.withOpacity(0.3)),
+      ),
+      child: Row(
+        children: [
+          Icon(
+            FontAwesomeIcons.wifi,
+            size: 16,
+            color: AppColors.accentOrange,
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Text(
+              'Offline Mode - Showing cached content',
+              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                    color: AppColors.accentOrange,
+                    fontWeight: FontWeight.w500,
+                  ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildErrorIndicator(
+      BuildContext context, PortfolioDataProvider provider) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 16),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.red.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: Colors.red.withOpacity(0.3)),
+      ),
+      child: Row(
+        children: [
+          const Icon(
+            FontAwesomeIcons.triangleExclamation,
+            size: 16,
+            color: Colors.red,
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Connection Error',
+                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                        color: Colors.red,
+                        fontWeight: FontWeight.w600,
+                      ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  'Failed to sync with server. Showing local content.',
+                  style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                        color: Colors.red.withOpacity(0.8),
+                      ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(width: 12),
+          GestureDetector(
+            onTap: () => provider.retryLoadAll(),
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+              decoration: BoxDecoration(
+                color: Colors.red.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(6),
+                border: Border.all(color: Colors.red.withOpacity(0.3)),
+              ),
+              child: Text(
+                'Retry',
+                style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                      color: Colors.red,
+                      fontWeight: FontWeight.w600,
+                    ),
+              ),
+            ),
           ),
         ],
       ),
@@ -491,7 +602,7 @@ class _ModernAppProjectsState extends State<ModernAppProjects>
                 ),
                 child: Row(
                   children: [
-                    Icon(
+                    const Icon(
                       FontAwesomeIcons.clock,
                       size: 14,
                       color: AppColors.textMuted,
@@ -568,7 +679,6 @@ class _ModernAppProjectsState extends State<ModernAppProjects>
   }
 
   Future<void> getAllProjectList() async {
-    await Provider.of<PortfolioDataProvider>(context, listen: false)
-        .fetchProjectsRemote();
+    await Provider.of<PortfolioDataProvider>(context, listen: false).loadAll();
   }
 }

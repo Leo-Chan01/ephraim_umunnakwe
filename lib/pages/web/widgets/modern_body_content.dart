@@ -43,6 +43,17 @@ class _ModernBodyContentState extends State<ModernBodyContent>
       vsync: this,
     );
 
+    // Load portfolio data when the widget initializes
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      try {
+        await Provider.of<PortfolioDataProvider>(context, listen: false)
+            .loadAll();
+      } catch (e) {
+        // Error handling is done in the provider
+        debugPrint('Error loading portfolio data in ModernBodyContent: $e');
+      }
+    });
+
     _heroFadeAnimation = Tween<double>(
       begin: 0.0,
       end: 1.0,
