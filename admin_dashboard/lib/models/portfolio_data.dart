@@ -115,8 +115,9 @@ class Testimonial {
         role: json['role'] ?? '',
         message: json['message'] ?? '',
         rating: (json['rating'] as num?)?.toDouble() ?? 0.0,
-        avatarUrl: json['avatarUrl'],
-        createdAt: DateTime.tryParse(json['createdAt'] ?? '') ?? DateTime.now(),
+        avatarUrl: json['avatarUrl'] ?? '',
+        createdAt:
+            DateTime.tryParse(json['created_at'] ?? '') ?? DateTime.now(),
       );
 
   Map<String, dynamic> toJson() => {
@@ -126,7 +127,6 @@ class Testimonial {
         'message': message,
         'rating': rating,
         if (avatarUrl != null) 'avatarUrl': avatarUrl,
-        'createdAt': createdAt.toIso8601String(),
       };
 
   Testimonial copyWith({
@@ -163,13 +163,13 @@ class SocialLink {
   factory SocialLink.fromJson(Map<String, dynamic> json) => SocialLink(
         platform: json['platform'] ?? '',
         url: json['url'] ?? '',
-        isVisible: json['isVisible'] ?? true,
+        isVisible: json['is_visible'] ?? true,
       );
 
   Map<String, dynamic> toJson() => {
         'platform': platform,
         'url': url,
-        'isVisible': isVisible,
+        'is_visible': isVisible,
       };
 
   SocialLink copyWith({
@@ -210,7 +210,7 @@ class PersonalInfo {
         phone: json['phone'] ?? '',
         location: json['location'] ?? '',
         bio: json['bio'] ?? '',
-        profileImageUrl: json['profileImageUrl'],
+        // profileImageUrl: json['profileImageUrl'],
       );
 
   Map<String, dynamic> toJson() => {

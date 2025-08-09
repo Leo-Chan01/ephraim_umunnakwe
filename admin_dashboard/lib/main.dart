@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'providers/admin_provider.dart';
-import 'screens/dashboard_screen.dart';
 import 'services/supabase_config.dart';
 import 'theme/admin_theme.dart';
+import 'widgets/auth_wrapper.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,7 +29,7 @@ class PortfolioAdminApp extends StatelessWidget {
         darkTheme: AdminTheme.darkTheme,
         themeMode: ThemeMode.system,
         debugShowCheckedModeBanner: false,
-        home: const DashboardScreen(),
+        home: const AuthWrapper(),
       ),
     );
   }

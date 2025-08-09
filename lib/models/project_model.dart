@@ -27,11 +27,28 @@ class Project {
       name: json['name'],
       description: json['description'],
       status: json['status'],
-      startDate: DateTime.parse(json['startDate']),
-      endDate: DateTime.parse(json['endDate']),
+      startDate:
+          json['startDate'] != null ? DateTime.parse(json['startDate']) : null,
+      endDate: json['endDate'] != null ? DateTime.parse(json['endDate']) : null,
       priority: json['priority'],
-      technologies: List<String>.from(json['technologies']),
+      technologies: json['technologies'] != null
+          ? List<String>.from(json['technologies'])
+          : null,
       role: json['role'],
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'description': description,
+      'status': status,
+      'startDate': startDate?.toIso8601String(),
+      'endDate': endDate?.toIso8601String(),
+      'priority': priority,
+      'technologies': technologies,
+      'role': role,
+    };
   }
 }

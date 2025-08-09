@@ -267,7 +267,6 @@ class _TestimonialsScreenState extends State<TestimonialsScreen> {
                     role: roleController.text,
                     message: messageController.text,
                     rating: rating,
-                    createdAt: testimonial?.createdAt ?? DateTime.now(),
                   );
 
                   final provider =

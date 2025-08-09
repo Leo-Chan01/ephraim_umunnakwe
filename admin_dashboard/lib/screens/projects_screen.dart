@@ -131,6 +131,40 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
                         project.description,
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
+                      const SizedBox(height: 8),
+                      Row(
+                        children: [
+                          Icon(Icons.calendar_today,
+                              size: 16, color: Colors.grey[600]),
+                          const SizedBox(width: 4),
+                          Text(
+                            '${project.startDate?.day}/${project.startDate?.month}/${project.startDate?.year}',
+                            style: Theme.of(context).textTheme.bodySmall,
+                          ),
+                          if (project.endDate != null) ...[
+                            const SizedBox(width: 8),
+                            Icon(Icons.arrow_forward,
+                                size: 12, color: Colors.grey[400]),
+                            const SizedBox(width: 8),
+                            Text(
+                              '${project.endDate?.day}/${project.endDate?.month}/${project.endDate?.year}',
+                              style: Theme.of(context).textTheme.bodySmall,
+                            ),
+                          ] else ...[
+                            const SizedBox(width: 8),
+                            Text(
+                              '(Ongoing)',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodySmall
+                                  ?.copyWith(
+                                    fontStyle: FontStyle.italic,
+                                    color: Colors.grey[500],
+                                  ),
+                            ),
+                          ],
+                        ],
+                      ),
                       const SizedBox(height: 12),
                       Row(
                         children: [
@@ -299,6 +333,89 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
                       ),
                     ],
                   ),
+                  const SizedBox(height: 16),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: InkWell(
+                          onTap: () async {
+                            final date = await showDatePicker(
+                              context: context,
+                              initialDate: startDate,
+                              firstDate: DateTime(2020),
+                              lastDate: DateTime(2030),
+                            );
+                            if (date != null) {
+                              setState(() {
+                                startDate = date;
+                              });
+                            }
+                          },
+                          child: InputDecorator(
+                            decoration: const InputDecoration(
+                              labelText: 'Start Date',
+                              suffixIcon: Icon(Icons.calendar_today),
+                            ),
+                            child: Text(
+                              '${startDate.day}/${startDate.month}/${startDate.year}',
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: InkWell(
+                          onTap: () async {
+                            final date = await showDatePicker(
+                              context: context,
+                              initialDate: endDate ?? DateTime.now(),
+                              firstDate: startDate,
+                              lastDate: DateTime(2030),
+                            );
+                            if (date != null) {
+                              setState(() {
+                                endDate = date;
+                              });
+                            }
+                          },
+                          child: InputDecorator(
+                            decoration: InputDecoration(
+                              labelText: 'End Date (Optional)',
+                              suffixIcon: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  if (endDate != null)
+                                    IconButton(
+                                      icon: const Icon(Icons.clear, size: 16),
+                                      onPressed: () {
+                                        setState(() {
+                                          endDate = null;
+                                        });
+                                      },
+                                    ),
+                                  const Icon(Icons.calendar_today),
+                                ],
+                              ),
+                            ),
+                            child: Text(
+                              endDate != null
+                                  ? '${endDate!.day}/${endDate!.month}/${endDate!.year}'
+                                  : 'Select end date',
+                              style: TextStyle(
+                                color: endDate != null
+                                    ? Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium
+                                        ?.color
+                                    : Theme.of(context).hintColor,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
                 ],
               ),
             ),

@@ -4,6 +4,7 @@ import 'package:ephraim_umunnakwe/pages/web/widgets/modern_footer.dart';
 import 'package:ephraim_umunnakwe/pages/web/routes/app_routes.dart';
 import 'package:ephraim_umunnakwe/theme/colors.dart';
 import 'package:ephraim_umunnakwe/view_models/providers/projects_provider.dart';
+import 'package:ephraim_umunnakwe/models/project_model.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
@@ -51,7 +52,7 @@ class _ModernAppProjectsState extends State<ModernAppProjects>
       end: 1.0,
     ).animate(CurvedAnimation(
       parent: _projectsController,
-      curve: Curves.easeOutBack,
+      curve: Curves.easeOutCubic, // Changed from easeOutBack to easeOutCubic
     ));
 
     // Load projects and start animations
@@ -121,7 +122,8 @@ class _ModernAppProjectsState extends State<ModernAppProjects>
       animation: _headerAnimation,
       builder: (context, child) {
         return Opacity(
-          opacity: _headerAnimation.value,
+          opacity: _headerAnimation.value
+              .clamp(0.0, 1.0), // Clamp opacity to valid range
           child: Transform.translate(
             offset: Offset(0, 50 * (1 - _headerAnimation.value)),
             child: Column(
@@ -234,21 +236,22 @@ class _ModernAppProjectsState extends State<ModernAppProjects>
       animation: _projectsAnimation,
       builder: (context, child) {
         return Transform.scale(
-          scale: _projectsAnimation.value,
+          scale: _projectsAnimation.value
+              .clamp(0.0, 1.0), // Clamp scale to valid range
           child: Opacity(
-            opacity: _projectsAnimation.value,
+            opacity: _projectsAnimation.value
+                .clamp(0.0, 1.0), // Clamp opacity to valid range
             child: Consumer<PortfolioDataProvider>(
-              builder: (context, PortfolioDataProvider, child) {
-                if (PortfolioDataProvider.isLoading) {
+              builder: (context, provider, child) {
+                if (provider.isLoading) {
                   return _buildLoadingState(context);
                 }
 
-                if (PortfolioDataProvider.projects.isEmpty) {
+                if (provider.projects.isEmpty) {
                   return _buildEmptyState(context);
                 }
 
-                return _buildProjectsGrid(
-                    context, PortfolioDataProvider, isDesktop);
+                return _buildProjectsGrid(context, provider, isDesktop);
               },
             ),
           ),
@@ -341,166 +344,170 @@ class _ModernAppProjectsState extends State<ModernAppProjects>
     );
   }
 
-  Widget _buildProjectCard(BuildContext context, dynamic project, int index) {
+  Widget _buildProjectCard(BuildContext context, Project project, int index) {
     final statusColor = _getStatusColor(project.status);
 
     return GlassCard(
       hasGlow: true,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Project Image
-          Container(
-            height: 160,
-            decoration: BoxDecoration(
-              gradient: AppGradients.cardGradient,
-              borderRadius: BorderRadius.circular(12),
-              image: const DecorationImage(
-                image: AssetImage('assets/images/profile_img.jpg'),
-                fit: BoxFit.cover,
-              ),
-            ),
-            child: Container(
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Project Image
+            Container(
+              height: 160,
               decoration: BoxDecoration(
+                gradient: AppGradients.cardGradient,
                 borderRadius: BorderRadius.circular(12),
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Colors.transparent,
-                    Colors.black.withOpacity(0.7),
-                  ],
+                image: const DecorationImage(
+                  image: AssetImage('assets/images/profile_img.jpg'),
+                  fit: BoxFit.cover,
                 ),
               ),
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    // Status Badge
-                    Align(
-                      alignment: Alignment.topRight,
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 12, vertical: 6),
-                        decoration: BoxDecoration(
-                          color: statusColor,
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: Text(
-                          project.status ?? 'Unknown',
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Colors.transparent,
+                      Colors.black.withOpacity(0.7),
+                    ],
+                  ),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      // Status Badge
+                      Align(
+                        alignment: Alignment.topRight,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 12, vertical: 6),
+                          decoration: BoxDecoration(
+                            color: statusColor,
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Text(
+                            project.status ?? 'Unknown',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                       ),
-                    ),
 
-                    // Project Actions
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        _buildActionButton(
-                            FontAwesomeIcons.googlePlay, AppColors.success),
-                        const SizedBox(width: 8),
-                        _buildActionButton(
-                            FontAwesomeIcons.appStore, AppColors.textMuted),
-                        const SizedBox(width: 8),
-                        _buildActionButton(
-                            FontAwesomeIcons.globe, AppColors.primaryBlue),
-                        const SizedBox(width: 8),
-                        _buildActionButton(
-                            FontAwesomeIcons.github, AppColors.textSecondary),
-                      ],
+                      // Project Actions
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          _buildActionButton(
+                              FontAwesomeIcons.googlePlay, AppColors.success),
+                          const SizedBox(width: 8),
+                          _buildActionButton(
+                              FontAwesomeIcons.appStore, AppColors.textMuted),
+                          const SizedBox(width: 8),
+                          _buildActionButton(
+                              FontAwesomeIcons.globe, AppColors.primaryBlue),
+                          const SizedBox(width: 8),
+                          _buildActionButton(
+                              FontAwesomeIcons.github, AppColors.textSecondary),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+
+            const SizedBox(height: 16),
+
+            // Project Title
+            Text(
+              project.name ?? 'Untitled Project',
+              style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
+
+            const SizedBox(height: 8),
+
+            // Project Description
+            Text(
+              project.description ?? 'No description available',
+              style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                    color: AppColors.textSecondary,
+                    height: 1.4,
+                  ),
+              maxLines: 3,
+              overflow: TextOverflow.ellipsis,
+            ),
+
+            const SizedBox(height: 16),
+
+            // Technologies
+            if (project.technologies != null &&
+                project.technologies!.isNotEmpty)
+              Wrap(
+                spacing: 6,
+                runSpacing: 6,
+                children: project.technologies!.take(3).map<Widget>((tech) {
+                  return Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    decoration: BoxDecoration(
+                      gradient: AppGradients.buttonGradient,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Text(
+                      tech,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 10,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  );
+                }).toList(),
+              ),
+
+            const Spacer(),
+
+            // Project Duration
+            if (project.startDate != null && project.endDate != null)
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: AppColors.cardGlass,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Row(
+                  children: [
+                    Icon(
+                      FontAwesomeIcons.clock,
+                      size: 14,
+                      color: AppColors.textMuted,
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      'Duration: ${calculateDurationInMonths(project.startDate, project.endDate)} months',
+                      style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                            color: AppColors.textMuted,
+                          ),
                     ),
                   ],
                 ),
               ),
-            ),
-          ),
-
-          const SizedBox(height: 16),
-
-          // Project Title
-          Text(
-            project.name ?? 'Untitled Project',
-            style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-          ),
-
-          const SizedBox(height: 8),
-
-          // Project Description
-          Text(
-            project.description ?? 'No description available',
-            style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                  color: AppColors.textSecondary,
-                  height: 1.4,
-                ),
-            maxLines: 3,
-            overflow: TextOverflow.ellipsis,
-          ),
-
-          const SizedBox(height: 16),
-
-          // Technologies
-          if (project.technologies != null && project.technologies!.isNotEmpty)
-            Wrap(
-              spacing: 6,
-              runSpacing: 6,
-              children: project.technologies!.take(3).map<Widget>((tech) {
-                return Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                  decoration: BoxDecoration(
-                    gradient: AppGradients.buttonGradient,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Text(
-                    tech,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 10,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                );
-              }).toList(),
-            ),
-
-          const Spacer(),
-
-          // Project Duration
-          if (project.startDate != null && project.endDate != null)
-            Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: AppColors.cardGlass,
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Row(
-                children: [
-                  Icon(
-                    FontAwesomeIcons.clock,
-                    size: 14,
-                    color: AppColors.textMuted,
-                  ),
-                  const SizedBox(width: 8),
-                  Text(
-                    'Duration: ${calculateDurationInMonths(project.startDate, project.endDate)} months',
-                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                          color: AppColors.textMuted,
-                        ),
-                  ),
-                ],
-              ),
-            ),
-        ],
+          ],
+        ),
       ),
     );
   }

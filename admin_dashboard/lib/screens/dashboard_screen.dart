@@ -4,6 +4,7 @@ import '../providers/admin_provider.dart';
 import '../theme/admin_theme.dart';
 import '../widgets/dashboard_card.dart';
 import '../widgets/stat_card.dart';
+import '../services/auth_service.dart';
 import 'projects_screen.dart';
 import 'testimonials_screen.dart';
 import 'social_links_screen.dart';
@@ -56,6 +57,44 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   tooltip: 'Export Data',
                 );
               },
+            ),
+            const SizedBox(width: 8),
+            PopupMenuButton<String>(
+              icon: const Icon(Icons.account_circle),
+              onSelected: (value) async {
+                switch (value) {
+                  case 'profile':
+                    // Navigate to profile/personal info
+                    _navigateToScreen(context, const PersonalInfoScreen());
+                    break;
+                  case 'logout':
+                    await _signOut(context);
+                    break;
+                }
+              },
+              itemBuilder: (context) => [
+                PopupMenuItem<String>(
+                  value: 'profile',
+                  child: Row(
+                    children: [
+                      Icon(Icons.person,
+                          size: 18, color: Theme.of(context).primaryColor),
+                      const SizedBox(width: 8),
+                      const Text('Profile'),
+                    ],
+                  ),
+                ),
+                const PopupMenuItem<String>(
+                  value: 'logout',
+                  child: Row(
+                    children: [
+                      Icon(Icons.logout, size: 18, color: Colors.red),
+                      SizedBox(width: 8),
+                      Text('Sign Out', style: TextStyle(color: Colors.red)),
+                    ],
+                  ),
+                ),
+              ],
             ),
             const SizedBox(width: 16),
           ],
@@ -291,6 +330,43 @@ class _DashboardScreenState extends State<DashboardScreen> {
           backgroundColor: AdminTheme.successColor,
         ),
       );
+    }
+  }
+
+  Future<void> _signOut(BuildContext context) async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Sign Out'),
+        content: const Text('Are you sure you want to sign out?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: const Text('Cancel'),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+            child: const Text('Sign Out'),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed == true) {
+      try {
+        await AuthService.signOut();
+        // AuthWrapper will automatically handle navigation back to login
+      } catch (e) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Error signing out: $e'),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      }
     }
   }
 }
