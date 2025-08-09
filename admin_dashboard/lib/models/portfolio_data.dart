@@ -58,6 +58,7 @@ class Project {
         if (previewImage != null) 'preview_image': previewImage,
         if (projectUrl != null) 'project_url': projectUrl,
         if (githubUrl != null) 'github_url': githubUrl,
+        'updated_at': DateTime.now().toIso8601String(),
       };
 
   Project copyWith({

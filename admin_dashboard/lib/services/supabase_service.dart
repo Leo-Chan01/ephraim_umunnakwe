@@ -23,7 +23,7 @@ class SupabaseService {
   Future<Project?> addProject(Project project) async {
     try {
       final projectData = project.toJson();
-      projectData.remove('id'); // Remove id for insert
+      projectData.remove('id');
 
       final response = await _client
           .from(SupabaseTables.projects)

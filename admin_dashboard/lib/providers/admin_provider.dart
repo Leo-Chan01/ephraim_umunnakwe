@@ -100,7 +100,7 @@ class AdminProvider extends ChangeNotifier {
         name: 'Ahiaoma App and Reseller',
         description:
             'Developed an online retail platform with shopping cart and payment integration.',
-        status: 'In Progress',
+        status: 'Completed',
         startDate: DateTime(2024, 1, 1),
         endDate: DateTime(2025, 8, 30),
         priority: 'High',

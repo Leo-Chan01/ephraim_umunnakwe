@@ -27,6 +27,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       theme: AdminTheme.lightTheme,
       darkTheme: AdminTheme.darkTheme,
       themeMode: _isDarkMode ? ThemeMode.dark : ThemeMode.light,
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
           title: const Text('Portfolio Admin Dashboard'),
