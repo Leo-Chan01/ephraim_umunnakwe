@@ -314,7 +314,6 @@ export const getStaticProps: GetStaticProps = async () => {
         testimonials,
         personalInfo,
       },
-      revalidate: 60,
     };
   } catch (error) {
     return {

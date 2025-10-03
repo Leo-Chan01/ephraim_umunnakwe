@@ -264,7 +264,6 @@ export const getStaticProps: GetStaticProps = async () => {
         personalInfo,
         socialLinks,
       },
-      revalidate: 60,
     };
   } catch (error) {
     console.error('Error fetching contact page data:', error);

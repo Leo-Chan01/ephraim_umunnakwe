@@ -149,7 +149,6 @@ export const getStaticProps: GetStaticProps = async () => {
     const personalInfo = await portfolioService.getPersonalInfo();
     return {
       props: { personalInfo },
-      revalidate: 3600,
     };
   } catch (error) {
     return {
