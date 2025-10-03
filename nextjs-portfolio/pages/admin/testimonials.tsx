@@ -185,7 +185,7 @@ function TestimonialForm({ testimonial, onSave, onCancel }: {
       role: '',
       message: '',
       rating: 5,
-      created_at: new Date(),
+      created_at: new Date().toISOString(),
     }
   );
 
