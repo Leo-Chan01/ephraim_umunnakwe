@@ -1,4 +1,7 @@
+import React from 'react';
 import { GetStaticProps } from 'next';
+import Link from 'next/link';
+import Layout from '../components/Layout';
 import { portfolioService } from '../lib/supabase';
 import { Project, Testimonial, PersonalInfo } from '../types/portfolio';
 
@@ -9,48 +12,290 @@ interface HomeProps {
 }
 
 export default function Home({ projects, testimonials, personalInfo }: HomeProps) {
+  const featuredProjects = projects.slice(0, 3);
+  const featuredTestimonials = testimonials.slice(0, 2);
+
   return (
-    <div className="min-h-screen bg-gray-900 text-white">
-      <header className="py-20 text-center">
-        <h1 className="text-5xl font-bold mb-4">{personalInfo?.name || 'Ephraim Umunnakwe'}</h1>
-        <p className="text-xl text-gray-300">{personalInfo?.title || 'Software Developer'}</p>
-      </header>
-
-      <section className="py-16 px-8">
-        <h2 className="text-3xl font-bold mb-8 text-center">Projects</h2>
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-          {projects.map((project) => (
-            <div key={project.id} className="bg-gray-800 p-6 rounded-lg">
-              <h3 className="text-xl font-semibold mb-2">{project.name}</h3>
-              <p className="text-gray-300 mb-4">{project.description}</p>
-              <div className="flex flex-wrap gap-2">
-                {project.technologies.map((tech) => (
-                  <span key={tech} className="bg-blue-600 px-2 py-1 rounded text-sm">
-                    {tech}
-                  </span>
-                ))}
-              </div>
+    <Layout>
+      {/* Hero Section */}
+      <section className="relative min-h-screen flex items-center justify-center px-4">
+        <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-purple-600/20" />
+        <div className="relative z-10 text-center max-w-4xl mx-auto">
+          <div className="mb-8">
+            <div className="w-32 h-32 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full mx-auto mb-6 flex items-center justify-center text-4xl font-bold text-white">
+              {personalInfo?.name?.split(' ').map(word => word[0]).join('').toUpperCase() || 'EU'}
             </div>
-          ))}
+          </div>
+          
+          <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
+            Hi, I'm{' '}
+            <span className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+              {personalInfo?.name || 'Ephraim Umunnakwe'}
+            </span>
+          </h1>
+          
+          <div className="text-xl md:text-2xl text-gray-300 mb-8 space-y-2">
+            <p>{personalInfo?.title || 'Software Engineer • Mobile & Web Developer'}</p>
+            <p className="text-lg text-gray-400">
+              {personalInfo?.bio || 'Building innovative solutions with Flutter, React, and modern technologies'}
+            </p>
+          </div>
+
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link
+              href="/projects"
+              className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-8 py-3 rounded-lg hover:from-blue-600 hover:to-purple-700 transition-all font-semibold"
+            >
+              View My Work
+            </Link>
+            <Link
+              href="/contact"
+              className="border border-white/30 text-white px-8 py-3 rounded-lg hover:bg-white/10 transition-all font-semibold"
+            >
+              Get In Touch
+            </Link>
+          </div>
+        </div>
+
+        {/* Scroll indicator */}
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+          <div className="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center">
+            <div className="w-1 h-3 bg-white/50 rounded-full mt-2" />
+          </div>
         </div>
       </section>
 
-      <section className="py-16 px-8 bg-gray-800">
-        <h2 className="text-3xl font-bold mb-8 text-center">Testimonials</h2>
-        <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-          {testimonials.map((testimonial) => (
-            <div key={testimonial.id} className="bg-gray-700 p-6 rounded-lg">
-              <p className="mb-4">"{testimonial.message}"</p>
-              <div className="flex items-center">
-                <div>
-                  <p className="font-semibold">{testimonial.author}</p>
-                  <p className="text-gray-300 text-sm">{testimonial.role}</p>
-                </div>
-              </div>
-            </div>
-          ))}
+      {/* Skills Section */}
+      <section className="py-20 px-4">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+              Technical Expertise
+            </h2>
+            <p className="text-gray-300 text-lg max-w-2xl mx-auto">
+              I specialize in mobile and web development with a focus on creating 
+              scalable, user-friendly applications.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <SkillCard
+              icon="📱"
+              title="Mobile Development"
+              description="Flutter & Dart for cross-platform mobile applications"
+              skills={['Flutter', 'Dart', 'Firebase', 'State Management']}
+            />
+            <SkillCard
+              icon="🌐"
+              title="Web Development"
+              description="Modern web applications with React and Next.js"
+              skills={['React', 'Next.js', 'TypeScript', 'Tailwind CSS']}
+            />
+            <SkillCard
+              icon="⚡"
+              title="Backend & Cloud"
+              description="Scalable backend services and cloud infrastructure"
+              skills={['Node.js', 'Supabase', 'REST APIs', 'Cloud Functions']}
+            />
+          </div>
         </div>
       </section>
+
+      {/* Featured Projects */}
+      <section className="py-20 px-4 bg-black/20">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+              Featured Projects
+            </h2>
+            <p className="text-gray-300 text-lg">
+              Some of my recent work and personal projects
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {featuredProjects.map((project) => (
+              <ProjectCard key={project.id} project={project} />
+            ))}
+          </div>
+
+          <div className="text-center mt-12">
+            <Link
+              href="/projects"
+              className="inline-flex items-center text-blue-400 hover:text-blue-300 transition-colors"
+            >
+              View All Projects
+              <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials */}
+      {featuredTestimonials.length > 0 && (
+        <section className="py-20 px-4">
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+                What Clients Say
+              </h2>
+              <p className="text-gray-300 text-lg">
+                Feedback from satisfied clients and collaborators
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {featuredTestimonials.map((testimonial) => (
+                <TestimonialCard key={testimonial.id} testimonial={testimonial} />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* CTA Section */}
+      <section className="py-20 px-4 bg-gradient-to-r from-blue-600/20 to-purple-600/20">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
+            Ready to Start Your Project?
+          </h2>
+          <p className="text-gray-300 text-lg mb-8">
+            Let's work together to bring your ideas to life with cutting-edge technology
+          </p>
+          <Link
+            href="/contact"
+            className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-8 py-4 rounded-lg hover:from-blue-600 hover:to-purple-700 transition-all font-semibold text-lg"
+          >
+            Start a Conversation
+          </Link>
+        </div>
+      </section>
+    </Layout>
+  );
+}
+
+function SkillCard({ icon, title, description, skills }: {
+  icon: string;
+  title: string;
+  description: string;
+  skills: string[];
+}) {
+  return (
+    <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg p-6 hover:bg-white/10 transition-all">
+      <div className="text-4xl mb-4">{icon}</div>
+      <h3 className="text-xl font-semibold text-white mb-3">{title}</h3>
+      <p className="text-gray-300 mb-4">{description}</p>
+      <div className="flex flex-wrap gap-2">
+        {skills.map((skill, index) => (
+          <span
+            key={index}
+            className="px-3 py-1 bg-blue-500/20 text-blue-300 text-sm rounded-full"
+          >
+            {skill}
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function ProjectCard({ project }: { project: Project }) {
+  return (
+    <div 
+      className={`bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg overflow-hidden hover:bg-white/10 transition-all group ${
+        project.project_url ? 'cursor-pointer' : ''
+      }`}
+      onClick={() => {
+        if (project.project_url) {
+          window.open(project.project_url, '_blank', 'noopener,noreferrer');
+        }
+      }}
+    >
+      <div className="h-48 bg-gradient-to-br from-blue-500 to-purple-600 relative overflow-hidden">
+        {project.preview_image ? (
+          <img 
+            src={project.preview_image} 
+            alt={project.name}
+            className="w-full h-full object-cover"
+          />
+        ) : (
+          <div className="flex items-center justify-center h-full">
+            <span className="text-6xl">📱</span>
+          </div>
+        )}
+        
+        <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+          <div className="flex space-x-4">
+            {project.project_url && (
+              <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
+                <span>🔗</span>
+              </div>
+            )}
+            {project.github_url && (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  window.open(project.github_url, '_blank', 'noopener,noreferrer');
+                }}
+                className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center hover:bg-white/30 transition-colors"
+              >
+                <span>�</span>
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
+      <div className="p-6">
+        <h3 className="text-lg font-semibold text-white mb-2">
+          {project.name}
+        </h3>
+        <p className="text-gray-300 text-sm mb-4 line-clamp-2">
+          {project.description}
+        </p>
+        <div className="flex flex-wrap gap-2">
+          {project.technologies.slice(0, 3).map((tech, index) => (
+            <span
+              key={index}
+              className="px-2 py-1 bg-purple-500/20 text-purple-300 text-xs rounded"
+            >
+              {tech}
+            </span>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
+  return (
+    <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg p-6">
+      <div className="flex mb-4">
+        {[...Array(5)].map((_, i) => (
+          <span
+            key={i}
+            className={`text-lg ${
+              i < (testimonial.rating || 5) ? 'text-yellow-400' : 'text-gray-600'
+            }`}
+          >
+            ⭐
+          </span>
+        ))}
+      </div>
+      <blockquote className="text-gray-300 mb-4 italic">
+        "{testimonial.message}"
+      </blockquote>
+      <div className="flex items-center">
+        <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold">
+          {testimonial.author.charAt(0)}
+        </div>
+        <div className="ml-3">
+          <p className="text-white font-medium">{testimonial.author}</p>
+          <p className="text-gray-400 text-sm">{testimonial.role}</p>
+        </div>
+      </div>
     </div>
   );
 }

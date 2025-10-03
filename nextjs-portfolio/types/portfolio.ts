@@ -3,14 +3,16 @@ export interface Project {
   name: string;
   description: string;
   status: string;
-  startDate?: Date;
-  endDate?: Date;
+  start_date?: string;
+  end_date?: string;
   priority: string;
   technologies: string[];
   role: string;
-  previewImage?: string;
-  projectUrl?: string;
-  githubUrl?: string;
+  preview_image?: string;
+  project_url?: string;
+  github_url?: string;
+  created_at?: string;
+  updated_at?: string;
 }
 
 export interface Testimonial {
@@ -19,22 +21,26 @@ export interface Testimonial {
   role: string;
   message: string;
   rating: number;
-  avatarUrl?: string;
-  createdAt: Date;
+  avatar_url?: string;
+  created_at: string;
 }
 
 export interface SocialLink {
-  platform: string;
+  platform: string; // Primary key
   url: string;
-  isVisible: boolean;
+  is_visible: boolean;
+  created_at?: string;
+  updated_at?: string;
 }
 
 export interface PersonalInfo {
+  id?: number;
   name: string;
   title: string;
   email: string;
   phone: string;
   location: string;
   bio: string;
-  profileImageUrl?: string;
+  profile_image_url?: string;
+  updated_at?: string;
 }
