@@ -260,7 +260,7 @@ class _ModernHireMeScreenState extends State<ModernHireMeScreen>
               ),
               Text(
                 label,
-                style: TextStyle(
+                style: const TextStyle(
                   color: AppColors.textMuted,
                   fontSize: 10,
                 ),
@@ -422,24 +422,24 @@ class _ModernHireMeScreenState extends State<ModernHireMeScreen>
           decoration: InputDecoration(
             prefixIcon: Icon(icon, color: AppColors.primaryBlue, size: 20),
             hintText: 'Enter your $label',
-            hintStyle: TextStyle(color: AppColors.textMuted),
+            hintStyle: const TextStyle(color: AppColors.textMuted),
             filled: true,
             fillColor: AppColors.cardGlass,
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: AppColors.borderColor),
+              borderSide: const BorderSide(color: AppColors.borderColor),
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: AppColors.borderColor),
+              borderSide: const BorderSide(color: AppColors.borderColor),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: AppColors.primaryBlue, width: 2),
+              borderSide: const BorderSide(color: AppColors.primaryBlue, width: 2),
             ),
             errorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: AppColors.error),
+              borderSide: const BorderSide(color: AppColors.error),
             ),
           ),
         ),

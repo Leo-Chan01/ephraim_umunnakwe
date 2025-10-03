@@ -4,7 +4,7 @@ import '../providers/admin_provider.dart';
 import '../models/portfolio_data.dart';
 
 class SocialLinksScreen extends StatefulWidget {
-  const SocialLinksScreen({Key? key}) : super(key: key);
+  const SocialLinksScreen({super.key});
 
   @override
   State<SocialLinksScreen> createState() => _SocialLinksScreenState();

@@ -216,8 +216,8 @@ class _ModernAboutMeState extends State<ModernAboutMe>
               style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                     height: 1.8,
                   ),
-              children: [
-                const TextSpan(text: "Hi, I'm "),
+              children: const [
+                TextSpan(text: "Hi, I'm "),
                 TextSpan(
                   text: 'Ephraim Umunnakwe',
                   style: TextStyle(
@@ -225,7 +225,7 @@ class _ModernAboutMeState extends State<ModernAboutMe>
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                const TextSpan(
+                TextSpan(
                   text:
                       ", but you can call me King Raym, which is a nickname I've embraced with pride. I hail from ",
                 ),
@@ -236,7 +236,7 @@ class _ModernAboutMeState extends State<ModernAboutMe>
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                const TextSpan(
+                TextSpan(
                     text:
                         "\n\nMy friends often call me Leo, a name that reflects both my strength and leadership qualities. "
                         "I'm passionate about technology and software development, particularly in the realm of mobile applications. "
@@ -263,7 +263,7 @@ class _ModernAboutMeState extends State<ModernAboutMe>
               children: [
                 Row(
                   children: [
-                    Icon(
+                    const Icon(
                       FontAwesomeIcons.rocket,
                       color: AppColors.accentOrange,
                       size: 20,
@@ -294,7 +294,7 @@ class _ModernAboutMeState extends State<ModernAboutMe>
                           ..onTap = () async {
                             await openLink('https://theraymuniverse.com');
                           },
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: AppColors.accentGold,
                           fontWeight: FontWeight.bold,
                           decoration: TextDecoration.underline,
@@ -450,7 +450,7 @@ class _ModernAboutMeState extends State<ModernAboutMe>
         const SizedBox(height: 6),
         Text(
           label,
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 10,
             color: AppColors.textMuted,
             fontWeight: FontWeight.w500,
@@ -466,7 +466,7 @@ class _ModernAboutMeState extends State<ModernAboutMe>
         children: [
           Row(
             children: [
-              Icon(
+              const Icon(
                 FontAwesomeIcons.route,
                 color: AppColors.accentTeal,
                 size: 24,

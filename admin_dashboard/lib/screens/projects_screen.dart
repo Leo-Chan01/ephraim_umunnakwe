@@ -5,7 +5,7 @@ import '../models/portfolio_data.dart';
 import '../theme/admin_theme.dart';
 
 class ProjectsScreen extends StatefulWidget {
-  const ProjectsScreen({Key? key}) : super(key: key);
+  const ProjectsScreen({super.key});
 
   @override
   State<ProjectsScreen> createState() => _ProjectsScreenState();
@@ -205,7 +205,7 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
                             ),
                             child: Text(
                               tech,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: AdminTheme.primaryColor,
                                 fontSize: 11,
                               ),
@@ -286,7 +286,7 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
                     children: [
                       Expanded(
                         child: DropdownButtonFormField<String>(
-                          value: selectedStatus,
+                          initialValue: selectedStatus,
                           decoration:
                               const InputDecoration(labelText: 'Status'),
                           items: [
@@ -313,7 +313,7 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
                       const SizedBox(width: 16),
                       Expanded(
                         child: DropdownButtonFormField<String>(
-                          value: selectedPriority,
+                          initialValue: selectedPriority,
                           decoration:
                               const InputDecoration(labelText: 'Priority'),
                           items: ['Low', 'Medium', 'High']

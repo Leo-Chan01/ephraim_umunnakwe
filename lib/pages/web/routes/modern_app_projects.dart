@@ -344,7 +344,7 @@ class _ModernAppProjectsState extends State<ModernAppProjects>
       ),
       child: Row(
         children: [
-          Icon(
+          const Icon(
             FontAwesomeIcons.wifi,
             size: 16,
             color: AppColors.accentOrange,

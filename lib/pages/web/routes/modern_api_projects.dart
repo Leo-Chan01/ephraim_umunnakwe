@@ -227,7 +227,7 @@ class _ModernApiProjectsState extends State<ModernApiProjects>
               ),
               Text(
                 label,
-                style: TextStyle(
+                style: const TextStyle(
                   color: AppColors.textMuted,
                   fontSize: 12,
                 ),
@@ -461,7 +461,7 @@ class _ModernApiProjectsState extends State<ModernApiProjects>
         ),
         Text(
           label,
-          style: TextStyle(
+          style: const TextStyle(
             color: AppColors.textMuted,
             fontSize: 10,
           ),
@@ -526,7 +526,7 @@ class _ModernApiProjectsState extends State<ModernApiProjects>
         'technologies': ['Stripe', 'PayPal', 'Express.js', 'Redis'],
         'icon': FontAwesomeIcons.creditCard,
         'gradient':
-            LinearGradient(colors: [AppColors.success, AppColors.accentTeal]),
+            const LinearGradient(colors: [AppColors.success, AppColors.accentTeal]),
       },
       {
         'name': 'File Storage API',
@@ -539,7 +539,7 @@ class _ModernApiProjectsState extends State<ModernApiProjects>
         'responseTime': '200ms',
         'technologies': ['AWS S3', 'CloudFront', 'Sharp', 'Multer'],
         'icon': FontAwesomeIcons.cloud,
-        'gradient': LinearGradient(
+        'gradient': const LinearGradient(
             colors: [AppColors.primaryBlue, AppColors.primaryCyan]),
       },
       {
@@ -553,7 +553,7 @@ class _ModernApiProjectsState extends State<ModernApiProjects>
         'responseTime': '80ms',
         'technologies': ['Socket.io', 'FCM', 'Twilio', 'NodeMailer'],
         'icon': FontAwesomeIcons.bell,
-        'gradient': LinearGradient(
+        'gradient': const LinearGradient(
             colors: [AppColors.accentOrange, AppColors.accentGold]),
       },
       {
@@ -567,7 +567,7 @@ class _ModernApiProjectsState extends State<ModernApiProjects>
         'responseTime': '65ms',
         'technologies': ['PostgreSQL', 'InfluxDB', 'Grafana', 'Docker'],
         'icon': FontAwesomeIcons.chartBar,
-        'gradient': LinearGradient(
+        'gradient': const LinearGradient(
             colors: [AppColors.secondaryPurple, AppColors.primaryPurple]),
       },
       {

@@ -4,7 +4,7 @@ import '../providers/admin_provider.dart';
 import '../models/portfolio_data.dart';
 
 class TestimonialsScreen extends StatefulWidget {
-  const TestimonialsScreen({Key? key}) : super(key: key);
+  const TestimonialsScreen({super.key});
 
   @override
   State<TestimonialsScreen> createState() => _TestimonialsScreenState();

@@ -458,7 +458,7 @@ class _ModernBodyContentState extends State<ModernBodyContent>
         children: [
           Row(
             children: [
-              Icon(FontAwesomeIcons.quoteLeft,
+              const Icon(FontAwesomeIcons.quoteLeft,
                   color: AppColors.accentOrange, size: 24),
               const SizedBox(width: 12),
               Text(
@@ -480,7 +480,7 @@ class _ModernBodyContentState extends State<ModernBodyContent>
           ),
           const SizedBox(height: 24),
           if (portfolioProvider.isLoading)
-            SizedBox(
+            const SizedBox(
               height: 160,
               child: Center(
                 child: CircularProgressIndicator(
