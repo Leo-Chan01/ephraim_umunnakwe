@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { GetStaticProps } from 'next';
 import Layout from '../components/Layout';
 import { portfolioService } from '../lib/supabase';
@@ -8,9 +8,42 @@ interface ProjectsProps {
   projects: Project[];
 }
 
-export default function Projects({ projects }: ProjectsProps) {
+export default function Projects({ projects: initialProjects }: ProjectsProps) {
+  const [projects, setProjects] = useState(initialProjects);
   const [filter, setFilter] = useState<string>('all');
   const [searchTerm, setSearchTerm] = useState('');
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
+  // Function to refresh projects from Supabase
+  const refreshData = async () => {
+    setIsRefreshing(true);
+    try {
+      const projectsData = await portfolioService.getProjects();
+      setProjects(projectsData);
+    } catch (error) {
+      console.error('Error refreshing projects:', error);
+    } finally {
+      setIsRefreshing(false);
+    }
+  };
+
+  // Auto-refresh data every 30 seconds
+  useEffect(() => {
+    const interval = setInterval(refreshData, 30 * 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Refresh when page becomes visible
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (!document.hidden) {
+        refreshData();
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
+  }, []);
 
   // Get unique technologies for filter options
   const allTechnologies = Array.from(
@@ -27,6 +60,22 @@ export default function Projects({ projects }: ProjectsProps) {
 
   return (
     <Layout>
+      {/* Refresh Button */}
+      <div className="fixed top-4 right-4 z-50">
+        <button
+          onClick={refreshData}
+          disabled={isRefreshing}
+          className="bg-blue-500/80 hover:bg-blue-600/80 text-white px-3 py-2 rounded-lg shadow-lg transition-all disabled:opacity-50 backdrop-blur-sm border border-white/20 text-sm"
+          title="Refresh projects"
+        >
+          {isRefreshing ? (
+            <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+          ) : (
+            '↻'
+          )}
+        </button>
+      </div>
+
       {/* Hero Section */}
       <section className="py-20 px-4">
         <div className="max-w-6xl mx-auto text-center">

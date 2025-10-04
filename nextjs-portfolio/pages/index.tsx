@@ -17,9 +17,11 @@ export default function Home({ projects: initialProjects, testimonials: initialT
   const [testimonials, setTestimonials] = useState(initialTestimonials);
   const [personalInfo, setPersonalInfo] = useState(initialPersonalInfo);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [lastRefresh, setLastRefresh] = useState(new Date());
 
   // Function to refresh data from Supabase
   const refreshData = async () => {
+    console.log('🔄 Refreshing portfolio data...');
     setIsRefreshing(true);
     try {
       const [projectsData, testimonialsData, personalInfoData] = await Promise.all([
@@ -28,38 +30,71 @@ export default function Home({ projects: initialProjects, testimonials: initialT
         portfolioService.getPersonalInfo(),
       ]);
 
+      console.log('✅ Data refreshed:', {
+        projects: projectsData.length,
+        testimonials: testimonialsData.length,
+        personalInfo: personalInfoData?.name
+      });
+
       setProjects(projectsData);
       setTestimonials(testimonialsData);
       setPersonalInfo(personalInfoData);
+      setLastRefresh(new Date());
     } catch (error) {
-      console.error('Error refreshing data:', error);
+      console.error('❌ Error refreshing data:', error);
     } finally {
       setIsRefreshing(false);
     }
   };
 
-  // Auto-refresh data every 5 minutes (optional)
+  // Auto-refresh data every 10 seconds for immediate testing
   useEffect(() => {
-    const interval = setInterval(refreshData, 5 * 60 * 1000);
+    console.log('🚀 Setting up auto-refresh every 10 seconds');
+    const interval = setInterval(refreshData, 10 * 1000); // 10 seconds for testing
     return () => clearInterval(interval);
+  }, []);
+
+  // Also refresh when page becomes visible (user switches back to tab)
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (!document.hidden) {
+        console.log('👁️ Page visible - refreshing data');
+        refreshData();
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
+  }, []);
+
+  // Refresh on component mount to get latest data immediately
+  useEffect(() => {
+    console.log('🎯 Component mounted - getting fresh data');
+    refreshData();
   }, []);
 
   const featuredProjects = projects.slice(0, 3);
 
   return (
     <Layout>
-      {/* Refresh Button (only visible during development or for admins) */}
-      {process.env.NODE_ENV === 'development' && (
-        <div className="fixed top-4 right-4 z-50">
-          <button
-            onClick={refreshData}
-            disabled={isRefreshing}
-            className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg shadow-lg transition-all disabled:opacity-50"
-          >
-            {isRefreshing ? '🔄' : '↻'} Refresh Data
-          </button>
+      {/* Refresh Button and Status */}
+      <div className="fixed top-4 right-4 z-50 flex flex-col items-end gap-2">
+        <button
+          onClick={refreshData}
+          disabled={isRefreshing}
+          className="bg-blue-500/80 hover:bg-blue-600/80 text-white px-3 py-2 rounded-lg shadow-lg transition-all disabled:opacity-50 backdrop-blur-sm border border-white/20 text-sm"
+          title="Refresh content"
+        >
+          {isRefreshing ? (
+            <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+          ) : (
+            '↻'
+          )}
+        </button>
+        <div className="bg-black/50 backdrop-blur-sm px-2 py-1 rounded text-xs text-white/80">
+          Last: {lastRefresh.toLocaleTimeString()}
         </div>
-      )}
+      </div>
 
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center px-4">
