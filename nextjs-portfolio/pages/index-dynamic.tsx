@@ -49,7 +49,7 @@ export default function Home() {
 
   // ... rest of your existing JSX
   return (
-    <Layout>
+    <Layout children={undefined}>
       {/* Your existing JSX here - same as before */}
     </Layout>
   );
