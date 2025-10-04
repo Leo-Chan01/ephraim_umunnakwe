@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { GetStaticProps } from 'next';
 import Link from 'next/link';
 import Layout from '../components/Layout';
+import TestimonialsCarousel from '../components/TestimonialsCarousel';
 import { portfolioService } from '../lib/supabase';
 import { Project, Testimonial, PersonalInfo } from '../types/portfolio';
 
@@ -11,12 +12,55 @@ interface HomeProps {
   personalInfo: PersonalInfo | null;
 }
 
-export default function Home({ projects, testimonials, personalInfo }: HomeProps) {
+export default function Home({ projects: initialProjects, testimonials: initialTestimonials, personalInfo: initialPersonalInfo }: HomeProps) {
+  const [projects, setProjects] = useState(initialProjects);
+  const [testimonials, setTestimonials] = useState(initialTestimonials);
+  const [personalInfo, setPersonalInfo] = useState(initialPersonalInfo);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
+  // Function to refresh data from Supabase
+  const refreshData = async () => {
+    setIsRefreshing(true);
+    try {
+      const [projectsData, testimonialsData, personalInfoData] = await Promise.all([
+        portfolioService.getProjects(),
+        portfolioService.getTestimonials(),
+        portfolioService.getPersonalInfo(),
+      ]);
+
+      setProjects(projectsData);
+      setTestimonials(testimonialsData);
+      setPersonalInfo(personalInfoData);
+    } catch (error) {
+      console.error('Error refreshing data:', error);
+    } finally {
+      setIsRefreshing(false);
+    }
+  };
+
+  // Auto-refresh data every 5 minutes (optional)
+  useEffect(() => {
+    const interval = setInterval(refreshData, 5 * 60 * 1000);
+    return () => clearInterval(interval);
+  }, []);
+
   const featuredProjects = projects.slice(0, 3);
-  const featuredTestimonials = testimonials.slice(0, 2);
 
   return (
     <Layout>
+      {/* Refresh Button (only visible during development or for admins) */}
+      {process.env.NODE_ENV === 'development' && (
+        <div className="fixed top-4 right-4 z-50">
+          <button
+            onClick={refreshData}
+            disabled={isRefreshing}
+            className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg shadow-lg transition-all disabled:opacity-50"
+          >
+            {isRefreshing ? '🔄' : '↻'} Refresh Data
+          </button>
+        </div>
+      )}
+
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center px-4">
         <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-purple-600/20" />
@@ -133,10 +177,10 @@ export default function Home({ projects, testimonials, personalInfo }: HomeProps
         </div>
       </section>
 
-      {/* Testimonials */}
-      {featuredTestimonials.length > 0 && (
+      {/* Testimonials Carousel */}
+      {testimonials.length > 0 && (
         <section className="py-20 px-4">
-          <div className="max-w-4xl mx-auto">
+          <div className="max-w-6xl mx-auto">
             <div className="text-center mb-16">
               <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
                 What Clients Say
@@ -146,11 +190,7 @@ export default function Home({ projects, testimonials, personalInfo }: HomeProps
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {featuredTestimonials.map((testimonial) => (
-                <TestimonialCard key={testimonial.id} testimonial={testimonial} />
-              ))}
-            </div>
+            <TestimonialsCarousel testimonials={testimonials} />
           </div>
         </section>
       )}
@@ -263,37 +303,6 @@ function ProjectCard({ project }: { project: Project }) {
               {tech}
             </span>
           ))}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
-  return (
-    <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg p-6">
-      <div className="flex mb-4">
-        {[...Array(5)].map((_, i) => (
-          <span
-            key={i}
-            className={`text-lg ${
-              i < (testimonial.rating || 5) ? 'text-yellow-400' : 'text-gray-600'
-            }`}
-          >
-            ⭐
-          </span>
-        ))}
-      </div>
-      <blockquote className="text-gray-300 mb-4 italic">
-        "{testimonial.message}"
-      </blockquote>
-      <div className="flex items-center">
-        <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold">
-          {testimonial.author.charAt(0)}
-        </div>
-        <div className="ml-3">
-          <p className="text-white font-medium">{testimonial.author}</p>
-          <p className="text-gray-400 text-sm">{testimonial.role}</p>
         </div>
       </div>
     </div>

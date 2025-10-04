@@ -12,18 +12,18 @@
     "deploy:hosting": "npm run export && firebase deploy --only hosting"
   },
   "dependencies": {
+    "@headlessui/react": "^1.7.17",
     "@supabase/supabase-js": "^2.58.0",
     "autoprefixer": "^10.4.16",
+    "clsx": "^2.0.0",
     "framer-motion": "^10.16.16",
+    "lucide-react": "^0.294.0",
     "next": "14.0.4",
     "postcss": "^8.4.32",
     "react": "^18",
     "react-dom": "^18",
-    "tailwindcss": "^3.3.6",
     "react-hook-form": "^7.48.2",
-    "lucide-react": "^0.294.0",
-    "@headlessui/react": "^1.7.17",
-    "clsx": "^2.0.0"
+    "tailwindcss": "^3.3.6"
   },
   "devDependencies": {
     "@types/node": "^20",
