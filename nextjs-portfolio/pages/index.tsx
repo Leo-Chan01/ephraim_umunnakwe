@@ -3,6 +3,7 @@ import { GetStaticProps } from 'next';
 import Link from 'next/link';
 import Layout from '../components/Layout';
 import TestimonialsCarousel from '../components/TestimonialsCarousel';
+import RefreshButton from '../components/RefreshButton';
 import { portfolioService } from '../lib/supabase';
 import { Project, Testimonial, PersonalInfo } from '../types/portfolio';
 
@@ -17,7 +18,8 @@ export default function Home({ projects: initialProjects, testimonials: initialT
   const [testimonials, setTestimonials] = useState(initialTestimonials);
   const [personalInfo, setPersonalInfo] = useState(initialPersonalInfo);
   const [isRefreshing, setIsRefreshing] = useState(false);
-  const [lastRefresh, setLastRefresh] = useState(new Date());
+  const [lastRefresh, setLastRefresh] = useState<Date | null>(null);
+  const [isMounted, setIsMounted] = useState(false);
 
   // Function to refresh data from Supabase
   const refreshData = async () => {
@@ -47,6 +49,13 @@ export default function Home({ projects: initialProjects, testimonials: initialT
     }
   };
 
+  // Set mounted state and refresh on component mount
+  useEffect(() => {
+    setIsMounted(true);
+    console.log('🎯 Component mounted - getting fresh data');
+    refreshData();
+  }, []);
+
   // Auto-refresh data every 10 seconds for immediate testing
   useEffect(() => {
     console.log('🚀 Setting up auto-refresh every 10 seconds');
@@ -67,33 +76,35 @@ export default function Home({ projects: initialProjects, testimonials: initialT
     return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
   }, []);
 
-  // Refresh on component mount to get latest data immediately
-  useEffect(() => {
-    console.log('🎯 Component mounted - getting fresh data');
-    refreshData();
-  }, []);
-
   const featuredProjects = projects.slice(0, 3);
 
   return (
     <Layout>
       {/* Refresh Button and Status */}
-      <div className="fixed top-4 right-4 z-50 flex flex-col items-end gap-2">
+      <div className="fixed top-20 right-4 z-40 flex flex-col items-end gap-2">
         <button
           onClick={refreshData}
           disabled={isRefreshing}
-          className="bg-blue-500/80 hover:bg-blue-600/80 text-white px-3 py-2 rounded-lg shadow-lg transition-all disabled:opacity-50 backdrop-blur-sm border border-white/20 text-sm"
+          className="bg-blue-500/80 hover:bg-blue-600/80 text-white px-4 py-2 rounded-lg shadow-lg transition-all disabled:opacity-50 backdrop-blur-sm border border-white/20 text-sm flex items-center gap-2"
           title="Refresh content"
         >
           {isRefreshing ? (
-            <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+            <>
+              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+              <span className="hidden sm:inline">Refreshing...</span>
+            </>
           ) : (
-            '↻'
+            <>
+              <span className="text-lg">↻</span>
+              <span className="hidden sm:inline">Please Refresh</span>
+            </>
           )}
         </button>
-        <div className="bg-black/50 backdrop-blur-sm px-2 py-1 rounded text-xs text-white/80">
-          Last: {lastRefresh.toLocaleTimeString()}
-        </div>
+        {isMounted && lastRefresh && (
+          <div className="bg-black/50 backdrop-blur-sm px-2 py-1 rounded text-xs text-white/80">
+            Last: {lastRefresh.toLocaleTimeString()}
+          </div>
+        )}
       </div>
 
       {/* Hero Section */}

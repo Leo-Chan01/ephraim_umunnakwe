@@ -9,32 +9,32 @@ interface AboutProps {
 
 export default function About({ personalInfo }: AboutProps) {
   const skills = [
-    { name: 'React/Next.js', level: 95 },
     { name: 'Flutter/Dart', level: 90 },
+    { name: 'Next.js', level: 80 },
     { name: 'Node.js', level: 85 },
-    { name: 'Python', level: 80 },
+    { name: 'Python', level: 86 },
     { name: 'TypeScript', level: 90 },
     { name: 'PostgreSQL', level: 85 },
   ];
 
   const experience = [
     {
-      title: 'Senior Full Stack Developer',
-      company: 'Tech Solutions Inc.',
-      period: '2022 - Present',
-      description: 'Led development of enterprise applications using React, Node.js, and cloud technologies.'
+      title: 'Flutter Developer',
+      company: 'Coder\'s Triangle',
+      period: 'Apr 2025 – Present',
+      description: 'Collaborated with a cross-functional team to maintain and enhance \'Confide\' (Social Media App) and \'CTLearn\' (Ed-Tech Platform). Integrated push and in-app notifications using Firebase Cloud Messaging, improving user engagement by 25%. Implemented secure user authentication and optimized app performance, reducing ANR rates to below 0.5%.'
     },
     {
-      title: 'Mobile App Developer',
-      company: 'Innovation Labs',
-      period: '2020 - 2022',
-      description: 'Built cross-platform mobile applications using Flutter and React Native.'
+      title: 'Senior Flutter Developer',
+      company: 'Xeno Technologies',
+      period: 'Oct 2023 – Jan 2025',
+      description: 'Developed and maintained a cross-platform crypto mining application using Flutter, achieving over 150k installations and 17k+ daily active users. Implemented JWT-based authentication, notifications using FCM and OneSignal, and CRUD API operations. Optimized app performance to achieve less than 1% ANR reports and a 4.0 rating on the Play Store.'
     },
     {
-      title: 'Software Engineer',
-      company: 'StartupXYZ',
-      period: '2018 - 2020',
-      description: 'Developed web applications and APIs using modern JavaScript frameworks.'
+      title: 'Flutter Developer',
+      company: 'ProjKonnect',
+      period: 'Apr 2023 – Nov 2024',
+      description: 'Built a scalable Ed-Tech Flutter application with features like notifications, chat, video streaming, media download, and payment integration. Deployed application on Play Store and App Store; currently runs on over 500 devices nationwide. Integrated third-party services such as Paystack for in-app purchases and secured user data using encryption algorithms.'
     }
   ];
 
@@ -54,11 +54,11 @@ export default function About({ personalInfo }: AboutProps) {
                 </p>
                 <div className="grid grid-cols-2 gap-4 text-center">
                   <div className="bg-white/5 p-4 rounded-lg">
-                    <div className="text-3xl font-bold text-blue-400">50+</div>
+                    <div className="text-3xl font-bold text-blue-400">20+</div>
                     <div className="text-gray-300">Projects</div>
                   </div>
                   <div className="bg-white/5 p-4 rounded-lg">
-                    <div className="text-3xl font-bold text-green-400">5+</div>
+                    <div className="text-3xl font-bold text-green-400">8+</div>
                     <div className="text-gray-300">Years Experience</div>
                   </div>
                 </div>
@@ -106,7 +106,7 @@ export default function About({ personalInfo }: AboutProps) {
         {/* Experience Section */}
         <section className="py-16 px-4">
           <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl font-bold text-white mb-12 text-center">Experience</h2>
+            <h2 className="text-3xl font-bold text-white mb-12 text-center">Recent Experiences</h2>
             <div className="space-y-8">
               {experience.map((exp, index) => (
                 <div key={index} className="bg-white/5 p-6 rounded-lg border-l-4 border-blue-500">
