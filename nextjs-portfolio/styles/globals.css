@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+/* CENTRALIZED COLOR THEME - Change colors here only */
+:root {
+  --color-primary: #0C2B4E;    /* Dark blue - main backgrounds in dark mode */
+  --color-secondary: #1A3D64;  /* Medium blue - secondary backgrounds */
+  --color-accent: #1D546C;     /* Teal - accents, borders, highlights */
+  --color-light: #F4F4F4;      /* Light gray - backgrounds in light mode */
+}
+
 * {
   box-sizing: border-box;
   padding: 0;
@@ -15,13 +23,7 @@ body {
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  background: white;
 }
 
 a {

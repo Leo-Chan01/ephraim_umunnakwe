@@ -1,0 +1,65 @@
+/* Centralized Theme Configuration */
+
+:root {
+  /* Light Mode (Default) */
+  --bg-primary: #ffffff;
+  --bg-secondary: #f9fafb;
+  --bg-tertiary: #f3f4f6;
+  
+  --text-primary: #111827;
+  --text-secondary: #4b5563;
+  --text-tertiary: #9ca3af;
+  
+  --border-primary: #e5e7eb;
+  --border-secondary: #d1d5db;
+  
+  --accent-primary: #2563eb;
+  --accent-primary-dark: #1d4ed8;
+  --accent-light: #dbeafe;
+  --accent-very-light: #eff6ff;
+  
+  --success: #10b981;
+  --success-light: #d1fae5;
+  --warning: #f59e0b;
+  --warning-light: #fef3c7;
+  --error: #ef4444;
+  --error-light: #fee2e2;
+  
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Dark Mode */
+    --bg-primary: #1f2937;
+    --bg-secondary: #111827;
+    --bg-tertiary: #0f172a;
+    
+    --text-primary: #f9fafb;
+    --text-secondary: #d1d5db;
+    --text-tertiary: #9ca3af;
+    
+    --border-primary: #374151;
+    --border-secondary: #4b5563;
+    
+    --accent-primary: #3b82f6;
+    --accent-primary-dark: #2563eb;
+    --accent-light: #1e40af;
+    --accent-very-light: #1e3a8a;
+    
+    --success: #10b981;
+    --success-light: #064e3b;
+    --warning: #f59e0b;
+    --warning-light: #78350f;
+    --error: #ef4444;
+    --error-light: #7f1d1d;
+    
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+  }
+}
+
+/* You can also add these as Tailwind utilities in tailwind.config.js */

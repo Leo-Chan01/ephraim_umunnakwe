@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
+import { Inbox, MessageSquare } from 'lucide-react';
 import { isAuthenticated } from '../../lib/auth';
 import { AdminLayout } from '../../components/admin';
 import { adminService } from '../../lib/admin-service';
@@ -72,7 +73,7 @@ export default function AdminMessages() {
 
   if (!mounted || !isAuthenticated()) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 flex items-center justify-center">
+      <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="text-white">Loading...</div>
       </div>
     );
@@ -98,7 +99,7 @@ export default function AdminMessages() {
           <div className="lg:col-span-1 space-y-4">
             {messages.length === 0 ? (
               <div className="text-center py-8">
-                <div className="text-4xl mb-4">📭</div>
+                <div className="text-4xl mb-4"><Inbox size={48} className="text-gray-400" /></div>
                 <p className="text-gray-300">No messages yet</p>
               </div>
             ) : (
@@ -169,7 +170,7 @@ export default function AdminMessages() {
               </div>
             ) : (
               <div className="bg-white/5 p-6 rounded-lg border border-white/10 text-center">
-                <div className="text-6xl mb-4">💬</div>
+                <div className="text-6xl mb-4"><MessageSquare size={64} className="text-gray-400" /></div>
                 <h3 className="text-xl font-bold text-white mb-2">Select a Message</h3>
                 <p className="text-gray-300">Choose a message from the list to view its details</p>
               </div>

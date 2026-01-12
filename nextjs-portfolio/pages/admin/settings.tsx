@@ -72,7 +72,7 @@ export default function AdminSettings() {
 
   if (!mounted || !isAuthenticatedSync()) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 flex items-center justify-center">
+      <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="text-white">Loading...</div>
       </div>
     );
@@ -193,7 +193,7 @@ export default function AdminSettings() {
         <button
           onClick={handleSave}
           disabled={isSaving}
-          className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-8 py-3 rounded-lg hover:from-blue-600 hover:to-purple-700 transition-all font-semibold disabled:opacity-50"
+          className="bg-white text-gray-900 px-8 py-3 rounded-lg hover:bg-gray-100 transition-all font-semibold disabled:opacity-50 border border-gray-300"
         >
           {isSaving ? 'Saving...' : 'Save Settings'}
         </button>

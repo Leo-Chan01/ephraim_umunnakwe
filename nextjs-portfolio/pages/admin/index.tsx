@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
+import { FolderOpen, MessageSquare } from 'lucide-react';
 import { isAuthenticated, logout, isAuthenticatedSync } from '../../lib/auth';
 import { AdminLayout } from '../../components/admin';
 
@@ -46,7 +47,7 @@ export default function AdminDashboard() {
 
   if (!mounted || !isAuthenticatedSync()) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 flex items-center justify-center">
+      <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="text-white">Loading...</div>
       </div>
     );
@@ -67,7 +68,7 @@ export default function AdminDashboard() {
               <p className="text-gray-300 text-sm">Total Projects</p>
               <p className="text-3xl font-bold text-white">{stats.projects}</p>
             </div>
-            <div className="text-blue-400 text-2xl">📁</div>
+            <div className="text-blue-400 text-2xl"><FolderOpen size={32} /></div>
           </div>
         </div>
 
@@ -87,7 +88,7 @@ export default function AdminDashboard() {
               <p className="text-gray-300 text-sm">Messages</p>
               <p className="text-3xl font-bold text-white">{stats.messages}</p>
             </div>
-            <div className="text-purple-400 text-2xl">💬</div>
+            <div className="text-purple-400 text-2xl"><MessageSquare size={32} /></div>
           </div>
         </div>
 

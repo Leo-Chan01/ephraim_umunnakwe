@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
+import { Edit, Trash2 } from 'lucide-react';
 import { isAuthenticated, isAuthenticatedSync } from '../../lib/auth';
 import { AdminLayout } from '../../components/admin';
 import { Testimonial } from '../../types/portfolio';
@@ -79,7 +80,7 @@ export default function AdminTestimonials() {
 
   if (!mounted || !isAuthenticatedSync()) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 flex items-center justify-center">
+      <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="text-white">Loading...</div>
       </div>
     );
@@ -111,7 +112,7 @@ export default function AdminTestimonials() {
             <div key={testimonial.id} className="bg-white/5 p-6 rounded-lg border border-white/10">
               <div className="flex justify-between items-start mb-4">
                 <div className="flex items-center space-x-3">
-                  <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold">
+                  <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center text-gray-900 font-bold border-2 border-gray-300">
                     {testimonial.author.charAt(0)}
                   </div>
                   <div>
@@ -124,13 +125,13 @@ export default function AdminTestimonials() {
                     onClick={() => handleEdit(testimonial)}
                     className="text-blue-400 hover:text-blue-300"
                   >
-                    ✏️
+                    <Edit size={16} />
                   </button>
                   <button
                     onClick={() => handleDelete(testimonial.id!)}
                     className="text-red-400 hover:text-red-300"
                   >
-                    🗑️
+                    <Trash2 size={16} />
                   </button>
                 </div>
               </div>
@@ -267,7 +268,7 @@ function TestimonialForm({ testimonial, onSave, onCancel }: {
           <div className="flex space-x-4 pt-4">
             <button
               type="submit"
-              className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-3 rounded-lg hover:from-blue-600 hover:to-purple-700 transition-all font-semibold"
+              className="bg-white text-gray-900 px-6 py-3 rounded-lg hover:bg-gray-100 transition-all font-semibold border border-gray-300"
             >
               Save Testimonial
             </button>

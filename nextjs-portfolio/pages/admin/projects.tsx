@@ -127,7 +127,7 @@ export default function AdminProjects() {
 
   if (!mounted || !isAuthenticatedSync()) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 flex items-center justify-center">
+      <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="text-white">Loading...</div>
       </div>
     );
@@ -142,7 +142,7 @@ export default function AdminProjects() {
         </div>
         <button
           onClick={() => setShowForm(true)}
-          className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-3 rounded-lg hover:from-blue-600 hover:to-purple-700 transition-all font-semibold"
+          className="bg-white text-gray-900 px-6 py-3 rounded-lg hover:bg-gray-100 transition-all font-semibold border border-gray-300"
         >
           Add Project
         </button>
@@ -518,7 +518,7 @@ function ProjectForm({ project, onSave, onCancel }: {
             <button
               type="submit"
               disabled={uploading}
-              className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-3 rounded-lg hover:from-blue-600 hover:to-purple-700 transition-all font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+              className="bg-white text-gray-900 px-6 py-3 rounded-lg hover:bg-gray-100 transition-all font-semibold disabled:opacity-50 disabled:cursor-not-allowed border border-gray-300"
             >
               {uploading ? 'Saving...' : 'Save Project'}
             </button>

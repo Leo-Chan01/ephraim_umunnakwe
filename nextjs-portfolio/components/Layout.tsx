@@ -1,3 +1,5 @@
+'use client';
+
 import { ReactNode, useEffect, useState } from 'react';
 import Head from 'next/head';
 import Navbar from './Navbar';
@@ -111,7 +113,7 @@ export default function Layout({
         />
       </Head>
       
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900">
+      <div className="min-h-screen bg-white dark:bg-primary text-gray-900 dark:text-gray-100">
         <Navbar personalInfo={personalInfo} socialLinks={socialLinks} />
         <main>{children}</main>
         <Footer personalInfo={personalInfo} socialLinks={socialLinks} />
