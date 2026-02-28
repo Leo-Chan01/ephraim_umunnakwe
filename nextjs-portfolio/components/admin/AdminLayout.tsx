@@ -10,8 +10,10 @@ import {
   Settings,
   Star,
   ExternalLink,
-  LogOut
+  LogOut,
+  Layers
 } from 'lucide-react';
+
 
 interface AdminLayoutProps {
   children: ReactNode;
@@ -29,6 +31,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, title = 'Admin' }) 
   const navItems = [
     { name: 'Dashboard', href: '/admin', icon: <LayoutDashboard size={20} /> },
     { name: 'Projects', href: '/admin/projects', icon: <Briefcase size={20} /> },
+    { name: 'Blog', href: '/admin/blog', icon: <Layers size={20} /> },
     { name: 'Testimonials', href: '/admin/testimonials', icon: <Star size={20} /> },
     { name: 'Profile', href: '/admin/profile', icon: <User size={20} /> },
     { name: 'Messages', href: '/admin/messages', icon: <MessageSquare size={20} /> },
@@ -54,8 +57,8 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, title = 'Admin' }) 
                 key={item.name}
                 href={item.href}
                 className={`flex items-center space-x-4 px-6 py-4 font-black uppercase tracking-widest text-xs transition-all ${isActive
-                    ? 'bg-accent text-white border-l-8 border-white'
-                    : 'text-neutral-400 hover:bg-white/5 hover:text-white'
+                  ? 'bg-accent text-white border-l-8 border-white'
+                  : 'text-neutral-400 hover:bg-white/5 hover:text-white'
                   }`}
               >
                 <span className={isActive ? 'text-white' : 'text-accent'}>{item.icon}</span>

@@ -1,40 +1,47 @@
+import React, { useState, useEffect } from 'react';
+import { GetStaticProps } from 'next';
+import Link from 'next/link';
 import Layout from '../components/Layout';
+import RefreshButton from '../components/RefreshButton';
+import { portfolioService } from '../lib/supabase';
+import { BlogPost } from '../types/portfolio';
+import { FileText } from 'lucide-react';
 
-export default function Blog() {
-  const posts = [
-    {
-      id: 1,
-      title: 'Building Scalable Web Applications with Next.js',
-      excerpt: 'Learn how to create performant and scalable web applications using Next.js and modern development practices.',
-      date: '2024-01-15',
-      readTime: '5 min read',
-      category: 'Web Development',
-      image: '/api/placeholder/400/250'
-    },
-    {
-      id: 2,
-      title: 'Flutter vs React Native: A Developer\'s Perspective',
-      excerpt: 'Comparing two popular cross-platform mobile development frameworks from a practical standpoint.',
-      date: '2024-01-10',
-      readTime: '8 min read',
-      category: 'Mobile Development',
-      image: '/api/placeholder/400/250'
-    },
-    {
-      id: 3,
-      title: 'The Future of Full-Stack Development',
-      excerpt: 'Exploring emerging trends and technologies that are shaping the future of full-stack development.',
-      date: '2024-01-05',
-      readTime: '6 min read',
-      category: 'Technology',
-      image: '/api/placeholder/400/250'
+interface BlogProps {
+  posts: BlogPost[];
+}
+
+export default function Blog({ posts: initialPosts }: BlogProps) {
+  const [posts, setPosts] = useState(initialPosts);
+  const [filter, setFilter] = useState('All');
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
+  const refreshData = async () => {
+    setIsRefreshing(true);
+    try {
+      const data = await portfolioService.getBlogPosts();
+      setPosts(data);
+    } catch (error) {
+      console.error('Error refreshing blog posts:', error);
+    } finally {
+      setIsRefreshing(false);
     }
-  ];
+  };
 
-  const categories = ['All', 'Web Development', 'Mobile Development', 'Technology', 'Career'];
+  useEffect(() => {
+    refreshData();
+  }, []);
+
+  const categories = ['All', ...Array.from(new Set(posts.map(post => post.category).filter(Boolean)))];
+
+  const filteredPosts = filter === 'All'
+    ? posts
+    : posts.filter(post => post.category === filter);
 
   return (
     <Layout title="Blog - Ephraim Umunnakwe">
+      <RefreshButton onRefresh={refreshData} isRefreshing={isRefreshing} />
+
       {/* Hero Section */}
       <section className="mt-16 py-32 px-4 bg-secondary dark:bg-primary border-b border-neutral-200 dark:border-neutral-800">
         <div className="max-w-7xl mx-auto">
@@ -56,7 +63,11 @@ export default function Blog() {
             {categories.map((category) => (
               <button
                 key={category}
-                className="px-8 py-3 bg-white dark:bg-primary border-2 border-neutral-900 dark:border-neutral-800 text-neutral-900 dark:text-white font-black uppercase tracking-widest text-xs hover:bg-neutral-900 hover:text-white dark:hover:bg-accent transition-all"
+                onClick={() => setFilter(category!)}
+                className={`px-8 py-3 border-2 font-black uppercase tracking-widest text-xs transition-all ${filter === category
+                  ? 'bg-neutral-900 border-neutral-900 text-white dark:bg-accent dark:border-accent'
+                  : 'bg-white dark:bg-primary border-neutral-900 dark:border-neutral-800 text-neutral-900 dark:text-white hover:bg-neutral-900 hover:text-white dark:hover:bg-accent'
+                  }`}
               >
                 {category}
               </button>
@@ -69,10 +80,16 @@ export default function Blog() {
       <section className="py-32 px-4 bg-secondary dark:bg-primary">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
-            {posts.map((post) => (
-              <article key={post.id} className="border-4 border-neutral-900 dark:border-neutral-800 flex flex-col hover:bg-neutral-900 hover:text-white dark:hover:bg-secondary dark:hover:text-primary transition-all duration-300 group">
+            {filteredPosts.map((post) => (
+              <Link href={`/blog/${post.slug}`} key={post.id} className="border-4 border-neutral-900 dark:border-neutral-800 flex flex-col hover:bg-neutral-900 hover:text-white dark:hover:bg-secondary dark:hover:text-primary transition-all duration-300 group">
                 <div className="h-64 bg-neutral-100 dark:bg-neutral-900 relative grayscale group-hover:grayscale-0 transition-all duration-500 overflow-hidden border-b-4 border-neutral-900 dark:border-neutral-800">
-                  <img src={post.image} alt="" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                  {post.featured_image ? (
+                    <img src={post.featured_image} alt="" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-neutral-300 dark:text-neutral-700">
+                      <FileText size={64} />
+                    </div>
+                  )}
                   <div className="absolute top-0 right-0 p-4">
                     <span className="bg-accent text-white px-4 py-2 font-black uppercase tracking-widest text-[10px]">
                       {post.category}
@@ -82,9 +99,9 @@ export default function Blog() {
 
                 <div className="p-10 flex flex-col flex-grow">
                   <div className="flex items-center text-xs font-black uppercase tracking-tightest mb-6 opacity-60">
-                    <span>{new Date(post.date).toLocaleDateString()}</span>
+                    <span>{post.created_at ? new Date(post.created_at).toLocaleDateString() : ''}</span>
                     <span className="mx-3">/</span>
-                    <span>{post.readTime}</span>
+                    <span>{post.read_time} MIN READ</span>
                   </div>
 
                   <h3 className="text-3xl font-black uppercase tracking-tight mb-6 leading-none">
@@ -95,11 +112,11 @@ export default function Blog() {
                     {post.excerpt}
                   </p>
 
-                  <button className="text-accent font-black uppercase tracking-widest text-sm text-left mt-auto group-hover:text-white transition-colors">
+                  <div className="text-accent font-black uppercase tracking-widest text-sm text-left mt-auto group-hover:text-white transition-colors">
                     Read Report <span className="ml-2">→</span>
-                  </button>
+                  </div>
                 </div>
-              </article>
+              </Link>
             ))}
           </div>
         </div>
@@ -139,3 +156,20 @@ export default function Blog() {
     </Layout>
   );
 }
+
+export const getStaticProps: GetStaticProps = async () => {
+  try {
+    const posts = await portfolioService.getBlogPosts();
+    return {
+      props: {
+        posts,
+      },
+    };
+  } catch (error) {
+    return {
+      props: {
+        posts: [],
+      },
+    };
+  }
+};

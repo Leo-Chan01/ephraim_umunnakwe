@@ -1,5 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
-import { Project, Testimonial, SocialLink, PersonalInfo } from '../types/portfolio';
+import { Project, Testimonial, SocialLink, PersonalInfo, BlogPost } from '../types/portfolio';
 
 const supabaseUrl = 'https://cecsvrwibdvncrxbbctr.supabase.co';
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNlY3N2cndpYmR2bmNyeGJiY3RyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1MjA3ODEsImV4cCI6MjA3MDA5Njc4MX0.dqSqaL37yCozA39pb61rnVzHmU0Jo_RH8vfisACAqS4';
@@ -275,6 +275,48 @@ export const portfolioService = {
       console.warn('Error fetching personal info, using fallback:', error);
 
       return fallbackData.personalInfo;
+    }
+  },
+
+  async getBlogPosts(onlyPublished: boolean = true): Promise<BlogPost[]> {
+    try {
+      if (!isOnline) await testConnection();
+
+      let query = supabase
+        .from('blog_posts')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (onlyPublished) {
+        query = query.eq('is_published', true);
+      }
+
+      const { data, error } = await query;
+      if (error) throw error;
+
+      return data || [];
+    } catch (error) {
+      console.error('Error fetching blog posts:', error);
+      return [];
+    }
+  },
+
+  async getBlogPostBySlug(slug: string): Promise<BlogPost | null> {
+    try {
+      if (!isOnline) await testConnection();
+
+      const { data, error } = await supabase
+        .from('blog_posts')
+        .select('*')
+        .eq('slug', slug)
+        .eq('is_published', true)
+        .single();
+
+      if (error) throw error;
+      return data;
+    } catch (error) {
+      console.error(`Error fetching blog post with slug ${slug}:`, error);
+      return null;
     }
   },
 

@@ -44,3 +44,17 @@ export interface PersonalInfo {
   profile_image_url?: string;
   updated_at?: string;
 }
+
+export interface BlogPost {
+  id?: number;
+  title: string;
+  slug: string;
+  excerpt?: string;
+  content: string;
+  category?: string;
+  featured_image?: string;
+  is_published: boolean;
+  read_time: number;
+  created_at?: string;
+  updated_at?: string;
+}

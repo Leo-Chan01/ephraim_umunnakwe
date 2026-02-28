@@ -1,5 +1,5 @@
 import { supabase } from './supabase';
-import { Project, Testimonial, PersonalInfo, SocialLink } from '../types/portfolio';
+import { Project, Testimonial, PersonalInfo, SocialLink, BlogPost } from '../types/portfolio';
 
 export const adminService = {
   // Projects
@@ -36,7 +36,7 @@ export const adminService = {
         });
         throw new Error(`Database error: ${error.message}${error.details ? ` (Details: ${error.details})` : ''}${error.hint ? ` (Hint: ${error.hint})` : ''}`);
       }
-      
+
       console.log('Project created successfully:', data);
       return data;
     } catch (error) {
@@ -77,7 +77,7 @@ export const adminService = {
         });
         throw new Error(`Database error: ${error.message}${error.details ? ` (Details: ${error.details})` : ''}${error.hint ? ` (Hint: ${error.hint})` : ''}`);
       }
-      
+
       return data;
     } catch (error) {
       console.error('Full error object in updateProject:', error);
@@ -168,14 +168,14 @@ export const adminService = {
   // Personal Info
   async updatePersonalInfo(info: PersonalInfo): Promise<PersonalInfo> {
     const { name, title, email, phone, location, bio, profile_image_url } = info;
-    
+
     // Try to update existing record first
     const { data: existing } = await supabase
       .from('personal_info')
       .select('id')
       .limit(1)
       .single();
-    
+
     if (existing) {
       // Update existing record
       const { data, error } = await supabase
@@ -193,7 +193,7 @@ export const adminService = {
         .eq('id', existing.id)
         .select()
         .single();
-      
+
       if (error) throw error;
       return data;
     } else {
@@ -211,7 +211,7 @@ export const adminService = {
         })
         .select()
         .single();
-      
+
       if (error) throw error;
       return data;
     }
@@ -222,21 +222,21 @@ export const adminService = {
     try {
       // Delete all existing links (using platform field since that's the primary key)
       await supabase.from('social_links').delete().neq('platform', '');
-      
+
       // Filter out empty URLs and ensure only valid fields
       const validLinks = links
         .filter(link => link.url.trim() !== '')
         .map(({ platform, url, is_visible }) => ({ platform, url, is_visible }));
-      
+
       if (validLinks.length === 0) {
         return [];
       }
-      
+
       const { data, error } = await supabase
         .from('social_links')
         .insert(validLinks)
         .select();
-        
+
       if (error) throw error;
       return data || [];
     } catch (error) {
@@ -274,5 +274,43 @@ export const adminService = {
     if (error) throw error;
   },
 
+  // Blog Posts
+  async createBlogPost(post: Omit<BlogPost, 'id'>): Promise<BlogPost> {
+    const { data, error } = await supabase
+      .from('blog_posts')
+      .insert([{
+        ...post,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
+      }])
+      .select()
+      .single();
 
+    if (error) throw error;
+    return data;
+  },
+
+  async updateBlogPost(id: number, post: Partial<BlogPost>): Promise<BlogPost> {
+    const { data, error } = await supabase
+      .from('blog_posts')
+      .update({
+        ...post,
+        updated_at: new Date().toISOString()
+      })
+      .eq('id', id)
+      .select()
+      .single();
+
+    if (error) throw error;
+    return data;
+  },
+
+  async deleteBlogPost(id: number): Promise<void> {
+    const { error } = await supabase
+      .from('blog_posts')
+      .delete()
+      .eq('id', id);
+
+    if (error) throw error;
+  },
 };

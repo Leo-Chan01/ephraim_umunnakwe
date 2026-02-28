@@ -6,7 +6,8 @@ import TestimonialsCarousel from '../components/TestimonialsCarousel';
 import RefreshButton from '../components/RefreshButton';
 import { portfolioService } from '../lib/supabase';
 import { Project, Testimonial, PersonalInfo } from '../types/portfolio';
-import { Smartphone, Globe, Zap, RefreshCw } from 'lucide-react';
+import { Smartphone, Globe, Zap, RefreshCw, FileText } from 'lucide-react';
+
 
 interface HomeProps {
   projects: Project[];
