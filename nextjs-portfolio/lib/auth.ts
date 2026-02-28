@@ -5,13 +5,12 @@ const ADMIN_PASSWORD = '@Phenomenal1Sensational2';
 
 export const authenticateAdmin = async (password: string): Promise<boolean> => {
   if (password !== ADMIN_PASSWORD) return false;
-  
   try {
     const { data, error } = await supabase.auth.signInWithPassword({
       email: ADMIN_EMAIL,
       password: ADMIN_PASSWORD,
     });
-    
+
     if (error) throw error;
     return !!data.user;
   } catch (error) {

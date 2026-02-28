@@ -17,7 +17,7 @@ export async function testConnection(): Promise<boolean> {
       .from('projects')
       .select('id')
       .limit(1);
-    
+
     if (error) throw error;
     isOnline = true;
     lastError = null;
@@ -58,7 +58,7 @@ export const portfolioService = {
         console.error('Storage bucket access error:', error);
         return false;
       }
-      
+
       console.log('Storage bucket accessible:', data);
       return true;
     } catch (error) {
@@ -125,7 +125,7 @@ export const portfolioService = {
       // Extract file path from URL
       const url = new URL(imageUrl);
       const filePath = url.pathname.split('/').slice(-2).join('/'); // Get last two parts: bucket/filename
-      
+
       const { error } = await supabase.storage
         .from('product_preview_images')
         .remove([filePath]);
@@ -151,27 +151,27 @@ export const portfolioService = {
         .from('projects')
         .select('*')
         .order('created_at', { ascending: false });
-      
+
       if (error) {
         console.warn('Projects fetch error (possibly due to RLS):', error);
         // If RLS blocks this, return cached data
         return fallbackData.projects;
       }
-      
+
       // Return raw data (already matches interface)
       const projects = data || [];
-      
+
       // Cache successful data
       fallbackData.projects = projects;
       isOnline = true;
       lastError = null;
-      
+
       return projects;
     } catch (error) {
       isOnline = false;
       lastError = error instanceof Error ? error.message : 'Failed to fetch projects';
       console.warn('Error fetching projects, using fallback:', error);
-      
+
       // Return cached data or empty array
       return fallbackData.projects;
     }
@@ -187,23 +187,38 @@ export const portfolioService = {
         .from('testimonials')
         .select('*')
         .order('created_at', { ascending: false });
-      
+
       if (error) throw error;
-      
-      // Return data as-is since interface now matches database
+
       const testimonials = data || [];
-      
       fallbackData.testimonials = testimonials;
       isOnline = true;
       lastError = null;
-      
+
       return testimonials;
     } catch (error) {
       isOnline = false;
       lastError = error instanceof Error ? error.message : 'Failed to fetch testimonials';
       console.warn('Error fetching testimonials, using fallback:', error);
-      
+
       return fallbackData.testimonials;
+    }
+  },
+
+  async submitContactMessage(message: { name: string; email: string; subject: string; message: string }): Promise<void> {
+    try {
+      const { error } = await supabase
+        .from('contact_messages')
+        .insert([{
+          ...message,
+          is_read: false,
+          created_at: new Date().toISOString()
+        }]);
+
+      if (error) throw error;
+    } catch (error) {
+      console.error('Error submitting contact message:', error);
+      throw error;
     }
   },
 
@@ -217,20 +232,20 @@ export const portfolioService = {
         .from('social_links')
         .select('*')
         .eq('is_visible', true);
-      
+
       if (error) throw error;
-      
+
       const socialLinks = data || [];
       fallbackData.socialLinks = socialLinks;
       isOnline = true;
       lastError = null;
-      
+
       return socialLinks;
     } catch (error) {
       isOnline = false;
       lastError = error instanceof Error ? error.message : 'Failed to fetch social links';
       console.warn('Error fetching social links, using fallback:', error);
-      
+
       return fallbackData.socialLinks;
     }
   },
@@ -246,19 +261,19 @@ export const portfolioService = {
         .select('*')
         .limit(1)
         .single();
-      
+
       if (error) throw error;
-      
+
       fallbackData.personalInfo = data;
       isOnline = true;
       lastError = null;
-      
+
       return data;
     } catch (error) {
       isOnline = false;
       lastError = error instanceof Error ? error.message : 'Failed to fetch personal info';
       console.warn('Error fetching personal info, using fallback:', error);
-      
+
       return fallbackData.personalInfo;
     }
   },
@@ -273,11 +288,11 @@ export const portfolioService = {
     error?: string;
   }> {
     console.log('Loading all portfolio data...');
-    
+
     try {
       // Test connection first
       const connectionStatus = await testConnection();
-      
+
       // Load all data in parallel
       const [projects, testimonials, socialLinks, personalInfo] = await Promise.all([
         this.getProjects(),
@@ -287,7 +302,7 @@ export const portfolioService = {
       ]);
 
       console.log(`Data loaded successfully. Online: ${isOnline}`);
-      
+
       return {
         projects,
         testimonials,
@@ -299,7 +314,7 @@ export const portfolioService = {
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Failed to load portfolio data';
       console.error('Error loading portfolio data:', error);
-      
+
       return {
         projects: fallbackData.projects,
         testimonials: fallbackData.testimonials,
@@ -315,7 +330,7 @@ export const portfolioService = {
   subscribeToProjects(callback: (projects: Project[]) => void) {
     return supabase
       .channel('projects_changes')
-      .on('postgres_changes', 
+      .on('postgres_changes',
         { event: '*', schema: 'public', table: 'projects' },
         async () => {
           try {
@@ -353,22 +368,22 @@ export const portfolioService = {
     delay: number = 1000
   ): Promise<T> {
     let lastError: Error;
-    
+
     for (let i = 0; i < maxRetries; i++) {
       try {
         return await operation();
       } catch (error) {
         lastError = error instanceof Error ? error : new Error('Unknown error');
-        
+
         if (i === maxRetries - 1) {
           throw lastError;
         }
-        
+
         // Wait before retrying
         await new Promise(resolve => setTimeout(resolve, delay * (i + 1)));
       }
     }
-    
+
     throw lastError!;
   },
 
@@ -376,7 +391,7 @@ export const portfolioService = {
   async updatePersonalInfo(personalInfo: Partial<PersonalInfo>): Promise<PersonalInfo> {
     try {
       await testConnection();
-      
+
       // Check if personal info already exists
       const { data: existing } = await supabase
         .from('personal_info')
@@ -385,7 +400,7 @@ export const portfolioService = {
         .single();
 
       let result;
-      
+
       if (existing) {
         // Update existing record
         const { data, error } = await supabase
@@ -424,7 +439,7 @@ export const portfolioService = {
         if (error) throw error;
         result = data;
       }
-      
+
       return result;
     } catch (error) {
       lastError = error instanceof Error ? error.message : 'Failed to update personal info';
@@ -437,13 +452,13 @@ export const portfolioService = {
   async updateSocialLinks(socialLinks: SocialLink[]): Promise<SocialLink[]> {
     try {
       await testConnection();
-      
+
       // First, delete all existing social links
       await supabase
         .from('social_links')
         .delete()
         .neq('platform', ''); // Delete all records (since platform is not empty)
-      
+
       // Then insert new ones (without id since platform is the primary key)
       const { data, error } = await supabase
         .from('social_links')
@@ -455,7 +470,7 @@ export const portfolioService = {
         .select();
 
       if (error) throw error;
-      
+
       return data || [];
     } catch (error) {
       lastError = error instanceof Error ? error.message : 'Failed to update social links';
@@ -468,7 +483,7 @@ export const portfolioService = {
   async createSocialLink(socialLink: SocialLink): Promise<SocialLink> {
     try {
       await testConnection();
-      
+
       const { data, error } = await supabase
         .from('social_links')
         .insert({
@@ -491,7 +506,7 @@ export const portfolioService = {
   async updateSocialLink(platform: string, updates: Partial<SocialLink>): Promise<SocialLink> {
     try {
       await testConnection();
-      
+
       const { data, error } = await supabase
         .from('social_links')
         .update({
@@ -514,7 +529,7 @@ export const portfolioService = {
   async deleteSocialLink(platform: string): Promise<void> {
     try {
       await testConnection();
-      
+
       const { error } = await supabase
         .from('social_links')
         .delete()
@@ -551,13 +566,13 @@ export const portfolioService = {
   async createProject(project: Omit<Project, 'id'>): Promise<Project> {
     try {
       await testConnection();
-      
+
       // Get current user to ensure we're authenticated
       const { data: { user }, error: authError } = await supabase.auth.getUser();
       if (authError || !user) {
         throw new Error('Authentication required to create projects');
       }
-      
+
       const { data, error } = await supabase
         .from('projects')
         .insert({
@@ -590,13 +605,13 @@ export const portfolioService = {
   async updateProject(id: number, project: Partial<Project>): Promise<Project> {
     try {
       await testConnection();
-      
+
       // Get current user to ensure we're authenticated
       const { data: { user }, error: authError } = await supabase.auth.getUser();
       if (authError || !user) {
         throw new Error('Authentication required to update projects');
       }
-      
+
       const { data, error } = await supabase
         .from('projects')
         .update({
@@ -629,13 +644,13 @@ export const portfolioService = {
   async deleteProject(id: number): Promise<void> {
     try {
       await testConnection();
-      
+
       // Get current user to ensure we're authenticated
       const { data: { user }, error: authError } = await supabase.auth.getUser();
       if (authError || !user) {
         throw new Error('Authentication required to delete projects');
       }
-      
+
       const { error } = await supabase
         .from('projects')
         .delete()
@@ -663,7 +678,7 @@ export const portfolioService = {
   async createTestimonial(testimonial: Omit<Testimonial, 'id'>): Promise<Testimonial> {
     try {
       await testConnection();
-      
+
       const { data, error } = await supabase
         .from('testimonials')
         .insert({
@@ -685,7 +700,7 @@ export const portfolioService = {
   async updateTestimonial(id: number, testimonial: Partial<Testimonial>): Promise<Testimonial> {
     try {
       await testConnection();
-      
+
       const { data, error } = await supabase
         .from('testimonials')
         .update(testimonial)
@@ -705,7 +720,7 @@ export const portfolioService = {
   async deleteTestimonial(id: number): Promise<void> {
     try {
       await testConnection();
-      
+
       const { error } = await supabase
         .from('testimonials')
         .delete()

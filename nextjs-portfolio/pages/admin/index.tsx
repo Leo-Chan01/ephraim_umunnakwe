@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { FolderOpen, MessageSquare } from 'lucide-react';
-import { isAuthenticated, logout, isAuthenticatedSync } from '../../lib/auth';
+import { Briefcase, MessageSquare, Star, Eye, ChevronRight, Plus } from 'lucide-react';
+import { isAuthenticated, isAuthenticatedSync } from '../../lib/auth';
 import { AdminLayout } from '../../components/admin';
+import Link from 'next/link';
 
 export default function AdminDashboard() {
   const [stats, setStats] = useState({
@@ -20,7 +21,7 @@ export default function AdminDashboard() {
 
   useEffect(() => {
     if (!mounted) return;
-    
+
     const checkAuth = async () => {
       try {
         const authenticated = await isAuthenticated();
@@ -41,126 +42,126 @@ export default function AdminDashboard() {
         router.push('/admin/login');
       }
     };
-    
+
     checkAuth();
   }, [router, mounted]);
 
   if (!mounted || !isAuthenticatedSync()) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
-        <div className="text-white">Loading...</div>
+      <div className="min-h-screen bg-white dark:bg-primary flex items-center justify-center">
+        <div className="text-neutral-900 dark:text-white font-black uppercase tracking-widest animate-pulse">Initializing System...</div>
       </div>
     );
   }
 
   return (
-    <AdminLayout>
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-white mb-2">Dashboard</h1>
-        <p className="text-gray-300">Welcome back! Here's an overview of your portfolio.</p>
-      </div>
-
+    <AdminLayout title="System Overview">
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <div className="bg-white/5 p-6 rounded-lg border border-white/10">
-          <div className="flex items-center justify-between">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
+        {[
+          { label: 'Total Projects', value: stats.projects, icon: <Briefcase />, color: 'text-accent' },
+          { label: 'Client Reviews', value: stats.testimonials, icon: <Star />, color: 'text-accent' },
+          { label: 'Inbox', value: stats.messages, icon: <MessageSquare />, color: 'text-accent' },
+          { label: 'Global Views', value: stats.views, icon: <Eye />, color: 'text-accent' },
+        ].map((stat, idx) => (
+          <div key={idx} className="bg-white dark:bg-primary border-4 border-neutral-900 dark:border-neutral-800 p-8 flex items-center justify-between hover:translate-x-1 hover:-translate-y-1 transition-transform cursor-pointer">
             <div>
-              <p className="text-gray-300 text-sm">Total Projects</p>
-              <p className="text-3xl font-bold text-white">{stats.projects}</p>
+              <p className="text-xs font-black uppercase tracking-widest text-neutral-400 mb-2">{stat.label}</p>
+              <p className="text-4xl font-black text-neutral-900 dark:text-white tabular-nums">{stat.value}</p>
             </div>
-            <div className="text-blue-400 text-2xl"><FolderOpen size={32} /></div>
-          </div>
-        </div>
-
-        <div className="bg-white/5 p-6 rounded-lg border border-white/10">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-gray-300 text-sm">Testimonials</p>
-              <p className="text-3xl font-bold text-white">{stats.testimonials}</p>
+            <div className={`${stat.color} bg-neutral-900 dark:bg-neutral-800 p-4 border-2 border-neutral-800`}>
+              {React.cloneElement(stat.icon as React.ReactElement, { size: 24 })}
             </div>
-            <div className="text-green-400 text-2xl">⭐</div>
           </div>
-        </div>
-
-        <div className="bg-white/5 p-6 rounded-lg border border-white/10">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-gray-300 text-sm">Messages</p>
-              <p className="text-3xl font-bold text-white">{stats.messages}</p>
-            </div>
-            <div className="text-purple-400 text-2xl"><MessageSquare size={32} /></div>
-          </div>
-        </div>
-
-        <div className="bg-white/5 p-6 rounded-lg border border-white/10">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-gray-300 text-sm">Page Views</p>
-              <p className="text-3xl font-bold text-white">{stats.views}</p>
-            </div>
-            <div className="text-yellow-400 text-2xl">👁️</div>
-          </div>
-        </div>
+        ))}
       </div>
 
-      {/* Quick Actions */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div className="bg-white/5 p-6 rounded-lg border border-white/10">
-          <h3 className="text-xl font-bold text-white mb-4">Quick Actions</h3>
-          <div className="space-y-3">
-            <a
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+        {/* Quick Actions */}
+        <div className="lg:col-span-2 space-y-8">
+          <h2 className="text-2xl font-black uppercase tracking-tighter text-neutral-900 dark:text-white flex items-center gap-4">
+            <span className="w-8 h-2 bg-accent"></span>
+            Operational Controls
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Link
               href="/admin/projects"
-              className="block w-full bg-blue-500/20 text-blue-300 px-4 py-2 rounded-lg hover:bg-blue-500/30 transition-colors"
+              className="group bg-neutral-900 text-white p-8 border-4 border-neutral-900 flex justify-between items-center hover:bg-white hover:text-neutral-900 transition-all duration-300"
             >
-              Manage Projects
-            </a>
-            <a
+              <div>
+                <h4 className="text-xl font-black uppercase tracking-tight mb-1">Projects</h4>
+                <p className="text-xs text-neutral-400 group-hover:text-neutral-500 font-bold uppercase tracking-widest">Manage Portfolio Items</p>
+              </div>
+              <Plus className="text-accent" />
+            </Link>
+            <Link
               href="/admin/testimonials"
-              className="block w-full bg-green-500/20 text-green-300 px-4 py-2 rounded-lg hover:bg-green-500/30 transition-colors"
+              className="group bg-neutral-900 text-white p-8 border-4 border-neutral-900 flex justify-between items-center hover:bg-white hover:text-neutral-900 transition-all duration-300"
             >
-              Manage Testimonials
-            </a>
-            <a
+              <div>
+                <h4 className="text-xl font-black uppercase tracking-tight mb-1">Reviews</h4>
+                <p className="text-xs text-neutral-400 group-hover:text-neutral-500 font-bold uppercase tracking-widest">Update Client Feedback</p>
+              </div>
+              <Plus className="text-accent" />
+            </Link>
+            <Link
               href="/admin/profile"
-              className="block w-full bg-purple-500/20 text-purple-300 px-4 py-2 rounded-lg hover:bg-purple-500/30 transition-colors"
+              className="group border-4 border-neutral-900 dark:border-neutral-800 p-8 flex justify-between items-center hover:bg-neutral-900 hover:text-white transition-all duration-300"
             >
-              Update Profile
-            </a>
+              <div>
+                <h4 className="text-xl font-black uppercase tracking-tight mb-1">Identity</h4>
+                <p className="text-xs text-neutral-400 font-bold uppercase tracking-widest">Modify Personal Info</p>
+              </div>
+              <ChevronRight className="text-accent" />
+            </Link>
+            <Link
+              href="/admin/settings"
+              className="group border-4 border-neutral-900 dark:border-neutral-800 p-8 flex justify-between items-center hover:bg-neutral-900 hover:text-white transition-all duration-300"
+            >
+              <div>
+                <h4 className="text-xl font-black uppercase tracking-tight mb-1">Cortex</h4>
+                <p className="text-xs text-neutral-400 font-bold uppercase tracking-widest">System Configurations</p>
+              </div>
+              <ChevronRight className="text-accent" />
+            </Link>
           </div>
         </div>
 
-        <div className="bg-white/5 p-6 rounded-lg border border-white/10">
-          <h3 className="text-xl font-bold text-white mb-4">Recent Activity</h3>
-          <div className="space-y-3 text-sm">
-            <div className="flex justify-between">
-              <span className="text-gray-300">New project added</span>
-              <span className="text-gray-400">2 hours ago</span>
+        {/* Status Area */}
+        <div className="space-y-8">
+          <h2 className="text-2xl font-black uppercase tracking-tighter text-neutral-900 dark:text-white flex items-center gap-4">
+            <span className="w-8 h-2 bg-accent"></span>
+            Telemetry
+          </h2>
+          <div className="bg-white dark:bg-primary border-4 border-neutral-900 dark:border-neutral-800 p-8 space-y-6">
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-black uppercase tracking-widest text-neutral-500">Database Engine</span>
+                <span className="text-xs font-black uppercase tracking-widest text-green-500 flex items-center gap-2">
+                  <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                  Optimal
+                </span>
+              </div>
+              <div className="w-full h-1 bg-neutral-100 dark:bg-neutral-800">
+                <div className="h-full bg-accent w-[98%]"></div>
+              </div>
             </div>
-            <div className="flex justify-between">
-              <span className="text-gray-300">Testimonial updated</span>
-              <span className="text-gray-400">1 day ago</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-gray-300">Profile updated</span>
-              <span className="text-gray-400">3 days ago</span>
-            </div>
-          </div>
-        </div>
 
-        <div className="bg-white/5 p-6 rounded-lg border border-white/10">
-          <h3 className="text-xl font-bold text-white mb-4">System Status</h3>
-          <div className="space-y-3">
-            <div className="flex items-center justify-between">
-              <span className="text-gray-300">Database</span>
-              <span className="text-green-400">✓ Online</span>
+            <div className="space-y-4 pt-4 border-t border-neutral-100 dark:border-neutral-800">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-black uppercase tracking-widest text-neutral-500">API Interface</span>
+                <span className="text-xs font-black uppercase tracking-widest text-green-500">Connected</span>
+              </div>
+              <div className="w-full h-1 bg-neutral-100 dark:bg-neutral-800">
+                <div className="h-full bg-accent w-[100%]"></div>
+              </div>
             </div>
-            <div className="flex items-center justify-between">
-              <span className="text-gray-300">API</span>
-              <span className="text-green-400">✓ Online</span>
-            </div>
-            <div className="flex items-center justify-between">
-              <span className="text-gray-300">Storage</span>
-              <span className="text-green-400">✓ Online</span>
+
+            <div className="pt-6">
+              <div className="bg-neutral-50 dark:bg-neutral-900 p-6 border-2 border-dashed border-neutral-200 dark:border-neutral-800">
+                <h5 className="text-xs font-black uppercase tracking-widest text-neutral-400 mb-2">Memory usage</h5>
+                <p className="text-2xl font-black text-neutral-900 dark:text-white">124 MB <span className="text-neutral-400 text-sm">/ 512 MB</span></p>
+              </div>
             </div>
           </div>
         </div>

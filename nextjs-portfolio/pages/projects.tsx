@@ -4,6 +4,7 @@ import Layout from '../components/Layout';
 import { portfolioService } from '../lib/supabase';
 import { Project } from '../types/portfolio';
 import { RefreshCw, Smartphone, Search, Link as LinkIcon, Github } from 'lucide-react';
+import RefreshButton from '../components/RefreshButton';
 
 interface ProjectsProps {
   projects: Project[];
@@ -67,21 +68,9 @@ export default function Projects({ projects: initialProjects }: ProjectsProps) {
   return (
     <Layout title="Projects - Ephraim Umunnakwe">
       {/* Refresh Button */}
-      <div className="fixed top-24 right-6 z-40">
-        <button
-          onClick={refreshData}
-          disabled={isRefreshing}
-          className="bg-neutral-900 border-2 border-neutral-900 dark:border-accent text-white px-6 py-3 rounded-none hover:bg-transparent hover:text-neutral-900 dark:hover:text-accent transition-all disabled:opacity-50 font-black uppercase tracking-widest text-xs flex items-center gap-3"
-          title="Refresh projects"
-        >
-          {isRefreshing ? (
-            <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-          ) : (
-            <RefreshCw size={16} />
-          )}
-          <span className="hidden sm:inline">Refresh</span>
-        </button>
-      </div>
+      import RefreshButton from '../components/RefreshButton';
+      ...
+      <RefreshButton onRefresh={refreshData} isRefreshing={isRefreshing} />
 
       {/* Hero Section */}
       <section className="mt-16 py-32 px-4 bg-secondary dark:bg-primary border-b border-neutral-200 dark:border-neutral-800">

@@ -82,31 +82,7 @@ export default function Home({ projects: initialProjects, testimonials: initialT
   return (
     <Layout>
       {/* Refresh Button and Status */}
-      <div className="fixed top-20 right-4 z-40 flex flex-col items-end gap-2">
-        <button
-          onClick={refreshData}
-          disabled={isRefreshing}
-          className="bg-accent hover:bg-accent/90 dark:bg-accent/90 dark:hover:bg-accent text-white px-4 py-2 rounded-none transition-all disabled:opacity-50 border-2 border-neutral-900 dark:border-accent text-xs font-black uppercase tracking-widest flex items-center gap-2"
-          title="Refresh content"
-        >
-          {isRefreshing ? (
-            <>
-              <div className="w-3 h-3 border-2 border-white border-t-transparent animate-spin"></div>
-              <span>SYNCING...</span>
-            </>
-          ) : (
-            <>
-              <RefreshCw size={14} />
-              <span>SYNC DATA</span>
-            </>
-          )}
-        </button>
-        {isMounted && lastRefresh && (
-          <div className="bg-neutral-900 text-white px-2 py-1 text-[10px] font-black uppercase tracking-tighter">
-            VER: {lastRefresh.toLocaleTimeString()}
-          </div>
-        )}
-      </div>
+      <RefreshButton onRefresh={refreshData} isRefreshing={isRefreshing} />
 
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center px-4 overflow-hidden bg-secondary dark:bg-primary">

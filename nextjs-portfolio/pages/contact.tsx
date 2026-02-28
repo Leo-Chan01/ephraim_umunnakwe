@@ -25,8 +25,7 @@ export default function Contact({ personalInfo, socialLinks }: ContactProps) {
     setIsSubmitting(true);
 
     try {
-      // Simulate form submission - in a real app, this would send to your backend
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await portfolioService.submitContactMessage(formData);
       setSubmitted(true);
       setFormData({ name: '', email: '', subject: '', message: '' });
     } catch (error) {

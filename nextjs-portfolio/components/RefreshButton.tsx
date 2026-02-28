@@ -1,4 +1,5 @@
 import React from 'react';
+import { RefreshCw } from 'lucide-react';
 
 interface RefreshButtonProps {
   onRefresh: () => void;
@@ -14,24 +15,19 @@ export default function RefreshButton({
   className = ""
 }: RefreshButtonProps) {
   return (
-    <div className={`fixed top-20 right-4 z-40 ${className}`}>
+    <div className={`fixed top-24 right-6 z-40 ${className}`}>
       <button
         onClick={onRefresh}
         disabled={isRefreshing}
-        className="bg-blue-500/80 hover:bg-blue-600/80 text-white px-4 py-2 rounded-lg shadow-lg transition-all disabled:opacity-50 backdrop-blur-sm border border-white/20 text-sm flex items-center gap-2"
+        className="bg-neutral-900 border-4 border-neutral-900 dark:border-accent text-white px-6 py-3 hover:bg-transparent hover:text-neutral-900 dark:hover:text-accent transition-all disabled:opacity-50 font-black uppercase tracking-widest text-[10px] flex items-center gap-3 shadow-[8px_8px_0px_0px_rgba(0,0,0,0.2)] dark:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.05)]"
         title={title}
       >
         {isRefreshing ? (
-          <>
-            <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-            <span className="hidden sm:inline">Refreshing...</span>
-          </>
+          <div className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
         ) : (
-          <>
-            <span className="text-lg">↻</span>
-            <span className="hidden sm:inline">Please Refresh</span>
-          </>
+          <RefreshCw size={14} className="text-accent" />
         )}
+        <span>{isRefreshing ? 'SYNCING...' : 'SYNC DATA'}</span>
       </button>
     </div>
   );

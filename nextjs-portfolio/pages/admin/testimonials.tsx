@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { Edit, Trash2 } from 'lucide-react';
+import { Edit, Trash2, Plus, Star, User, Quote } from 'lucide-react';
 import { isAuthenticated, isAuthenticatedSync } from '../../lib/auth';
 import { AdminLayout } from '../../components/admin';
 import { Testimonial } from '../../types/portfolio';
@@ -21,7 +21,7 @@ export default function AdminTestimonials() {
 
   useEffect(() => {
     if (!mounted) return;
-    
+
     const checkAuth = async () => {
       if (!(await isAuthenticated())) {
         router.push('/admin/login');
@@ -29,7 +29,7 @@ export default function AdminTestimonials() {
       }
       loadTestimonials();
     };
-    
+
     checkAuth();
   }, [router, mounted]);
 
@@ -80,80 +80,82 @@ export default function AdminTestimonials() {
 
   if (!mounted || !isAuthenticatedSync()) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
-        <div className="text-white">Loading...</div>
+      <div className="min-h-screen bg-white dark:bg-primary flex items-center justify-center">
+        <div className="text-neutral-900 dark:text-white font-black uppercase tracking-widest animate-pulse">Initializing Testimonials...</div>
       </div>
     );
   }
 
   return (
-    <AdminLayout>
-      <div className="mb-8 flex justify-between items-center">
-        <div>
-          <h1 className="text-3xl font-bold text-white mb-2">Testimonials</h1>
-          <p className="text-gray-300">Manage client testimonials and reviews</p>
+    <AdminLayout title="Client Feedback">
+      <div className="mb-12 flex justify-between items-end">
+        <div className="space-y-4">
+          <div className="w-16 h-2 bg-accent"></div>
+          <p className="text-neutral-500 font-bold uppercase tracking-widest text-xs">Testimonials Engine</p>
         </div>
         <button
           onClick={() => setShowForm(true)}
-          className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-3 rounded-lg hover:from-blue-600 hover:to-purple-700 transition-all font-semibold"
+          className="bg-neutral-900 dark:bg-white text-white dark:text-primary px-8 py-4 border-4 border-neutral-900 dark:border-white font-black text-xs uppercase tracking-widest hover:bg-accent dark:hover:bg-accent transition-all flex items-center gap-3"
         >
-          Add Testimonial
+          <Plus size={16} />
+          Create Entry
         </button>
       </div>
 
       {isLoading ? (
-        <div className="text-center py-12">
-          <div className="text-4xl mb-4">⏳</div>
-          <p className="text-gray-300">Loading testimonials...</p>
+        <div className="py-20 text-center border-4 border-dashed border-neutral-100 dark:border-neutral-800">
+          <div className="animate-spin w-12 h-12 border-t-4 border-accent mx-auto mb-6"></div>
+          <p className="text-neutral-400 font-black uppercase tracking-widest text-xs">Retrieving database items...</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {testimonials.map((testimonial) => (
-            <div key={testimonial.id} className="bg-white/5 p-6 rounded-lg border border-white/10">
-              <div className="flex justify-between items-start mb-4">
-                <div className="flex items-center space-x-3">
-                  <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center text-gray-900 font-bold border-2 border-gray-300">
-                    {testimonial.author.charAt(0)}
+            <div key={testimonial.id} className="bg-white dark:bg-primary p-10 border-4 border-neutral-900 dark:border-neutral-800 group hover:translate-x-1 hover:-translate-y-1 transition-transform">
+              <div className="flex justify-between items-start mb-8">
+                <div className="flex items-center space-x-4">
+                  <div className="w-14 h-14 bg-neutral-900 dark:bg-accent flex items-center justify-center text-white border-2 border-neutral-800">
+                    <User size={24} />
                   </div>
                   <div>
-                    <h3 className="text-lg font-bold text-white">{testimonial.author}</h3>
-                    <p className="text-gray-400">{testimonial.role}</p>
+                    <h3 className="text-xl font-black text-neutral-900 dark:text-white uppercase tracking-tight">{testimonial.author}</h3>
+                    <p className="text-xs font-black text-accent uppercase tracking-widest">{testimonial.role}</p>
                   </div>
                 </div>
                 <div className="flex space-x-2">
                   <button
                     onClick={() => handleEdit(testimonial)}
-                    className="text-blue-400 hover:text-blue-300"
+                    className="p-2 border-2 border-neutral-100 dark:border-neutral-800 text-neutral-400 hover:text-accent hover:border-accent transition-all"
                   >
                     <Edit size={16} />
                   </button>
                   <button
                     onClick={() => handleDelete(testimonial.id!)}
-                    className="text-red-400 hover:text-red-300"
+                    className="p-2 border-2 border-neutral-100 dark:border-neutral-800 text-neutral-400 hover:text-red-500 hover:border-red-500 transition-all"
                   >
                     <Trash2 size={16} />
                   </button>
                 </div>
               </div>
-              
-              <p className="text-gray-300 mb-4 italic">"{testimonial.message}"</p>
-              
-              <div className="flex items-center justify-between">
-                <div className="flex items-center">
+
+              <div className="relative mb-8">
+                <Quote className="absolute -top-4 -left-4 text-neutral-100 dark:text-neutral-900 w-12 h-12 -z-10" />
+                <p className="text-neutral-600 dark:text-neutral-400 font-medium leading-relaxed italic line-clamp-4 text-lg">
+                  "{testimonial.message}"
+                </p>
+              </div>
+
+              <div className="flex items-center justify-between pt-8 border-t-2 border-neutral-50 dark:border-neutral-900">
+                <div className="flex items-center space-x-1">
                   {[...Array(5)].map((_, i) => (
-                    <span
+                    <Star
                       key={i}
-                      className={`text-lg ${
-                        i < testimonial.rating ? 'text-yellow-400' : 'text-gray-600'
-                      }`}
-                    >
-                      ⭐
-                    </span>
+                      size={14}
+                      className={i < testimonial.rating ? 'text-accent fill-accent' : 'text-neutral-200 dark:text-neutral-800'}
+                    />
                   ))}
-                  <span className="text-gray-400 ml-2">({testimonial.rating})</span>
                 </div>
-                <span className="text-gray-400 text-sm">
-                  {testimonial.created_at ? new Date(testimonial.created_at).toLocaleDateString() : 'N/A'}
+                <span className="text-[10px] font-black uppercase tracking-widest text-neutral-400">
+                  Registered: {testimonial.created_at ? new Date(testimonial.created_at).toLocaleDateString() : 'Unknown'}
                 </span>
               </div>
             </div>
@@ -196,88 +198,92 @@ function TestimonialForm({ testimonial, onSave, onCancel }: {
   };
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-      <div className="bg-gray-900 p-8 rounded-lg max-w-2xl w-full">
-        <h2 className="text-2xl font-bold text-white mb-6">
-          {testimonial ? 'Edit Testimonial' : 'Add Testimonial'}
+    <div className="fixed inset-0 bg-neutral-900/40 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+      <div className="bg-white dark:bg-primary border-8 border-neutral-900 dark:border-neutral-800 p-12 max-w-2xl w-full shadow-[32px_32px_0px_0px_rgba(0,0,0,0.2)]">
+        <h2 className="text-4xl font-black text-neutral-900 dark:text-white mb-10 uppercase tracking-tighter">
+          {testimonial ? 'Revise Entry' : 'Manual Entry'}
         </h2>
-        
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="block text-white font-medium mb-2">Author Name</label>
+
+        <form onSubmit={handleSubmit} className="space-y-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="space-y-3">
+              <label className="text-xs font-black uppercase tracking-tightest text-neutral-400">AUTHOR IDENTIFICATION</label>
               <input
                 type="text"
                 required
                 value={formData.author}
-                onChange={(e) => setFormData({...formData, author: e.target.value})}
-                className="w-full bg-white/10 border border-white/20 text-white rounded-lg px-4 py-3"
+                onChange={(e) => setFormData({ ...formData, author: e.target.value })}
+                className="w-full bg-neutral-50 dark:bg-neutral-900 border-4 border-neutral-200 dark:border-neutral-800 text-neutral-900 dark:text-white px-6 py-4 focus:outline-none focus:border-accent font-bold transition-all"
+                placeholder="NAME OF CLIENT"
               />
             </div>
-            
-            <div>
-              <label className="block text-white font-medium mb-2">Role/Position</label>
+
+            <div className="space-y-3">
+              <label className="text-xs font-black uppercase tracking-tightest text-neutral-400">CORE POSITION / ROLE</label>
               <input
                 type="text"
                 required
                 value={formData.role}
-                onChange={(e) => setFormData({...formData, role: e.target.value})}
-                className="w-full bg-white/10 border border-white/20 text-white rounded-lg px-4 py-3"
+                onChange={(e) => setFormData({ ...formData, role: e.target.value })}
+                className="w-full bg-neutral-50 dark:bg-neutral-900 border-4 border-neutral-200 dark:border-neutral-800 text-neutral-900 dark:text-white px-6 py-4 focus:outline-none focus:border-accent font-bold transition-all"
+                placeholder="CEO @ COMPANY"
               />
             </div>
           </div>
-          
-          <div>
-            <label className="block text-white font-medium mb-2">Message</label>
+
+          <div className="space-y-3">
+            <label className="text-xs font-black uppercase tracking-tightest text-neutral-400">TESTIMONIAL CONTENT</label>
             <textarea
               required
               rows={4}
               value={formData.message}
-              onChange={(e) => setFormData({...formData, message: e.target.value})}
-              className="w-full bg-white/10 border border-white/20 text-white rounded-lg px-4 py-3"
-              placeholder="What did they say about your work?"
+              onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+              className="w-full bg-neutral-50 dark:bg-neutral-900 border-4 border-neutral-200 dark:border-neutral-800 text-neutral-900 dark:text-white px-6 py-4 focus:outline-none focus:border-accent font-bold transition-all resize-none"
+              placeholder="VERBATIM FEEDBACK..."
             />
           </div>
-          
-          <div>
-            <label className="block text-white font-medium mb-2">Rating</label>
-            <select
-              value={formData.rating}
-              onChange={(e) => setFormData({...formData, rating: Number(e.target.value)})}
-              className="w-full bg-white/10 border border-white/20 text-white rounded-lg px-4 py-3"
-            >
-              <option value={5}>5 Stars</option>
-              <option value={4}>4 Stars</option>
-              <option value={3}>3 Stars</option>
-              <option value={2}>2 Stars</option>
-              <option value={1}>1 Star</option>
-            </select>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="space-y-3">
+              <label className="text-xs font-black uppercase tracking-tightest text-neutral-400">PERFORMANCE RATING</label>
+              <select
+                value={formData.rating}
+                onChange={(e) => setFormData({ ...formData, rating: Number(e.target.value) })}
+                className="w-full bg-neutral-50 dark:bg-neutral-900 border-4 border-neutral-200 dark:border-neutral-800 text-neutral-900 dark:text-white px-6 py-4 focus:outline-none focus:border-accent font-bold transition-all appearance-none cursor-pointer"
+              >
+                <option value={5}>5 STARS (OPTIMAL)</option>
+                <option value={4}>4 STARS (STABLE)</option>
+                <option value={3}>3 STARS (ADEQUATE)</option>
+                <option value={2}>2 STARS (SUBOPTIMAL)</option>
+                <option value={1}>1 STAR (CRITICAL)</option>
+              </select>
+            </div>
+
+            <div className="space-y-3">
+              <label className="text-xs font-black uppercase tracking-tightest text-neutral-400">AVATAR REFERENCE (URL)</label>
+              <input
+                type="url"
+                value={formData.avatar_url || ''}
+                onChange={(e) => setFormData({ ...formData, avatar_url: e.target.value })}
+                className="w-full bg-neutral-50 dark:bg-neutral-900 border-4 border-neutral-200 dark:border-neutral-800 text-neutral-900 dark:text-white px-6 py-4 focus:outline-none focus:border-accent font-bold transition-all"
+                placeholder="https://cloud.com/user.jpg"
+              />
+            </div>
           </div>
-          
-          <div>
-            <label className="block text-white font-medium mb-2">Avatar URL (optional)</label>
-            <input
-              type="url"
-              value={formData.avatar_url || ''}
-              onChange={(e) => setFormData({...formData, avatar_url: e.target.value})}
-              className="w-full bg-white/10 border border-white/20 text-white rounded-lg px-4 py-3"
-              placeholder="https://example.com/avatar.jpg"
-            />
-          </div>
-          
-          <div className="flex space-x-4 pt-4">
+
+          <div className="flex gap-6 pt-6">
             <button
               type="submit"
-              className="bg-white text-gray-900 px-6 py-3 rounded-lg hover:bg-gray-100 transition-all font-semibold border border-gray-300"
+              className="flex-1 bg-neutral-900 dark:bg-accent text-white py-5 border-4 border-neutral-900 dark:border-accent font-black text-xl uppercase tracking-widest hover:bg-transparent hover:text-neutral-900 dark:hover:text-white transition-all shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"
             >
-              Save Testimonial
+              COMMIT RECORD
             </button>
             <button
               type="button"
               onClick={onCancel}
-              className="bg-gray-600 text-white px-6 py-3 rounded-lg hover:bg-gray-700 transition-all font-semibold"
+              className="px-10 bg-neutral-100 dark:bg-neutral-900 text-neutral-500 py-5 border-4 border-neutral-100 dark:border-neutral-800 font-black text-xl uppercase tracking-widest hover:bg-red-500 hover:text-white transition-all"
             >
-              Cancel
+              ABORT
             </button>
           </div>
         </form>
