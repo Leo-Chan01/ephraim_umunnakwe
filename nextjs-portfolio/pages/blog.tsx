@@ -42,14 +42,14 @@ export default function Blog() {
             Journal<br />Entry
           </h1>
           <p className="text-2xl text-neutral-600 dark:text-neutral-400 max-w-3xl font-medium leading-relaxed">
-            Thoughts on architectural engineering, design systems, and the future
+            My thoughts on architectural engineering, design systems, and the future
             of high-performance digital products.
           </p>
         </div>
       </section>
 
       {/* Categories */}
-      <section className="py-20 px-4 bg-neutral-50 dark:bg-secondary border-b border-neutral-200 dark:border-neutral-800">
+      <section className="py-20 px-4 bg-neutral-50 dark:bg-primary border-b border-neutral-200 dark:border-neutral-800">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-wrap gap-4 items-center">
             <span className="text-xs font-black uppercase tracking-widest text-neutral-400 mr-4">Filter By</span>
@@ -106,7 +106,7 @@ export default function Blog() {
       </section>
 
       {/* Newsletter Signup */}
-      <section className="py-40 px-4 bg-neutral-50 dark:bg-secondary">
+      <section className="py-40 px-4 bg-neutral-50 dark:bg-primary">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
             <div>

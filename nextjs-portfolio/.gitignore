@@ -9,9 +9,17 @@
 # Next.js
 /.next/
 /out/
+/dist/
 
 # Production
 /build
+
+# Firebase
+.firebase/
+firebase-debug.log*
+firestore-debug.log*
+pubsub-debug.log*
+ui-debug.log*
 
 # Misc
 .DS_Store
@@ -24,10 +32,12 @@ yarn-debug.log*
 yarn-error.log*
 
 # Local env files
+.env
 .env*.local
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
 
 # Vercel
 .vercel
-
-# TypeScript
-*.tsbuildinfo

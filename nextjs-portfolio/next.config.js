@@ -7,7 +7,6 @@ const nextConfig = {
   },
   output: 'export',
   trailingSlash: true,
-  distDir: 'dist', // Output directory for Firebase Hosting
 }
 
 module.exports = nextConfig

@@ -68,7 +68,7 @@ export default function Navbar({ personalInfo, socialLinks }: NavbarProps) {
         {/* Mobile Menu */}
         {isOpen && (
           <div className="md:hidden">
-            <div className="px-2 pt-2 pb-3 space-y-1 bg-light dark:bg-secondary rounded-lg mt-2 border border-gray-200 dark:border-accent">
+            <div className="px-2 pt-2 pb-3 space-y-1 bg-light dark:bg-primary rounded-lg mt-2 border border-gray-200 dark:border-accent">
               {navItems.map((item) => (
                 <Link
                   key={item.name}

@@ -11,10 +11,11 @@ interface AboutProps {
 export default function About({ personalInfo }: AboutProps) {
   const skills = [
     { name: 'Flutter/Dart', level: 90 },
+    { name: 'React Native', level: 87 },
     { name: 'Next.js', level: 80 },
-    { name: 'Node.js', level: 85 },
-    { name: 'Python', level: 86 },
-    { name: 'TypeScript', level: 90 },
+    { name: 'Node.js', level: 75 },
+    { name: 'Python', level: 80 },
+    { name: 'TypeScript', level: 89 },
     { name: 'PostgreSQL', level: 85 },
   ];
 
@@ -81,7 +82,7 @@ export default function About({ personalInfo }: AboutProps) {
       </section>
 
       {/* Skills Section */}
-      <section className="py-32 px-4 bg-neutral-50 dark:bg-secondary border-b border-neutral-200 dark:border-neutral-800">
+      <section className="py-32 px-4 bg-neutral-50 dark:bg-primary border-b border-neutral-200 dark:border-neutral-800">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-4xl md:text-6xl font-black tracking-tighter text-neutral-900 dark:text-secondary mb-20 uppercase">Skills</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -133,7 +134,7 @@ export default function About({ personalInfo }: AboutProps) {
           </p>
           <Link
             href="/contact"
-            className="bg-white text-accent px-12 py-5 border-4 border-white font-black text-xl uppercase tracking-widest hover:bg-neutral-900 hover:text-white transition-all inline-block"
+            className="bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 px-12 py-5 border-4 border-neutral-900 dark:border-white font-black text-xl uppercase tracking-widest hover:bg-white hover:text-accent dark:hover:bg-neutral-900 dark:hover:text-white transition-all inline-block"
           >
             Get In Touch
           </Link>

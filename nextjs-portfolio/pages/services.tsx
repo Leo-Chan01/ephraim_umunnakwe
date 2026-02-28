@@ -96,7 +96,7 @@ export default function Services() {
       </section>
 
       {/* Services Grid */}
-      <section className="py-32 px-4 bg-neutral-50 dark:bg-secondary border-b border-neutral-200 dark:border-neutral-800">
+      <section className="py-32 px-4 bg-neutral-50 dark:bg-primary border-b border-neutral-200 dark:border-neutral-800">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
             {services.map((service, index) => (
@@ -166,7 +166,7 @@ export default function Services() {
           <div className="flex flex-col sm:flex-row gap-6 justify-center">
             <a
               href="/contact"
-              className="bg-white text-accent px-12 py-5 border-4 border-white font-black text-xl uppercase tracking-widest hover:bg-neutral-900 hover:text-white transition-all"
+              className="bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 px-12 py-5 border-4 border-neutral-900 dark:border-white font-black text-xl uppercase tracking-widest hover:bg-white hover:text-accent dark:hover:bg-neutral-900 dark:hover:text-white transition-all"
             >
               Get Free Quote
             </a>

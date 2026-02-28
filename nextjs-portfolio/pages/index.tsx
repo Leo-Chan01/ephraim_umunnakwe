@@ -151,11 +151,11 @@ export default function Home({ projects: initialProjects, testimonials: initialT
       </section>
 
       {/* Skills Section */}
-      <section className="py-40 px-4 bg-neutral-50 dark:bg-secondary border-y-4 border-neutral-900 dark:border-neutral-800">
+      <section className="py-40 px-4 bg-neutral-50 dark:bg-primary border-y-4 border-neutral-900 dark:border-neutral-800">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row justify-between items-end mb-24 gap-8">
             <div className="max-w-2xl">
-              <h2 className="text-5xl md:text-8xl font-black tracking-tighter text-neutral-900 dark:text-white mb-8 uppercase leading-none">
+              <h2 className="text-5xl md:text-8xl font-black tracking-tighter text-neutral-900 dark:text-secondary mb-8 uppercase leading-none">
                 Core<br />Stack
               </h2>
               <p className="text-neutral-500 dark:text-neutral-400 text-2xl font-medium leading-relaxed">
@@ -251,7 +251,7 @@ export default function Home({ projects: initialProjects, testimonials: initialT
           </p>
           <Link
             href="/contact"
-            className="bg-white text-accent px-16 py-6 border-4 border-white font-black text-2xl uppercase tracking-widest hover:bg-neutral-900 hover:text-white transition-all inline-block"
+            className="bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 px-16 py-6 border-4 border-neutral-900 dark:border-white font-black text-2xl uppercase tracking-widest hover:bg-white hover:text-accent dark:hover:bg-neutral-900 dark:hover:text-white transition-all inline-block"
           >
             Connect Now
           </Link>
