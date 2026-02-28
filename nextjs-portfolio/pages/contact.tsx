@@ -79,7 +79,7 @@ export default function Contact({ personalInfo, socialLinks }: ContactProps) {
       </section>
 
       {/* Contact Section */}
-      <section className="py-32 px-4 bg-neutral-50 dark:bg-secondary border-b border-neutral-200 dark:border-neutral-800">
+      <section className="py-32 px-4 bg-neutral-50 dark:bg-primary border-b border-neutral-200 dark:border-neutral-800">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-20">
             {/* Contact Info */}

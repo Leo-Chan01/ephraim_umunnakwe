@@ -172,8 +172,8 @@ export default function Home({ projects: initialProjects, testimonials: initialT
               <SkillCard
                 icon={<Smartphone size={40} />}
                 title="Mobile Systems"
-                description="Engineered cross-platform mobile environments using Flutter and architectural design patterns."
-                skills={['Flutter', 'Swift', 'Kotlin', 'Firebase']}
+                description="Engineered cross-platform mobile environments using Industry-Standard tools and architectural design patterns."
+                skills={['Flutter', 'React-Native', 'Swift', 'Kotlin', 'Firebase']}
               />
             </div>
             <div className="md:col-span-4">

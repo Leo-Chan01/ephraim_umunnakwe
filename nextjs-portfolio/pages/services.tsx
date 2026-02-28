@@ -8,14 +8,14 @@ export default function Services() {
       description: 'Modern, responsive websites built with React, Next.js, and cutting-edge technologies.',
       features: ['Responsive Design', 'SEO Optimization', 'Performance Focused', 'Modern UI/UX'],
       icon: 'Globe',
-      price: 'Starting at $2,500'
+      price: 'Starting at $1,500'
     },
     {
       title: 'Mobile App Development',
       description: 'Cross-platform mobile applications using Flutter and React Native.',
       features: ['iOS & Android', 'Native Performance', 'Custom UI Design', 'App Store Deployment'],
       icon: 'Mobile',
-      price: 'Starting at $5,000'
+      price: 'Starting at $2,000'
     },
     {
       title: 'API Development',
@@ -51,7 +51,7 @@ export default function Services() {
     {
       step: '01',
       title: 'Discovery',
-      description: 'We discuss your project requirements, goals, and timeline.'
+      description: 'We discuss your project requirements, feasibility, goals, and timeline.'
     },
     {
       step: '02',
