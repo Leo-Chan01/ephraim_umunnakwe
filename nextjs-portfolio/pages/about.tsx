@@ -1,5 +1,5 @@
 import { GetStaticProps } from 'next';
-import { User } from 'lucide-react';
+import { Link, User } from 'lucide-react';
 import Layout from '../components/Layout';
 import { portfolioService } from '../lib/supabase';
 import { PersonalInfo } from '../types/portfolio';
@@ -42,37 +42,37 @@ export default function About({ personalInfo }: AboutProps) {
   return (
     <Layout title={`About - ${personalInfo?.name || 'Ephraim Umunnakwe'}`}>
       {/* Hero Section */}
-        <section className="mt-16 py-20 px-4 bg-white dark:bg-primary">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      <section className="mt-16 py-32 px-4 bg-secondary dark:bg-primary border-b border-neutral-200 dark:border-neutral-800">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div>
-              <h1 className="text-4xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6">
-                About Me
+              <h1 className="text-6xl md:text-8xl font-black tracking-tightest text-neutral-900 dark:text-secondary mb-8 uppercase leading-tight">
+                About<br />Me
               </h1>
-              <p className="text-xl text-gray-600 dark:text-gray-400 mb-8">
+              <p className="text-2xl text-neutral-600 dark:text-neutral-400 mb-12 font-medium">
                 {personalInfo?.bio || 'Passionate developer with expertise in full-stack development, mobile applications, and modern web technologies.'}
               </p>
-              <div className="grid grid-cols-2 gap-4 text-center">
-                <div className="bg-white/5 dark:bg-gray-800/50 p-4 rounded-lg">
-                  <div className="text-3xl font-bold text-blue-400">20+</div>
-                  <div className="text-gray-300 dark:text-gray-400">Projects</div>
+              <div className="grid grid-cols-2 gap-6">
+                <div className="bg-neutral-100 dark:bg-neutral-800/50 p-8 border-2 border-neutral-900 dark:border-neutral-700">
+                  <div className="text-5xl font-black text-accent mb-2">20+</div>
+                  <div className="text-neutral-600 dark:text-neutral-400 font-bold uppercase tracking-widest text-sm">Projects</div>
                 </div>
-                <div className="bg-white/5 dark:bg-gray-800/50 p-4 rounded-lg">
-                  <div className="text-3xl font-bold text-green-400">8+</div>
-                  <div className="text-gray-300 dark:text-gray-400">Years Experience</div>
+                <div className="bg-neutral-100 dark:bg-neutral-800/50 p-8 border-2 border-neutral-900 dark:border-neutral-700">
+                  <div className="text-5xl font-black text-neutral-900 dark:text-secondary mb-2">8+</div>
+                  <div className="text-neutral-600 dark:text-neutral-400 font-bold uppercase tracking-widest text-sm">Years</div>
                 </div>
               </div>
             </div>
             <div className="flex justify-center">
-              <div className="w-80 h-80 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center border-2 border-gray-300 dark:border-gray-600">
+              <div className="w-80 h-80 md:w-[500px] md:h-[500px] bg-neutral-900 dark:bg-secondary border-4 border-neutral-900 dark:border-accent flex items-center justify-center p-4">
                 {personalInfo?.profile_image_url ? (
                   <img
                     src={personalInfo.profile_image_url}
                     alt={personalInfo.name}
-                    className="w-72 h-72 rounded-full object-cover"
+                    className="w-full h-full object-cover grayscale active:grayscale-0 transition-all duration-500"
                   />
                 ) : (
-                  <User size={128} className="text-gray-400 dark:text-gray-500" />
+                  <User size={128} className="text-white dark:text-primary" />
                 )}
               </div>
             </div>
@@ -81,19 +81,19 @@ export default function About({ personalInfo }: AboutProps) {
       </section>
 
       {/* Skills Section */}
-        <section className="py-16 px-4 bg-light dark:bg-secondary">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-12 text-center">Skills & Expertise</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <section className="py-32 px-4 bg-neutral-50 dark:bg-secondary border-b border-neutral-200 dark:border-neutral-800">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-4xl md:text-6xl font-black tracking-tighter text-neutral-900 dark:text-secondary mb-20 uppercase">Skills</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {skills.map((skill) => (
-                <div key={skill.name} className="bg-white dark:bg-secondary p-6 rounded-lg border border-gray-200 dark:border-accent">
-                <div className="flex justify-between mb-2">
-                  <span className="text-gray-900 dark:text-white font-medium">{skill.name}</span>
-                  <span className="text-blue-600 dark:text-blue-400">{skill.level}%</span>
+              <div key={skill.name} className="bg-white dark:bg-primary p-8 border-2 border-neutral-900 dark:border-neutral-800">
+                <div className="flex justify-between items-end mb-4">
+                  <span className="text-xl font-black uppercase tracking-tight text-neutral-900 dark:text-secondary">{skill.name}</span>
+                  <span className="text-accent font-black">{skill.level}%</span>
                 </div>
-                <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                <div className="w-full bg-neutral-100 dark:bg-neutral-800 h-4 border-2 border-neutral-900 dark:border-neutral-700">
                   <div
-                    className="bg-blue-600 dark:bg-blue-500 h-2 rounded-full transition-all duration-1000"
+                    className="bg-accent h-full transition-all duration-1000"
                     style={{ width: `${skill.level}%` }}
                   ></div>
                 </div>
@@ -104,20 +104,20 @@ export default function About({ personalInfo }: AboutProps) {
       </section>
 
       {/* Experience Section */}
-        <section className="py-16 px-4 bg-white dark:bg-primary">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-12 text-center">Recent Experiences</h2>
-          <div className="space-y-8">
+      <section className="py-32 px-4 bg-secondary dark:bg-primary">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-4xl md:text-6xl font-black tracking-tighter text-neutral-900 dark:text-secondary mb-20 uppercase">Experience</h2>
+          <div className="space-y-12">
             {experience.map((exp, index) => (
-              <div key={index} className="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg border-l-4 border-blue-600 dark:border-blue-400">
-                <div className="flex flex-col md:flex-row md:justify-between md:items-start mb-4">
+              <div key={index} className="p-10 border-2 border-neutral-900 dark:border-neutral-800 hover:bg-neutral-900 hover:text-white dark:hover:bg-secondary dark:hover:text-primary transition-all duration-300 group">
+                <div className="flex flex-col md:flex-row md:justify-between md:items-start mb-6">
                   <div>
-                    <h3 className="text-xl font-bold text-gray-900 dark:text-white">{exp.title}</h3>
-                    <p className="text-blue-600 dark:text-blue-400">{exp.company}</p>
+                    <h3 className="text-3xl font-black uppercase tracking-tight mb-2">{exp.title}</h3>
+                    <p className="text-accent font-bold uppercase tracking-widest">{exp.company}</p>
                   </div>
-                  <span className="text-gray-600 dark:text-gray-400 mt-2 md:mt-0">{exp.period}</span>
+                  <span className="text-neutral-500 font-bold uppercase tracking-widest mt-4 md:mt-2">{exp.period}</span>
                 </div>
-                <p className="text-gray-700 dark:text-gray-300">{exp.description}</p>
+                <p className="text-xl text-neutral-600 dark:text-neutral-400 group-hover:text-neutral-300 dark:group-hover:text-neutral-600 leading-relaxed max-w-4xl font-medium">{exp.description}</p>
               </div>
             ))}
           </div>
@@ -125,18 +125,18 @@ export default function About({ personalInfo }: AboutProps) {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 px-4 bg-gray-50 dark:bg-gray-800">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-6">Let's Work Together</h2>
-          <p className="text-gray-600 dark:text-gray-400 text-lg mb-8">
-            Ready to bring your ideas to life? Let's discuss your next project.
+      <section className="py-40 px-4 bg-accent text-white">
+        <div className="max-w-7xl mx-auto text-center">
+          <h2 className="text-5xl md:text-7xl font-black tracking-tighter mb-10 uppercase">Start a Project</h2>
+          <p className="text-2xl text-white/80 mb-12 font-medium max-w-2xl mx-auto">
+            Bring your vision to life with architectural engineering.
           </p>
-          <a
+          <Link
             href="/contact"
-            className="bg-blue-600 dark:bg-blue-500 text-white px-8 py-4 rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 transition-all font-semibold text-lg inline-block"
+            className="bg-white text-accent px-12 py-5 border-4 border-white font-black text-xl uppercase tracking-widest hover:bg-neutral-900 hover:text-white transition-all inline-block"
           >
             Get In Touch
-          </a>
+          </Link>
         </div>
       </section>
 

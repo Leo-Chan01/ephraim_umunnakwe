@@ -4,10 +4,23 @@
 
 /* CENTRALIZED COLOR THEME - Change colors here only */
 :root {
-  --color-primary: #0C2B4E;    /* Dark blue - main backgrounds in dark mode */
-  --color-secondary: #1A3D64;  /* Medium blue - secondary backgrounds */
-  --color-accent: #1D546C;     /* Teal - accents, borders, highlights */
-  --color-light: #F4F4F4;      /* Light gray - backgrounds in light mode */
+  --color-primary: #0a0a0b;
+  --color-secondary: #fdfdfd;
+  --color-accent: #2563eb;
+  --color-neutral-text: #111827;
+  --color-neutral-muted: #6b7280;
+  --color-border: #e5e7eb;
+  --font-system:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,
+    sans-serif;
+}
+
+[data-theme="dark"] {
+  --color-primary: #fdfdfd;
+  --color-secondary: #0a0a0b;
+  --color-neutral-text: #fdfdfd;
+  --color-neutral-muted: #9ca3af;
+  --color-border: #1f2937;
 }
 
 * {
@@ -35,4 +48,20 @@ a {
   html {
     color-scheme: dark;
   }
+}
+
+/* Custom Utilities */
+.tracking-tightest {
+  letter-spacing: -0.05em;
+}
+
+::selection {
+  background: var(--color-accent);
+  color: white;
+}
+
+body {
+  transition: background-color 0.5s ease, color 0.5s ease;
+  font-family: var(--font-system);
+  color: var(--color-neutral-text);
 }

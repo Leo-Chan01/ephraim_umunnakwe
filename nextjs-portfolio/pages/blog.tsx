@@ -35,96 +35,107 @@ export default function Blog() {
 
   return (
     <Layout title="Blog - Ephraim Umunnakwe">
-        {/* Hero Section */}
-        <section className="mt-16 py-20 px-4 bg-white dark:bg-primary">
-          <div className="max-w-6xl mx-auto text-center">
-            <h1 className="text-4xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6">
-              My Blog
-            </h1>
-            <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
-              Thoughts, tutorials, and insights about software development, technology trends,
-              and my journey as a developer.
-            </p>
-          </div>
-        </section>
+      {/* Hero Section */}
+      <section className="mt-16 py-32 px-4 bg-secondary dark:bg-primary border-b border-neutral-200 dark:border-neutral-800">
+        <div className="max-w-7xl mx-auto">
+          <h1 className="text-6xl md:text-8xl font-black tracking-tightest text-neutral-900 dark:text-secondary mb-8 uppercase leading-tight">
+            Journal<br />Entry
+          </h1>
+          <p className="text-2xl text-neutral-600 dark:text-neutral-400 max-w-3xl font-medium leading-relaxed">
+            Thoughts on architectural engineering, design systems, and the future
+            of high-performance digital products.
+          </p>
+        </div>
+      </section>
 
-        {/* Categories */}
-        <section className="py-8 px-4 bg-light dark:bg-secondary">
-          <div className="max-w-6xl mx-auto">
-            <div className="flex flex-wrap justify-center gap-4 mb-12">
-              {categories.map((category) => (
-                <button
-                  key={category}
-                  className="px-6 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-full hover:bg-gray-300 dark:hover:bg-gray-600 hover:text-gray-900 dark:hover:text-white transition-colors"
-                >
-                  {category}
-                </button>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Blog Posts */}
-        <section className="py-8 px-4 bg-white dark:bg-primary">
-          <div className="max-w-6xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {posts.map((post) => (
-                <article key={post.id} className="bg-gray-50 dark:bg-secondary rounded-lg overflow-hidden hover:bg-gray-100 dark:hover:bg-secondary/80 transition-all group border border-gray-200 dark:border-accent">
-                  <div className="h-48 bg-gray-200 dark:bg-gray-900 relative">
-                    <div className="absolute inset-0 bg-black/20"></div>
-                    <div className="absolute bottom-4 left-4">
-                      <span className="px-3 py-1 bg-blue-50 dark:bg-accent/20 text-blue-700 dark:text-accent text-sm rounded-full border border-blue-200 dark:border-accent">
-                        {post.category}
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="p-6">
-                    <div className="flex items-center text-gray-400 dark:text-gray-500 text-sm mb-3">
-                      <span>{new Date(post.date).toLocaleDateString()}</span>
-                      <span className="mx-2">•</span>
-                      <span>{post.readTime}</span>
-                    </div>
-
-                    <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                      {post.title}
-                    </h3>
-
-                    <p className="text-gray-600 dark:text-gray-400 mb-4 line-clamp-3">
-                      {post.excerpt}
-                    </p>
-
-                    <button className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium">
-                      Read More →
-                    </button>
-                  </div>
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Newsletter Signup */}
-        <section className="py-20 px-4 bg-light dark:bg-secondary">
-          <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-6">
-              Stay Updated
-            </h2>
-            <p className="text-gray-600 dark:text-gray-400 text-lg mb-8">
-              Subscribe to get notified about new blog posts and updates.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="flex-1 bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500"
-              />
-              <button className="bg-blue-600 dark:bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-700 dark:hover:bg-blue-600 transition-all font-semibold">
-                Subscribe
+      {/* Categories */}
+      <section className="py-20 px-4 bg-neutral-50 dark:bg-secondary border-b border-neutral-200 dark:border-neutral-800">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex flex-wrap gap-4 items-center">
+            <span className="text-xs font-black uppercase tracking-widest text-neutral-400 mr-4">Filter By</span>
+            {categories.map((category) => (
+              <button
+                key={category}
+                className="px-8 py-3 bg-white dark:bg-primary border-2 border-neutral-900 dark:border-neutral-800 text-neutral-900 dark:text-white font-black uppercase tracking-widest text-xs hover:bg-neutral-900 hover:text-white dark:hover:bg-accent transition-all"
+              >
+                {category}
               </button>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Blog Posts */}
+      <section className="py-32 px-4 bg-secondary dark:bg-primary">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+            {posts.map((post) => (
+              <article key={post.id} className="border-4 border-neutral-900 dark:border-neutral-800 flex flex-col hover:bg-neutral-900 hover:text-white dark:hover:bg-secondary dark:hover:text-primary transition-all duration-300 group">
+                <div className="h-64 bg-neutral-100 dark:bg-neutral-900 relative grayscale group-hover:grayscale-0 transition-all duration-500 overflow-hidden border-b-4 border-neutral-900 dark:border-neutral-800">
+                  <img src={post.image} alt="" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                  <div className="absolute top-0 right-0 p-4">
+                    <span className="bg-accent text-white px-4 py-2 font-black uppercase tracking-widest text-[10px]">
+                      {post.category}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="p-10 flex flex-col flex-grow">
+                  <div className="flex items-center text-xs font-black uppercase tracking-tightest mb-6 opacity-60">
+                    <span>{new Date(post.date).toLocaleDateString()}</span>
+                    <span className="mx-3">/</span>
+                    <span>{post.readTime}</span>
+                  </div>
+
+                  <h3 className="text-3xl font-black uppercase tracking-tight mb-6 leading-none">
+                    {post.title}
+                  </h3>
+
+                  <p className="text-neutral-600 dark:text-neutral-400 font-medium text-lg mb-10 line-clamp-3 group-hover:text-neutral-300 transition-colors leading-relaxed">
+                    {post.excerpt}
+                  </p>
+
+                  <button className="text-accent font-black uppercase tracking-widest text-sm text-left mt-auto group-hover:text-white transition-colors">
+                    Read Report <span className="ml-2">→</span>
+                  </button>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Newsletter Signup */}
+      <section className="py-40 px-4 bg-neutral-50 dark:bg-secondary">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+            <div>
+              <h2 className="text-5xl md:text-7xl font-black tracking-tighter text-neutral-900 dark:text-white mb-8 uppercase leading-tight">
+                Get Daily<br />Insights
+              </h2>
+              <p className="text-2xl text-neutral-600 dark:text-neutral-400 font-medium leading-relaxed">
+                Join our architectural network for technical deep-dives
+                delivered straight to your inbox.
+              </p>
+            </div>
+            <div className="bg-white dark:bg-primary p-12 border-4 border-neutral-900 dark:border-neutral-800">
+              <div className="flex flex-col gap-6">
+                <input
+                  type="email"
+                  placeholder="USER@DOMAIN.COM"
+                  className="w-full bg-neutral-100 dark:bg-neutral-900 border-2 border-neutral-200 dark:border-neutral-800 text-neutral-900 dark:text-white placeholder-neutral-300 dark:placeholder-neutral-700 px-6 py-5 focus:outline-none focus:border-accent font-bold transition-all"
+                />
+                <button className="w-full bg-neutral-900 dark:bg-accent text-white py-6 border-4 border-neutral-900 dark:border-accent font-black text-xl uppercase tracking-widest hover:bg-transparent hover:text-neutral-900 dark:hover:text-white transition-all">
+                  Join Network
+                </button>
+              </div>
+              <p className="mt-6 text-xs font-black uppercase tracking-widest text-neutral-400 text-center">
+                Secure Transmission Guaranteed. No Spam.
+              </p>
             </div>
           </div>
-        </section>
+        </div>
+      </section>
     </Layout>
   );
 }

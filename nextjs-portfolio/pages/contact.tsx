@@ -66,59 +66,60 @@ export default function Contact({ personalInfo, socialLinks }: ContactProps) {
   return (
     <Layout title={`Contact - ${personalInfo?.name || 'Ephraim Umunnakwe'}`}>
       {/* Hero Section */}
-      <section className="mt-16 py-20 px-4 bg-white dark:bg-primary">
-        <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-4xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6">
-            Get In Touch
+      <section className="mt-16 py-32 px-4 bg-secondary dark:bg-primary border-b border-neutral-200 dark:border-neutral-800">
+        <div className="max-w-7xl mx-auto">
+          <h1 className="text-6xl md:text-8xl font-black tracking-tightest text-neutral-900 dark:text-secondary mb-8 uppercase leading-tight">
+            Get In<br />Touch
           </h1>
-          <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
-            Have a project in mind? Let's discuss how we can work together to bring your ideas to life.
+          <p className="text-2xl text-neutral-600 dark:text-neutral-400 max-w-3xl font-medium leading-relaxed">
+            Have a project in mind? Let's discuss how we can build your vision
+            using high-performance architectural engineering.
           </p>
         </div>
       </section>
 
       {/* Contact Section */}
-      <section className="py-16 px-4 bg-light dark:bg-secondary">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+      <section className="py-32 px-4 bg-neutral-50 dark:bg-secondary border-b border-neutral-200 dark:border-neutral-800">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-20">
             {/* Contact Info */}
             <div>
-              <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">Let's Connect</h2>
-              <div className="space-y-6">
-                <div className="flex items-center space-x-4">
-                  <div className="w-12 h-12 bg-blue-100 dark:bg-accent/30 rounded-lg flex items-center justify-center">
-                    <Mail className="text-blue-600 dark:text-accent" size={24} />
+              <h2 className="text-4xl font-black text-neutral-900 dark:text-white mb-12 uppercase tracking-tight">Connect</h2>
+              <div className="space-y-12">
+                <div className="flex items-start space-x-6">
+                  <div className="w-16 h-16 bg-neutral-900 dark:bg-accent flex items-center justify-center shrink-0">
+                    <Mail className="text-white" size={28} />
                   </div>
                   <div>
-                    <h3 className="text-gray-900 dark:text-white font-semibold">Email</h3>
-                    <p className="text-gray-600 dark:text-gray-400">{personalInfo?.email || 'ephraimumunnakwe3@gmail.com'}</p>
+                    <h3 className="text-xs font-black uppercase tracking-widest text-neutral-400 mb-2">Email Address</h3>
+                    <p className="text-2xl font-black text-neutral-900 dark:text-secondary break-all">{personalInfo?.email || 'ephraimumunnakwe3@gmail.com'}</p>
                   </div>
                 </div>
 
-                <div className="flex items-center space-x-4">
-                  <div className="w-12 h-12 bg-green-100 dark:bg-accent/30 rounded-lg flex items-center justify-center">
-                    <Phone className="text-green-600 dark:text-accent" size={24} />
+                <div className="flex items-start space-x-6">
+                  <div className="w-16 h-16 bg-neutral-100 dark:bg-neutral-800 border-2 border-neutral-900 dark:border-neutral-700 flex items-center justify-center shrink-0">
+                    <Phone className="text-neutral-900 dark:text-secondary" size={28} />
                   </div>
                   <div>
-                    <h3 className="text-gray-900 dark:text-white font-semibold">Phone</h3>
-                    <p className="text-gray-600 dark:text-gray-400">{personalInfo?.phone || '+1 (555) 123-4567'}</p>
+                    <h3 className="text-xs font-black uppercase tracking-widest text-neutral-400 mb-2">Quick Call</h3>
+                    <p className="text-2xl font-black text-neutral-900 dark:text-secondary">{personalInfo?.phone || '+1 (555) 123-4567'}</p>
                   </div>
                 </div>
 
-                <div className="flex items-center space-x-4">
-                  <div className="w-12 h-12 bg-purple-100 dark:bg-accent/30 rounded-lg flex items-center justify-center">
-                    <MapPin className="text-purple-600 dark:text-accent" size={24} />
+                <div className="flex items-start space-x-6">
+                  <div className="w-16 h-16 bg-neutral-100 dark:bg-neutral-800 border-2 border-neutral-900 dark:border-neutral-700 flex items-center justify-center shrink-0">
+                    <MapPin className="text-neutral-900 dark:text-secondary" size={28} />
                   </div>
                   <div>
-                    <h3 className="text-gray-900 dark:text-white font-semibold">Location</h3>
-                    <p className="text-gray-600 dark:text-gray-400">{personalInfo?.location || 'Remote / Available Worldwide'}</p>
+                    <h3 className="text-xs font-black uppercase tracking-widest text-neutral-400 mb-2">Location</h3>
+                    <p className="text-2xl font-black text-neutral-900 dark:text-secondary">{personalInfo?.location || 'Remote / Worldwide'}</p>
                   </div>
                 </div>
               </div>
 
-              <div className="mt-8">
-                <h3 className="text-gray-900 dark:text-white font-semibold mb-4">Follow Me</h3>
-                <div className="flex space-x-4">
+              <div className="mt-20 pt-20 border-t-2 border-neutral-200 dark:border-neutral-800">
+                <h3 className="text-xs font-black uppercase tracking-widest text-neutral-400 mb-8">Elsewhere</h3>
+                <div className="flex flex-wrap gap-4">
                   {socialLinks.filter(link => link.is_visible).length > 0 ? (
                     socialLinks
                       .filter(link => link.is_visible)
@@ -128,26 +129,19 @@ export default function Contact({ personalInfo, socialLinks }: ContactProps) {
                           href={link.url}
                           target="_blank"
                           rel="noopener noreferrer"
-                            className="w-10 h-10 bg-blue-100 dark:bg-accent/30 rounded-lg flex items-center justify-center hover:bg-blue-200 dark:hover:bg-accent/50 transition-colors group text-blue-600 dark:text-accent"
+                          className="px-6 py-3 bg-neutral-900 text-white font-black uppercase tracking-widest text-xs hover:bg-accent transition-all flex items-center gap-3"
                           title={`Follow me on ${link.platform}`}
                         >
-                          {link.platform.toLowerCase().includes('github') && <Github className="group-hover:scale-110 transition-transform" />}
-                          {link.platform.toLowerCase().includes('linkedin') && <Linkedin className="group-hover:scale-110 transition-transform" />}
-                          {link.platform.toLowerCase().includes('twitter') && <Twitter className="group-hover:scale-110 transition-transform" />}
+                          {link.platform.toLowerCase().includes('github') && <Github size={16} />}
+                          {link.platform.toLowerCase().includes('linkedin') && <Linkedin size={16} />}
+                          {link.platform.toLowerCase().includes('twitter') && <Twitter size={16} />}
+                          <span>{link.platform}</span>
                         </a>
                       ))
                   ) : (
-                    // Fallback social links
                     <>
-                      <a href="#" className="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center hover:bg-blue-200 dark:hover:bg-blue-800 transition-colors group text-blue-600 dark:text-blue-400" title="GitHub">
-                        <Github className="group-hover:scale-110 transition-transform" />
-                      </a>
-                      <a href="#" className="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center hover:bg-blue-200 dark:hover:bg-blue-800 transition-colors group text-blue-600 dark:text-blue-400" title="LinkedIn">
-                        <Linkedin className="group-hover:scale-110 transition-transform" />
-                      </a>
-                      <a href="#" className="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center hover:bg-blue-200 dark:hover:bg-blue-800 transition-colors group text-blue-600 dark:text-blue-400" title="Twitter">
-                        <Twitter className="group-hover:scale-110 transition-transform" />
-                      </a>
+                      <a href="#" className="px-6 py-3 bg-neutral-900 text-white font-black uppercase tracking-widest text-xs hover:bg-accent transition-all" title="GitHub">GITHUB</a>
+                      <a href="#" className="px-6 py-3 bg-neutral-900 text-white font-black uppercase tracking-widest text-xs hover:bg-accent transition-all" title="LinkedIn">LINKEDIN</a>
                     </>
                   )}
                 </div>
@@ -155,24 +149,24 @@ export default function Contact({ personalInfo, socialLinks }: ContactProps) {
             </div>
 
             {/* Contact Form */}
-              <div className="bg-white dark:bg-secondary p-8 rounded-lg border border-gray-200 dark:border-accent">
+            <div className="bg-white dark:bg-primary p-10 md:p-16 border-4 border-neutral-900 dark:border-neutral-800">
               {submitted ? (
-                <div className="text-center py-8">
-                  <CheckCircle className="w-16 h-16 text-green-600 dark:text-green-400 mx-auto mb-4" />
-                  <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Message Sent!</h3>
-                  <p className="text-gray-600 dark:text-gray-400">Thank you for reaching out. I'll get back to you soon.</p>
+                <div className="text-center py-20">
+                  <CheckCircle className="w-24 h-24 text-accent mx-auto mb-8" />
+                  <h3 className="text-4xl font-black text-neutral-900 dark:text-white mb-4 uppercase tracking-tighter">Transmission Sent</h3>
+                  <p className="text-neutral-500 font-medium text-lg mb-10">I will respond to your inquiry shortly.</p>
                   <button
                     onClick={() => setSubmitted(false)}
-                    className="mt-4 text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300"
+                    className="text-accent font-black uppercase tracking-widest underline underline-offset-8 hover:text-neutral-900 dark:hover:text-white transition-colors"
                   >
                     Send another message
                   </button>
                 </div>
               ) : (
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  <div>
-                    <label htmlFor="name" className="block text-gray-900 dark:text-white font-medium mb-2">
-                      Name *
+                <form onSubmit={handleSubmit} className="space-y-10">
+                  <div className="space-y-4">
+                    <label htmlFor="name" className="text-xs font-black uppercase tracking-tightest text-neutral-400">
+                      IDENTIFICATION / NAME
                     </label>
                     <input
                       type="text"
@@ -181,14 +175,14 @@ export default function Contact({ personalInfo, socialLinks }: ContactProps) {
                       required
                       value={formData.name}
                       onChange={handleChange}
-                      className="w-full bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                      placeholder="Your full name"
+                      className="w-full bg-neutral-50 dark:bg-neutral-900 border-2 border-neutral-200 dark:border-neutral-800 text-neutral-900 dark:text-white placeholder-neutral-300 dark:placeholder-neutral-700 px-6 py-5 focus:outline-none focus:border-accent font-bold transition-all"
+                      placeholder="YOUR FULL NAME"
                     />
                   </div>
 
-                  <div>
-                    <label htmlFor="email" className="block text-gray-900 dark:text-white font-medium mb-2">
-                      Email *
+                  <div className="space-y-4">
+                    <label htmlFor="email" className="text-xs font-black uppercase tracking-tightest text-neutral-400">
+                      ELECTRONIC MAIL / EMAIL
                     </label>
                     <input
                       type="email"
@@ -197,14 +191,14 @@ export default function Contact({ personalInfo, socialLinks }: ContactProps) {
                       required
                       value={formData.email}
                       onChange={handleChange}
-                      className="w-full bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                      placeholder="your.email@example.com"
+                      className="w-full bg-neutral-50 dark:bg-neutral-900 border-2 border-neutral-200 dark:border-neutral-800 text-neutral-900 dark:text-white placeholder-neutral-300 dark:placeholder-neutral-700 px-6 py-5 focus:outline-none focus:border-accent font-bold transition-all"
+                      placeholder="EMAIL@EXAMPLE.COM"
                     />
                   </div>
 
-                  <div>
-                    <label htmlFor="subject" className="block text-gray-900 dark:text-white font-medium mb-2">
-                      Subject *
+                  <div className="space-y-4">
+                    <label htmlFor="subject" className="text-xs font-black uppercase tracking-tightest text-neutral-400">
+                      TOPIC / SUBJECT
                     </label>
                     <input
                       type="text"
@@ -213,33 +207,33 @@ export default function Contact({ personalInfo, socialLinks }: ContactProps) {
                       required
                       value={formData.subject}
                       onChange={handleChange}
-                      className="w-full bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                      placeholder="What's this about?"
+                      className="w-full bg-neutral-50 dark:bg-neutral-900 border-2 border-neutral-200 dark:border-neutral-800 text-neutral-900 dark:text-white placeholder-neutral-300 dark:placeholder-neutral-700 px-6 py-5 focus:outline-none focus:border-accent font-bold transition-all"
+                      placeholder="GENERAL INQUIRY"
                     />
                   </div>
 
-                  <div>
-                    <label htmlFor="message" className="block text-gray-900 dark:text-white font-medium mb-2">
-                      Message *
+                  <div className="space-y-4">
+                    <label htmlFor="message" className="text-xs font-black uppercase tracking-tightest text-neutral-400">
+                      MESSAGE / CONTENT
                     </label>
                     <textarea
                       id="message"
                       name="message"
                       required
-                      rows={5}
+                      rows={6}
                       value={formData.message}
                       onChange={handleChange}
-                      className="w-full bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 rounded-lg px-4 py-3 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 resize-none"
-                      placeholder="Tell me about your project..."
+                      className="w-full bg-neutral-50 dark:bg-neutral-900 border-2 border-neutral-200 dark:border-neutral-800 text-neutral-900 dark:text-white placeholder-neutral-300 dark:placeholder-neutral-700 px-6 py-5 focus:outline-none focus:border-accent font-bold transition-all resize-none"
+                      placeholder="DESCRIBE YOUR PROJECT OR VISION..."
                     />
                   </div>
 
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-all font-semibold disabled:opacity-50"
+                    className="w-full bg-neutral-900 dark:bg-accent text-white py-6 border-4 border-neutral-900 dark:border-accent font-black text-xl uppercase tracking-widest hover:bg-transparent hover:text-neutral-900 dark:hover:text-white transition-all disabled:opacity-50"
                   >
-                    {isSubmitting ? 'Sending...' : 'Send Message'}
+                    {isSubmitting ? 'TRANSMITTING...' : 'SEND MESSAGE'}
                   </button>
                 </form>
               )}

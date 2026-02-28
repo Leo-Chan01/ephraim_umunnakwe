@@ -83,104 +83,102 @@ export default function Services() {
   return (
     <Layout title="Services - Ephraim Umunnakwe">
       {/* Hero Section */}
-        <section className="mt-16 py-20 px-4 bg-white dark:bg-primary">
-          <div className="max-w-6xl mx-auto text-center">
-            <h1 className="text-4xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6">
-              My Services
-            </h1>
-            <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
-              I offer comprehensive development services to help bring your digital ideas to life. 
-              From concept to deployment, I've got you covered.
-            </p>
-          </div>
-        </section>
+      <section className="mt-16 py-32 px-4 bg-secondary dark:bg-primary border-b border-neutral-200 dark:border-neutral-800">
+        <div className="max-w-7xl mx-auto">
+          <h1 className="text-6xl md:text-8xl font-black tracking-tightest text-neutral-900 dark:text-secondary mb-8 uppercase leading-tight">
+            Design<br />Systems
+          </h1>
+          <p className="text-2xl text-neutral-600 dark:text-neutral-400 max-w-3xl font-medium leading-relaxed">
+            Scalable digital architectures tailored for high-performance products.
+            From concept to deployment, engineered with precision.
+          </p>
+        </div>
+      </section>
 
-        {/* Services Grid */}
-        <section className="py-16 px-4 bg-light dark:bg-secondary">
-          <div className="max-w-6xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {services.map((service, index) => (
-                <div key={index} className="bg-white dark:bg-secondary border border-gray-200 dark:border-accent rounded-lg p-8 hover:shadow-lg transition-all group">
-                  <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center text-blue-600 dark:text-blue-400 mb-4">
-                    {service.icon === 'Globe' && <Globe size={24} />}
-                    {service.icon === 'Mobile' && <Mobile size={24} />}
-                    {service.icon === 'Zap' && <Zap size={24} />}
-                    {service.icon === 'ShoppingCart' && <ShoppingCart size={24} />}
-                    {service.icon === 'Lightbulb' && <Lightbulb size={24} />}
-                    {service.icon === 'Wrench' && <Wrench size={24} />}
-                  </div>
-                  <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">{service.title}</h3>
-                  <p className="text-gray-600 dark:text-gray-400 mb-6">{service.description}</p>
-                  
-                  <ul className="space-y-2 mb-6">
-                    {service.features.map((feature, idx) => (
-                      <li key={idx} className="flex items-center text-gray-700 dark:text-gray-300">
-                        <Check size={16} className="text-blue-600 dark:text-blue-400 mr-2" />
-                        {feature}
-                      </li>
-                    ))}
-                  </ul>
-                  
-                  <div className="border-t border-gray-200 pt-4">
-                    <p className="text-blue-600 font-semibold">{service.price}</p>
-                  </div>
+      {/* Services Grid */}
+      <section className="py-32 px-4 bg-neutral-50 dark:bg-secondary border-b border-neutral-200 dark:border-neutral-800">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+            {services.map((service, index) => (
+              <div key={index} className="bg-white dark:bg-primary border-4 border-neutral-900 dark:border-neutral-800 p-10 flex flex-col h-full hover:bg-neutral-900 hover:text-white dark:hover:bg-secondary dark:hover:text-primary transition-all duration-300 group">
+                <div className="w-16 h-16 bg-neutral-900 dark:bg-accent flex items-center justify-center text-white mb-8 group-hover:bg-white group-hover:text-neutral-900 transition-colors">
+                  {service.icon === 'Globe' && <Globe size={32} />}
+                  {service.icon === 'Mobile' && <Mobile size={32} />}
+                  {service.icon === 'Zap' && <Zap size={32} />}
+                  {service.icon === 'ShoppingCart' && <ShoppingCart size={32} />}
+                  {service.icon === 'Lightbulb' && <Lightbulb size={32} />}
+                  {service.icon === 'Wrench' && <Wrench size={32} />}
                 </div>
-              ))}
-            </div>
-          </div>
-        </section>
+                <h3 className="text-3xl font-black uppercase tracking-tight mb-6">{service.title}</h3>
+                <p className="text-neutral-600 dark:text-neutral-400 group-hover:text-neutral-300 font-medium text-lg mb-8 leading-relaxed">{service.description}</p>
 
-        {/* Process Section */}
-        <section className="py-16 px-4 bg-light dark:bg-secondary">
-          <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-                My Development Process
-              </h2>
-              <p className="text-gray-600 dark:text-gray-400 text-lg">
-                A proven methodology that ensures successful project delivery
-              </p>
-            </div>
+                <ul className="space-y-4 mb-10 mt-auto">
+                  {service.features.map((feature, idx) => (
+                    <li key={idx} className="flex items-center text-xs font-black uppercase tracking-widest">
+                      <span className="w-6 h-[2px] bg-accent mr-3"></span>
+                      {feature}
+                    </li>
+                  ))}
+                </ul>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {process.map((item, index) => (
-                <div key={index} className="text-center">
-                  <div className="w-16 h-16 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center text-blue-600 dark:text-blue-400 font-bold text-xl mx-auto mb-4 border-2 border-blue-200 dark:border-blue-700">
-                    {item.step}
-                  </div>
-                  <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">{item.title}</h3>
-                  <p className="text-gray-600 dark:text-gray-400">{item.description}</p>
+                <div className="pt-8 border-t-2 border-neutral-100 dark:border-neutral-800 group-hover:border-white/20">
+                  <p className="text-accent font-black uppercase tracking-widest">{service.price}</p>
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* CTA Section */}
-        <section className="py-20 px-4 bg-light dark:bg-secondary">
-          <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-6">
-              Ready to Start Your Project?
+      {/* Process Section */}
+      <section className="py-32 px-4 bg-secondary dark:bg-primary border-b border-neutral-200 dark:border-neutral-800">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex flex-col md:flex-row justify-between items-end mb-24 gap-8">
+            <h2 className="text-4xl md:text-6xl font-black tracking-tighter text-neutral-900 dark:text-secondary uppercase">
+              The Method
             </h2>
-            <p className="text-gray-600 dark:text-gray-400 text-lg mb-8">
-              Let's discuss your requirements and create something amazing together.
+            <p className="text-neutral-400 text-xl font-medium max-w-md">
+              A systematic approach to engineering excellence.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a
-                href="/contact"
-                className="bg-blue-600 text-white px-8 py-4 rounded-lg hover:bg-blue-700 transition-all font-semibold text-lg"
-              >
-                Get Free Quote
-              </a>
-              <a
-                href="/projects"
-                className="border border-gray-400 dark:border-gray-600 text-gray-900 dark:text-white px-8 py-4 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-all font-semibold text-lg"
-              >
-                View My Work
-              </a>
-            </div>
           </div>
-        </section>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-20">
+            {process.map((item, index) => (
+              <div key={index} className="relative pt-12 border-t-2 border-neutral-900 dark:border-neutral-800">
+                <span className="absolute top-0 left-0 -translate-y-1/2 bg-accent text-white px-4 py-1 font-black text-sm uppercase tracking-widest">
+                  Step {item.step}
+                </span>
+                <h3 className="text-2xl font-black uppercase tracking-tight text-neutral-900 dark:text-secondary mb-4">{item.title}</h3>
+                <p className="text-neutral-600 dark:text-neutral-400 font-medium text-lg leading-relaxed">{item.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-40 px-4 bg-accent text-white">
+        <div className="max-w-7xl mx-auto text-center">
+          <h2 className="text-5xl md:text-7xl font-black tracking-tighter mb-10 uppercase">Start Your Architecture</h2>
+          <p className="text-2xl text-white/80 mb-12 font-medium max-w-2xl mx-auto">
+            Bring precision and performance to your next digital product.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-6 justify-center">
+            <a
+              href="/contact"
+              className="bg-white text-accent px-12 py-5 border-4 border-white font-black text-xl uppercase tracking-widest hover:bg-neutral-900 hover:text-white transition-all"
+            >
+              Get Free Quote
+            </a>
+            <a
+              href="/projects"
+              className="bg-transparent text-white px-12 py-5 border-4 border-white font-black text-xl uppercase tracking-widest hover:bg-white hover:text-accent transition-all"
+            >
+              View Work
+            </a>
+          </div>
+        </div>
+      </section>
     </Layout>
   );
 }

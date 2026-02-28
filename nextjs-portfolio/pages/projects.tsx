@@ -59,106 +59,105 @@ export default function Projects({ projects: initialProjects }: ProjectsProps) {
   // Filter projects based on search and technology filter
   const filteredProjects = projects.filter(project => {
     const matchesSearch = project.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         project.description.toLowerCase().includes(searchTerm.toLowerCase());
+      project.description.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesFilter = filter === 'all' || project.technologies.includes(filter);
     return matchesSearch && matchesFilter;
   });
 
   return (
-    <Layout>
+    <Layout title="Projects - Ephraim Umunnakwe">
       {/* Refresh Button */}
-      <div className="fixed top-20 right-4 z-40">
+      <div className="fixed top-24 right-6 z-40">
         <button
           onClick={refreshData}
           disabled={isRefreshing}
-          className="bg-accent hover:bg-accent/90 dark:bg-accent/90 dark:hover:bg-accent text-white px-4 py-2 rounded-lg shadow-md transition-all disabled:opacity-50 border border-accent/30 text-sm flex items-center gap-2"
+          className="bg-neutral-900 border-2 border-neutral-900 dark:border-accent text-white px-6 py-3 rounded-none hover:bg-transparent hover:text-neutral-900 dark:hover:text-accent transition-all disabled:opacity-50 font-black uppercase tracking-widest text-xs flex items-center gap-3"
           title="Refresh projects"
         >
           {isRefreshing ? (
-            <>
-              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-              <span className="hidden sm:inline">Refreshing...</span>
-            </>
+            <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
           ) : (
-            <>
-              <RefreshCw size={18} />
-              <span className="hidden sm:inline">Please Refresh</span>
-            </>
+            <RefreshCw size={16} />
           )}
+          <span className="hidden sm:inline">Refresh</span>
         </button>
       </div>
 
       {/* Hero Section */}
-      <section className="mt-16 py-20 px-4 bg-white dark:bg-primary">
-        <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-4xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6">
-            My Projects
+      <section className="mt-16 py-32 px-4 bg-secondary dark:bg-primary border-b border-neutral-200 dark:border-neutral-800">
+        <div className="max-w-7xl mx-auto">
+          <h1 className="text-6xl md:text-8xl font-black tracking-tightest text-neutral-900 dark:text-secondary mb-8 uppercase leading-tight">
+            Selected<br />Works
           </h1>
-          <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
-            A showcase of my work in mobile and web development. Each project represents 
-            a unique challenge and solution, built with modern technologies and best practices.
+          <p className="text-2xl text-neutral-600 dark:text-neutral-400 max-w-3xl font-medium leading-relaxed">
+            A curated showcase of mobile and web architectures. Focused on scalability,
+            performance, and technical excellence.
           </p>
         </div>
       </section>
 
       {/* Filters and Search */}
-      <section className="py-8 px-4 bg-light dark:bg-secondary">
-        <div className="max-w-6xl mx-auto">
-          <div className="flex flex-col lg:flex-row gap-4 items-center justify-between mb-8">
+      <section className="py-20 px-4 bg-neutral-50 dark:bg-secondary border-b border-neutral-200 dark:border-neutral-800">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex flex-col lg:flex-row gap-8 items-end justify-between mb-12">
             {/* Search */}
-            <div className="relative flex-1 max-w-md">
-              <input
-                type="text"
-                placeholder="Search projects..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full bg-white dark:bg-primary border border-gray-300 dark:border-accent text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 rounded-lg px-4 py-3 pl-10 focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-colors"
-              />
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500" size={18} />
+            <div className="relative flex-1 max-w-2xl w-full">
+              <label className="block text-xs font-black uppercase tracking-widest text-neutral-400 mb-2">Search Case Studies</label>
+              <div className="relative">
+                <input
+                  type="text"
+                  placeholder="FILTER BY KEYWORD..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full bg-white dark:bg-primary border-2 border-neutral-900 dark:border-neutral-800 text-neutral-900 dark:text-white placeholder-neutral-300 dark:placeholder-neutral-700 rounded-none px-6 py-5 pl-14 focus:outline-none focus:border-accent transition-all font-bold"
+                />
+                <Search className="absolute left-6 top-1/2 transform -translate-y-1/2 text-neutral-400" size={20} />
+              </div>
             </div>
 
             {/* Technology Filter */}
-            <div className="flex flex-wrap gap-2">
-              <FilterButton
-                active={filter === 'all'}
-                onClick={() => setFilter('all')}
-                count={projects.length}
-              >
-                All
-              </FilterButton>
-              {allTechnologies.slice(0, 6).map(tech => (
+            <div className="w-full lg:w-auto">
+              <label className="block text-xs font-black uppercase tracking-widest text-neutral-400 mb-2">Filter by Stack</label>
+              <div className="flex flex-wrap gap-3">
                 <FilterButton
-                  key={tech}
-                  active={filter === tech}
-                  onClick={() => setFilter(tech)}
-                  count={projects.filter(p => p.technologies.includes(tech)).length}
+                  active={filter === 'all'}
+                  onClick={() => setFilter('all')}
+                  count={projects.length}
                 >
-                  {tech}
+                  All
                 </FilterButton>
-              ))}
+                {allTechnologies.slice(0, 5).map(tech => (
+                  <FilterButton
+                    key={tech}
+                    active={filter === tech}
+                    onClick={() => setFilter(tech)}
+                    count={projects.filter(p => p.technologies.includes(tech)).length}
+                  >
+                    {tech}
+                  </FilterButton>
+                ))}
+              </div>
             </div>
           </div>
 
-          {/* Results Count */}
-          <div className="text-gray-700 dark:text-gray-300 mb-8">
-            Showing {filteredProjects.length} of {projects.length} projects
+          <div className="text-neutral-400 font-bold uppercase tracking-widest text-xs flex justify-between items-center bg-neutral-100 dark:bg-neutral-800/30 p-4 border-l-4 border-neutral-900 dark:border-accent">
+            <span>Query Results</span>
+            <span>{filteredProjects.length} / {projects.length} PROJECTS</span>
           </div>
         </div>
       </section>
 
       {/* Projects Grid */}
-      <section className="py-8 px-4 bg-white dark:bg-primary">
-        <div className="max-w-6xl mx-auto">
+      <section className="py-32 px-4 bg-secondary dark:bg-primary">
+        <div className="max-w-7xl mx-auto">
           {filteredProjects.length === 0 ? (
-            <div className="text-center py-16">
-              <Search className="w-16 h-16 text-gray-400 dark:text-gray-600 mx-auto mb-4" />
-              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">No projects found</h3>
-              <p className="text-gray-600 dark:text-gray-400">
-                Try adjusting your search terms or filters to find what you're looking for.
-              </p>
+            <div className="text-center py-32 border-2 border-dashed border-neutral-200 dark:border-neutral-800">
+              <Search className="w-16 h-16 text-neutral-200 dark:text-neutral-800 mx-auto mb-6" />
+              <h3 className="text-3xl font-black text-neutral-900 dark:text-white mb-4 uppercase">No matches found</h3>
+              <p className="text-neutral-500 font-medium">Try adjusting your filters or search query.</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
               {filteredProjects.map((project) => (
                 <ProjectCard key={project.id} project={project} />
               ))}
@@ -168,18 +167,18 @@ export default function Projects({ projects: initialProjects }: ProjectsProps) {
       </section>
 
       {/* Skills Showcase */}
-      <section className="py-16 px-4 bg-light dark:bg-secondary">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
-              Technologies I Use
+      <section className="py-32 px-4 bg-neutral-900 text-white">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex flex-col md:flex-row justify-between items-end mb-20 gap-8">
+            <h2 className="text-4xl md:text-6xl font-black tracking-tighter uppercase">
+              Core Stack
             </h2>
-            <p className="text-gray-600 dark:text-gray-400 text-lg">
-              The tools and frameworks that power my projects
+            <p className="text-neutral-400 text-xl font-medium max-w-md">
+              A comprehensive toolkit for modern high-performance architectures.
             </p>
           </div>
 
-          <div className="flex flex-wrap justify-center gap-3">
+          <div className="flex flex-wrap gap-4">
             {allTechnologies.map(tech => (
               <TechBadge
                 key={tech}
@@ -193,19 +192,17 @@ export default function Projects({ projects: initialProjects }: ProjectsProps) {
       </section>
 
       {/* Call to Action */}
-      <section className="py-20 px-4 bg-white dark:bg-primary">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-6">
-            Have a Project in Mind?
-          </h2>
-          <p className="text-gray-600 dark:text-gray-400 text-lg mb-8">
-            I'm always excited to work on new challenges and bring innovative ideas to life.
+      <section className="py-40 px-4 bg-accent text-white">
+        <div className="max-w-7xl mx-auto text-center">
+          <h2 className="text-5xl md:text-7xl font-black tracking-tighter mb-10 uppercase">Ready to scale?</h2>
+          <p className="text-2xl text-white/80 mb-12 font-medium max-w-2xl mx-auto">
+            Let's discuss how we can build your next high-performance solution.
           </p>
           <a
             href="/contact"
-            className="bg-accent text-white px-8 py-4 rounded-lg hover:bg-accent/90 transition-all font-semibold text-lg inline-block"
+            className="bg-white text-accent px-12 py-5 border-4 border-white font-black text-xl uppercase tracking-widest hover:bg-neutral-900 hover:text-white transition-all inline-block"
           >
-            Let's Discuss Your Project
+            Start Conversation
           </a>
         </div>
       </section>
@@ -222,13 +219,13 @@ function FilterButton({ children, active, onClick, count }: {
   return (
     <button
       onClick={onClick}
-      className={`px-4 py-2 rounded-lg font-medium transition-all ${
-        active
-          ? 'bg-accent text-white'
-          : 'bg-gray-200 dark:bg-primary text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-accent/20'
-      }`}
+      className={`px-5 py-2 border-2 transition-all font-black uppercase tracking-widest text-xs ${active
+        ? 'bg-neutral-900 border-neutral-900 text-white dark:bg-accent dark:border-accent'
+        : 'bg-transparent border-neutral-300 dark:border-neutral-700 text-neutral-500 hover:border-neutral-900 dark:hover:border-accent'
+        }`}
     >
-      {children} ({count})
+      {active && <span className="mr-2">/</span>}
+      {children} <span className="ml-1 opacity-50">[{count}]</span>
     </button>
   );
 }
@@ -236,50 +233,40 @@ function FilterButton({ children, active, onClick, count }: {
 function ProjectCard({ project }: { project: Project }) {
   const getStatusColor = (status: string) => {
     switch (status.toLowerCase()) {
-      case 'completed': return 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 border-green-300 dark:border-green-600';
-      case 'in-progress': return 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400 border-yellow-300 dark:border-yellow-600';
-      case 'planned': return 'bg-accent/20 dark:bg-accent/30 text-accent dark:text-accent border-accent/30 dark:border-accent';
-      default: return 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600';
-    }
-  };
-
-  const getPriorityColor = (priority: string) => {
-    switch (priority.toLowerCase()) {
-      case 'high': return 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400';
-      case 'medium': return 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400';
-      case 'low': return 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400';
-      default: return 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300';
+      case 'completed': return 'bg-neutral-900 text-white dark:bg-accent';
+      case 'in-progress': return 'bg-accent text-white';
+      default: return 'bg-neutral-200 text-neutral-700';
     }
   };
 
   return (
-    <div className="bg-white dark:bg-secondary border border-gray-200 dark:border-accent rounded-lg overflow-hidden hover:shadow-lg transition-all group">
+    <div className="border-2 border-neutral-900 dark:border-neutral-800 transition-all duration-300 group flex flex-col h-full hover:bg-neutral-900 dark:hover:bg-accent transition-colors">
       {/* Project Image */}
-      <div className="h-48 bg-gray-100 dark:bg-primary relative overflow-hidden">
+      <div className="h-64 bg-neutral-100 dark:bg-neutral-900 relative overflow-hidden border-b-2 border-neutral-900 dark:border-neutral-800 grayscale group-hover:grayscale-0 transition-all duration-500">
         {project.preview_image ? (
-          <img 
-            src={project.preview_image} 
+          <img
+            src={project.preview_image}
             alt={project.name}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
           />
         ) : (
           <div className="flex items-center justify-center h-full">
-            <Smartphone size={48} className="text-gray-400" />
+            <Smartphone size={64} className="text-neutral-300" />
           </div>
         )}
-        
+
         {/* Overlay with links */}
-        <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-          <div className="flex space-x-3">
+        <div className="absolute inset-0 bg-neutral-900/0 group-hover:bg-neutral-900/60 transition-colors flex items-center justify-center">
+          <div className="flex gap-4 opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500">
             {project.project_url && (
               <a
                 href={project.project_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center hover:bg-white/30 transition-colors"
+                className="w-14 h-14 bg-white text-primary flex items-center justify-center border-2 border-white hover:bg-transparent hover:text-white transition-all"
                 title="View Project"
               >
-                <LinkIcon className="text-white" size={20} />
+                <LinkIcon size={24} />
               </a>
             )}
             {project.github_url && (
@@ -287,72 +274,47 @@ function ProjectCard({ project }: { project: Project }) {
                 href={project.github_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center hover:bg-white/30 transition-colors"
+                className="w-14 h-14 bg-white text-primary flex items-center justify-center border-2 border-white hover:bg-transparent hover:text-white transition-all"
                 title="View Code"
               >
-                <Github className="text-white" size={20} />
+                <Github size={24} />
               </a>
             )}
           </div>
         </div>
 
         {/* Status Badge */}
-        <div className={`absolute top-3 left-3 px-2 py-1 rounded-full text-xs font-medium border ${getStatusColor(project.status)}`}>
+        <div className={`absolute top-0 right-0 px-4 py-2 font-black uppercase tracking-widest text-[10px] ${getStatusColor(project.status)}`}>
           {project.status}
         </div>
       </div>
 
       {/* Project Content */}
-      <div className="p-6">
-        <div className="flex items-start justify-between mb-3">
-          <h3 className="text-xl font-semibold text-gray-900 dark:text-white group-hover:text-accent dark:group-hover:text-accent transition-colors">
+      <div className="p-8 flex flex-col flex-grow group-hover:text-white transition-colors duration-300">
+        <div className="flex items-start justify-between mb-6">
+          <h3 className="text-2xl font-black uppercase tracking-tight leading-none">
             {project.name}
           </h3>
-          <span className={`px-2 py-1 rounded text-xs font-medium ${getPriorityColor(project.priority)}`}>
+          <span className="text-[10px] font-black uppercase tracking-widest px-2 py-1 border border-neutral-900 dark:border-neutral-300 group-hover:border-white/50">
             {project.priority}
           </span>
         </div>
 
-        <p className="text-gray-600 dark:text-gray-400 text-sm mb-4 line-clamp-3 leading-relaxed">
+        <p className="text-neutral-600 dark:text-neutral-400 group-hover:text-neutral-300 font-medium text-lg mb-8 line-clamp-3 leading-relaxed">
           {project.description}
         </p>
 
-        {/* Role */}
-        <div className="mb-4">
-          <span className="text-accent dark:text-accent text-sm font-medium">
-            Role: {project.role}
-          </span>
-        </div>
-
         {/* Technologies */}
-        <div className="flex flex-wrap gap-2 mb-4">
+        <div className="flex flex-wrap gap-2 mt-auto pt-8 border-t border-neutral-200 dark:border-neutral-800 group-hover:border-white/20 transition-colors">
           {project.technologies.slice(0, 4).map((tech, index) => (
             <span
               key={index}
-              className="px-3 py-1 bg-blue-50 dark:bg-accent/20 text-blue-700 dark:text-accent text-sm rounded-full border border-blue-200 dark:border-accent"
+              className="px-3 py-1 bg-neutral-100 dark:bg-neutral-800 text-neutral-500 text-[10px] font-black uppercase tracking-widest border border-neutral-200 dark:border-neutral-700 group-hover:bg-white group-hover:text-primary transition-colors"
             >
               {tech}
             </span>
           ))}
-          {project.technologies.length > 4 && (
-            <span className="px-2 py-1 bg-gray-200 dark:bg-primary text-gray-600 dark:text-gray-300 text-xs rounded-full">
-              +{project.technologies.length - 4} more
-            </span>
-          )}
         </div>
-
-        {/* Dates */}
-        {(project.start_date || project.end_date) && (
-          <div className="text-gray-600 dark:text-gray-400 text-xs">
-            {project.start_date && (
-              <span>Started: {new Date(project.start_date).toLocaleDateString()}</span>
-            )}
-            {project.start_date && project.end_date && <span> • </span>}
-            {project.end_date && (
-              <span>Completed: {new Date(project.end_date).toLocaleDateString()}</span>
-            )}
-          </div>
-        )}
       </div>
     </div>
   );
@@ -366,10 +328,9 @@ function TechBadge({ name, count, onClick }: {
   return (
     <button
       onClick={onClick}
-      className="px-3 py-1 bg-blue-50 dark:bg-accent/20 text-blue-700 dark:text-accent text-sm rounded-full border border-blue-200 dark:border-accent hover:bg-blue-100 dark:hover:bg-accent/30 transition-all"
+      className="px-6 py-3 border-2 border-neutral-700 text-neutral-300 font-black uppercase tracking-widest text-xs hover:bg-white hover:text-black hover:border-white transition-all"
     >
-      <span className="font-medium">{name}</span>
-      <span className="ml-2">({count})</span>
+      {name} <span className="ml-2 opacity-40">[{count}]</span>
     </button>
   );
 }

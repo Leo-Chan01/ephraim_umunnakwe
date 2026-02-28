@@ -28,7 +28,7 @@ export default function Navbar({ personalInfo, socialLinks }: NavbarProps) {
   ];
 
   return (
-    <nav className="fixed top-0 w-full bg-white dark:bg-primary border-b border-gray-200 dark:border-accent z-50 shadow-sm">
+    <nav className="fixed top-0 w-full bg-secondary/80 dark:bg-primary/80 backdrop-blur-md border-b border-neutral-200 dark:border-neutral-800 z-50 transition-all duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <Link href="/" className="text-2xl font-bold text-gray-900 dark:text-white">
@@ -41,11 +41,10 @@ export default function Navbar({ personalInfo, socialLinks }: NavbarProps) {
               <Link
                 key={item.name}
                 href={item.href}
-                className={`transition-colors ${
-                  router.pathname === item.href
-                    ? 'text-accent dark:text-accent font-semibold'
-                    : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
-                }`}
+                className={`transition-colors ${router.pathname === item.href
+                  ? 'text-accent dark:text-accent font-semibold'
+                  : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
+                  }`}
               >
                 {item.name}
               </Link>
@@ -74,11 +73,10 @@ export default function Navbar({ personalInfo, socialLinks }: NavbarProps) {
                 <Link
                   key={item.name}
                   href={item.href}
-                  className={`block px-3 py-2 rounded-md transition-colors ${
-                    router.pathname === item.href
-                      ? 'text-accent dark:text-accent bg-accent/10 dark:bg-accent/20 font-semibold'
-                      : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-primary'
-                  }`}
+                  className={`block px-3 py-2 rounded-md transition-colors ${router.pathname === item.href
+                    ? 'text-accent dark:text-accent bg-accent/10 dark:bg-accent/20 font-semibold'
+                    : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-primary'
+                    }`}
                   onClick={() => setIsOpen(false)}
                 >
                   {item.name}

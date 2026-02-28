@@ -16,12 +16,12 @@ export default function Footer({ personalInfo, socialLinks }: FooterProps) {
   const visibleSocialLinks = socialLinks.filter(link => link.is_visible);
 
   return (
-    <footer className="bg-light dark:bg-primary border-t border-gray-200 dark:border-accent">
-      <div className="max-w-7xl mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+    <footer className="bg-secondary dark:bg-primary border-t border-neutral-200 dark:border-neutral-800">
+      <div className="max-w-7xl mx-auto px-4 py-20">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
           <div className="col-span-1 md:col-span-2">
-            <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">{displayName}</h3>
-            <div className="flex space-x-4">
+            <h3 className="text-3xl font-bold tracking-tightest text-neutral-900 dark:text-secondary mb-6">{displayName}</h3>
+            <div className="flex flex-wrap gap-3">
               {visibleSocialLinks.length > 0 ? (
                 visibleSocialLinks.map((link) => {
                   // Get appropriate icon component for each platform
@@ -38,12 +38,11 @@ export default function Footer({ personalInfo, socialLinks }: FooterProps) {
                   };
 
                   const { Icon, label } = getIconComponent(link.platform);
-
                   return (
-                    <a 
+                    <a
                       key={link.platform}
-                      href={link.url} 
-                      className="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center hover:bg-blue-200 dark:hover:bg-blue-800 transition-colors group text-blue-600 dark:text-blue-400"
+                      href={link.url}
+                      className="w-12 h-12 bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-none flex items-center justify-center hover:bg-neutral-900 hover:text-white dark:hover:bg-secondary dark:hover:text-primary transition-all duration-200 group text-neutral-600 dark:text-neutral-400"
                       target="_blank"
                       rel="noopener noreferrer"
                       title={`Follow me on ${label}`}
@@ -53,16 +52,12 @@ export default function Footer({ personalInfo, socialLinks }: FooterProps) {
                   );
                 })
               ) : (
-                // Fallback social links with lucide icons
                 <>
-                  <a href="https://github.com" className="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center hover:bg-blue-200 dark:hover:bg-blue-800 transition-colors text-blue-600 dark:text-blue-400" title="GitHub">
+                  <a href="https://github.com" className="w-12 h-12 bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-none flex items-center justify-center hover:bg-neutral-900 hover:text-white dark:hover:bg-secondary dark:hover:text-primary transition-all duration-200" title="GitHub">
                     <Github size={20} />
                   </a>
-                  <a href="https://linkedin.com" className="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center hover:bg-blue-200 dark:hover:bg-blue-800 transition-colors text-blue-600 dark:text-blue-400" title="LinkedIn">
+                  <a href="https://linkedin.com" className="w-12 h-12 bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-none flex items-center justify-center hover:bg-neutral-900 hover:text-white dark:hover:bg-secondary dark:hover:text-primary transition-all duration-200" title="LinkedIn">
                     <Linkedin size={20} />
-                  </a>
-                  <a href="https://twitter.com" className="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center hover:bg-blue-200 dark:hover:bg-blue-800 transition-colors text-blue-600 dark:text-blue-400" title="Twitter">
-                    <Twitter size={20} />
                   </a>
                 </>
               )}
