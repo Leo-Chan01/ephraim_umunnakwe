@@ -17,10 +17,12 @@ export const adminService = {
 
       console.log('Creating project with authenticated user:', user.id);
 
+      const { id: _, ...saveData } = project as any;
+
       const { data, error } = await supabase
         .from('projects')
         .insert([{
-          ...project,
+          ...saveData,
           created_at: new Date().toISOString(),
           updated_at: new Date().toISOString()
         }])
@@ -58,10 +60,12 @@ export const adminService = {
         throw new Error('Authentication required to update projects - no user found');
       }
 
+      const { id: _, created_at, ...updateData } = project as any;
+
       const { data, error } = await supabase
         .from('projects')
         .update({
-          ...project,
+          ...updateData,
           updated_at: new Date().toISOString(),
         })
         .eq('id', id)
@@ -276,10 +280,11 @@ export const adminService = {
 
   // Blog Posts
   async createBlogPost(post: Omit<BlogPost, 'id'>): Promise<BlogPost> {
+    const { id: _, ...saveData } = post as any;
     const { data, error } = await supabase
       .from('blog_posts')
       .insert([{
-        ...post,
+        ...saveData,
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString()
       }])
@@ -291,10 +296,11 @@ export const adminService = {
   },
 
   async updateBlogPost(id: number, post: Partial<BlogPost>): Promise<BlogPost> {
+    const { id: _, created_at, ...updateData } = post as any;
     const { data, error } = await supabase
       .from('blog_posts')
       .update({
-        ...post,
+        ...updateData,
         updated_at: new Date().toISOString()
       })
       .eq('id', id)

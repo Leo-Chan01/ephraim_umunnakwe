@@ -31,11 +31,14 @@ export default function AdminAchievements() {
 
     useEffect(() => {
         if (!mounted) return;
-        if (!isAuthenticated()) {
-            router.push('/admin/login');
-            return;
-        }
-        loadAchievements();
+        const checkAuth = async () => {
+            if (!(await isAuthenticated())) {
+                router.push('/admin/login');
+                return;
+            }
+            loadAchievements();
+        };
+        checkAuth();
     }, [router, mounted]);
 
     const loadAchievements = async () => {

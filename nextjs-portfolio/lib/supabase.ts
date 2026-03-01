@@ -624,13 +624,15 @@ export const portfolioService = {
         throw new Error('Authentication required to create projects');
       }
 
+      const { id: _, ...saveData } = project as any;
+
       const { data, error } = await supabase
         .from('projects')
-        .insert({
-          ...project,
+        .insert([{
+          ...saveData,
           created_at: new Date().toISOString(),
           updated_at: new Date().toISOString()
-        })
+        }])
         .select()
         .single();
 
@@ -663,10 +665,12 @@ export const portfolioService = {
         throw new Error('Authentication required to update projects');
       }
 
+      const { id: _, created_at, ...updateData } = project as any;
+
       const { data, error } = await supabase
         .from('projects')
         .update({
-          ...project,
+          ...updateData,
           updated_at: new Date().toISOString()
         })
         .eq('id', id)
@@ -730,12 +734,15 @@ export const portfolioService = {
     try {
       await testConnection();
 
+      // Ensure we don't send id even if it's in the object
+      const { id, ...saveData } = testimonial as any;
+
       const { data, error } = await supabase
         .from('testimonials')
-        .insert({
-          ...testimonial,
+        .insert([{
+          ...saveData,
           created_at: new Date().toISOString()
-        })
+        }])
         .select()
         .single();
 
@@ -752,9 +759,15 @@ export const portfolioService = {
     try {
       await testConnection();
 
+      // Strip id and other read-only fields
+      const { id: _, created_at, ...updateData } = testimonial as any;
+
       const { data, error } = await supabase
         .from('testimonials')
-        .update(testimonial)
+        .update({
+          ...updateData,
+          updated_at: new Date().toISOString()
+        })
         .eq('id', id)
         .select()
         .single();
@@ -823,9 +836,13 @@ export const portfolioService = {
   async createService(service: Omit<ServiceItem, 'id'>): Promise<ServiceItem> {
     try {
       await testConnection();
+      const { id, ...saveData } = service as any;
       const { data, error } = await supabase
         .from('services')
-        .insert([service])
+        .insert([{
+          ...saveData,
+          created_at: new Date().toISOString()
+        }])
         .select()
         .single();
 
@@ -840,9 +857,13 @@ export const portfolioService = {
   async updateService(id: number, updates: Partial<ServiceItem>): Promise<ServiceItem> {
     try {
       await testConnection();
+      const { id: _, created_at, ...updateData } = updates as any;
       const { data, error } = await supabase
         .from('services')
-        .update({ ...updates, updated_at: new Date().toISOString() })
+        .update({
+          ...updateData,
+          updated_at: new Date().toISOString()
+        })
         .eq('id', id)
         .select()
         .single();
@@ -889,9 +910,13 @@ export const portfolioService = {
   async createExperience(experience: Omit<Experience, 'id'>): Promise<Experience> {
     try {
       await testConnection();
+      const { id, ...saveData } = experience as any;
       const { data, error } = await supabase
         .from('experiences')
-        .insert([experience])
+        .insert([{
+          ...saveData,
+          created_at: new Date().toISOString()
+        }])
         .select()
         .single();
 
@@ -906,9 +931,13 @@ export const portfolioService = {
   async updateExperience(id: number, updates: Partial<Experience>): Promise<Experience> {
     try {
       await testConnection();
+      const { id: _, created_at, ...updateData } = updates as any;
       const { data, error } = await supabase
         .from('experiences')
-        .update({ ...updates, updated_at: new Date().toISOString() })
+        .update({
+          ...updateData,
+          updated_at: new Date().toISOString()
+        })
         .eq('id', id)
         .select()
         .single();
@@ -955,9 +984,13 @@ export const portfolioService = {
   async createSkill(skill: Omit<Skill, 'id'>): Promise<Skill> {
     try {
       await testConnection();
+      const { id, ...saveData } = skill as any;
       const { data, error } = await supabase
         .from('skills')
-        .insert([skill])
+        .insert([{
+          ...saveData,
+          created_at: new Date().toISOString()
+        }])
         .select()
         .single();
 
@@ -972,9 +1005,13 @@ export const portfolioService = {
   async updateSkill(id: number, updates: Partial<Skill>): Promise<Skill> {
     try {
       await testConnection();
+      const { id: _, created_at, ...updateData } = updates as any;
       const { data, error } = await supabase
         .from('skills')
-        .update({ ...updates, updated_at: new Date().toISOString() })
+        .update({
+          ...updateData,
+          updated_at: new Date().toISOString()
+        })
         .eq('id', id)
         .select()
         .single();
@@ -1051,11 +1088,15 @@ export const portfolioService = {
     }
   },
 
-  async createAchievement(achievement: Achievement): Promise<Achievement> {
+  async createAchievement(achievement: Omit<Achievement, 'id'>): Promise<Achievement> {
     try {
+      const { id, ...saveData } = achievement as any;
       const { data, error } = await supabase
         .from('achievements')
-        .insert(achievement)
+        .insert([{
+          ...saveData,
+          created_at: new Date().toISOString()
+        }])
         .select()
         .single();
 
@@ -1069,9 +1110,13 @@ export const portfolioService = {
 
   async updateAchievement(id: number, achievement: Partial<Achievement>): Promise<Achievement> {
     try {
+      const { id: _, created_at, ...updateData } = achievement as any;
       const { data, error } = await supabase
         .from('achievements')
-        .update(achievement)
+        .update({
+          ...updateData,
+          updated_at: new Date().toISOString()
+        })
         .eq('id', id)
         .select()
         .single();

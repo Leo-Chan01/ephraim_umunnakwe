@@ -24,6 +24,38 @@ BEGIN
     END IF;
 END $$;
 
+-- 4. Services
+DO $$ 
+BEGIN 
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='services' AND column_name='order_index') THEN
+        ALTER TABLE public.services ADD COLUMN order_index INTEGER DEFAULT 0;
+    END IF;
+END $$;
+
+-- 5. Experiences
+DO $$ 
+BEGIN 
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='experiences' AND column_name='order_index') THEN
+        ALTER TABLE public.experiences ADD COLUMN order_index INTEGER DEFAULT 0;
+    END IF;
+END $$;
+
+-- 6. Skills
+DO $$ 
+BEGIN 
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='skills' AND column_name='order_index') THEN
+        ALTER TABLE public.skills ADD COLUMN order_index INTEGER DEFAULT 0;
+    END IF;
+END $$;
+
+-- 7. Achievements
+DO $$ 
+BEGIN 
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='achievements' AND column_name='order_index') THEN
+        ALTER TABLE public.achievements ADD COLUMN order_index INTEGER DEFAULT 0;
+    END IF;
+END $$;
+
 -- Initialize order_index with existing IDs to maintain a stable starting order
 UPDATE public.projects SET order_index = id WHERE order_index = 0;
 UPDATE public.testimonials SET order_index = id WHERE order_index = 0;
