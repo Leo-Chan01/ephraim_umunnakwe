@@ -14,6 +14,7 @@ export default function AdminProfile() {
     phone: '',
     location: '',
     bio: '',
+    years_of_experience: 0,
   });
   const [socialLinks, setSocialLinks] = useState<SocialLink[]>([
     { platform: 'GitHub', url: '', is_visible: true },
@@ -158,6 +159,16 @@ export default function AdminProfile() {
                     value={personalInfo.location}
                     onChange={(e) => setPersonalInfo({ ...personalInfo, location: e.target.value })}
                     className="w-full bg-neutral-50 dark:bg-neutral-900 border-4 border-neutral-200 dark:border-neutral-800 text-neutral-900 dark:text-white px-6 py-4 focus:outline-none focus:border-accent font-bold transition-all"
+                  />
+                </div>
+                <div className="space-y-3">
+                  <label className="text-xs font-black uppercase tracking-tightest text-neutral-400">YEARS OF EXPERIENCE</label>
+                  <input
+                    type="number"
+                    value={personalInfo.years_of_experience || 0}
+                    onChange={(e) => setPersonalInfo({ ...personalInfo, years_of_experience: parseInt(e.target.value) || 0 })}
+                    className="w-full bg-neutral-50 dark:bg-neutral-900 border-4 border-neutral-200 dark:border-neutral-800 text-neutral-900 dark:text-white px-6 py-4 focus:outline-none focus:border-accent font-bold transition-all"
+                    placeholder="e.g. 8"
                   />
                 </div>
               </div>

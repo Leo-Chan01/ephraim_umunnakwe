@@ -1,5 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
-import { Project, Testimonial, SocialLink, PersonalInfo, BlogPost, ServiceItem, Experience, Skill } from '../types/portfolio';
+import { Project, Testimonial, SocialLink, PersonalInfo, BlogPost, ServiceItem, Experience, Skill, Achievement } from '../types/portfolio';
 
 const supabaseUrl = 'https://cecsvrwibdvncrxbbctr.supabase.co';
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNlY3N2cndpYmR2bmNyeGJiY3RyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1MjA3ODEsImV4cCI6MjA3MDA5Njc4MX0.dqSqaL37yCozA39pb61rnVzHmU0Jo_RH8vfisACAqS4';
@@ -86,8 +86,8 @@ export const portfolioService = {
       }
 
       const fileExt = file.name.split('.').pop();
-      const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`;
-      const filePath = `project-previews/${fileName}`;
+      const fileName = `${Date.now()} -${Math.random().toString(36).substring(2)}.${fileExt} `;
+      const filePath = `project - previews / ${fileName} `;
 
       console.log('Uploading file:', { fileName, fileSize: file.size, fileType: file.type });
 
@@ -100,7 +100,7 @@ export const portfolioService = {
 
       if (error) {
         console.error('Supabase storage error:', error);
-        throw new Error(`Upload failed: ${error.message}`);
+        throw new Error(`Upload failed: ${error.message} `);
       }
 
       console.log('Upload successful:', data);
@@ -315,7 +315,7 @@ export const portfolioService = {
       if (error) throw error;
       return data;
     } catch (error) {
-      console.error(`Error fetching blog post with slug ${slug}:`, error);
+      console.error(`Error fetching blog post with slug ${slug}: `, error);
       return null;
     }
   },
@@ -343,7 +343,7 @@ export const portfolioService = {
         this.getPersonalInfo(),
       ]);
 
-      console.log(`Data loaded successfully. Online: ${isOnline}`);
+      console.log(`Data loaded successfully.Online: ${isOnline} `);
 
       return {
         projects,
@@ -454,6 +454,7 @@ export const portfolioService = {
             phone: personalInfo.phone,
             location: personalInfo.location,
             bio: personalInfo.bio,
+            years_of_experience: personalInfo.years_of_experience,
             profile_image_url: personalInfo.profile_image_url
           })
           .eq('id', existing.id)
@@ -473,6 +474,7 @@ export const portfolioService = {
             phone: personalInfo.phone,
             location: personalInfo.location,
             bio: personalInfo.bio,
+            years_of_experience: personalInfo.years_of_experience || 0,
             profile_image_url: personalInfo.profile_image_url
           })
           .select()
@@ -632,7 +634,7 @@ export const portfolioService = {
           hint: error.hint,
           code: error.code
         });
-        throw new Error(`Database error: ${error.message}${error.details ? ` (Details: ${error.details})` : ''}${error.hint ? ` (Hint: ${error.hint})` : ''}`);
+        throw new Error(`Database error: ${error.message}${error.details ? ` (Details: ${error.details})` : ''}${error.hint ? ` (Hint: ${error.hint})` : ''} `);
       }
       return data;
     } catch (error) {
@@ -671,7 +673,7 @@ export const portfolioService = {
           hint: error.hint,
           code: error.code
         });
-        throw new Error(`Database error: ${error.message}${error.details ? ` (Details: ${error.details})` : ''}${error.hint ? ` (Hint: ${error.hint})` : ''}`);
+        throw new Error(`Database error: ${error.message}${error.details ? ` (Details: ${error.details})` : ''}${error.hint ? ` (Hint: ${error.hint})` : ''} `);
       }
       return data;
     } catch (error) {
@@ -705,7 +707,7 @@ export const portfolioService = {
           hint: error.hint,
           code: error.code
         });
-        throw new Error(`Database error: ${error.message}${error.details ? ` (Details: ${error.details})` : ''}${error.hint ? ` (Hint: ${error.hint})` : ''}`);
+        throw new Error(`Database error: ${error.message}${error.details ? ` (Details: ${error.details})` : ''}${error.hint ? ` (Hint: ${error.hint})` : ''} `);
       }
     } catch (error) {
       console.error('Full error object:', error);
@@ -1024,4 +1026,68 @@ export const portfolioService = {
       };
     }
   },
+
+  // ACHIEVEMENTS
+  async getAchievements(): Promise<Achievement[]> {
+    try {
+      await testConnection();
+      const { data, error } = await supabase
+        .from('achievements')
+        .select('*')
+        .order('order_index', { ascending: true });
+
+      if (error) throw error;
+      return data || [];
+    } catch (error) {
+      console.error('Error fetching achievements:', error);
+      return [];
+    }
+  },
+
+  async createAchievement(achievement: Achievement): Promise<Achievement> {
+    try {
+      const { data, error } = await supabase
+        .from('achievements')
+        .insert(achievement)
+        .select()
+        .single();
+
+      if (error) throw error;
+      return data;
+    } catch (error) {
+      console.error('Error creating achievement:', error);
+      throw error;
+    }
+  },
+
+  async updateAchievement(id: number, achievement: Partial<Achievement>): Promise<Achievement> {
+    try {
+      const { data, error } = await supabase
+        .from('achievements')
+        .update(achievement)
+        .eq('id', id)
+        .select()
+        .single();
+
+      if (error) throw error;
+      return data;
+    } catch (error) {
+      console.error('Error updating achievement:', error);
+      throw error;
+    }
+  },
+
+  async deleteAchievement(id: number): Promise<void> {
+    try {
+      const { error } = await supabase
+        .from('achievements')
+        .delete()
+        .eq('id', id);
+
+      if (error) throw error;
+    } catch (error) {
+      console.error('Error deleting achievement:', error);
+      throw error;
+    }
+  }
 };

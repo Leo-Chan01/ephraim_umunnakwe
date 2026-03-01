@@ -1,56 +1,63 @@
 import { GetStaticProps } from 'next';
-import { Link, User } from 'lucide-react';
+import Link from 'next/link';
+import { User, Award, Trophy, Target, Cpu, Cloud, Zap } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import { portfolioService } from '../lib/supabase';
-import { PersonalInfo, Experience, Skill } from '../types/portfolio';
+import { PersonalInfo, Experience, Skill, Achievement } from '../types/portfolio';
 
 interface AboutProps {
   personalInfo: PersonalInfo | null;
   initialExperiences: Experience[];
   initialSkills: Skill[];
+  initialAchievements: Achievement[];
   totalProjects: number;
 }
 
-export default function About({ personalInfo, initialExperiences, initialSkills, totalProjects }: AboutProps) {
+export default function About({ personalInfo, initialExperiences, initialSkills, initialAchievements, totalProjects }: AboutProps) {
   const [experiences, setExperiences] = useState<Experience[]>(initialExperiences);
   const [skills, setSkills] = useState<Skill[]>(initialSkills);
+  const [achievements, setAchievements] = useState<Achievement[]>(initialAchievements);
   const [projectCount, setProjectCount] = useState<number>(totalProjects);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [expData, skillData, stats] = await Promise.all([
+        const [expData, skillData, achievementData, stats] = await Promise.all([
           portfolioService.getExperiences(),
           portfolioService.getSkills(),
+          portfolioService.getAchievements(),
           portfolioService.getDashboardStats()
         ]);
 
         if (expData && expData.length > 0) setExperiences(expData);
         if (skillData && skillData.length > 0) setSkills(skillData);
+        if (achievementData && achievementData.length > 0) setAchievements(achievementData);
         if (stats && stats.projects > 0) setProjectCount(stats.projects);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     };
 
-    if (!initialExperiences?.length || !initialSkills?.length || totalProjects === 0) {
+    if (!initialExperiences?.length || !initialSkills?.length || !initialAchievements?.length || totalProjects === 0) {
       fetchData();
     }
-  }, [initialExperiences, initialSkills, totalProjects]);
+  }, [initialExperiences, initialSkills, initialAchievements, totalProjects]);
 
-  const skills_list = [
-    { name: 'Flutter/Dart', level: 90 },
-    { name: 'React Native', level: 87 },
-    { name: 'Next.js', level: 80 },
-    { name: 'Node.js', level: 75 },
-    { name: 'Python', level: 80 },
-    { name: 'TypeScript', level: 89 },
-    { name: 'PostgreSQL', level: 85 },
-  ];
+  const getAchievementIcon = (iconName?: string) => {
+    switch (iconName) {
+      case 'Award': return <Award size={24} />;
+      case 'Trophy': return <Trophy size={24} />;
+      case 'Target': return <Target size={24} />;
+      case 'Cpu': return <Cpu size={24} />;
+      case 'Cloud': return <Cloud size={24} />;
+      case 'Zap': return <Zap size={24} />;
+      default: return <Award size={24} />;
+    }
+  };
 
   return (
-    <Layout title={`About - ${personalInfo?.name || 'Ephraim Umunnakwe'}`}>
+    <Layout title={`About - ${personalInfo?.name || 'Ephraim Umunnakwe'} `}>
       {/* Hero Section */}
       <section className="mt-16 py-32 px-4 bg-secondary dark:bg-primary border-b border-neutral-200 dark:border-neutral-800">
         <div className="max-w-7xl mx-auto">
@@ -104,7 +111,7 @@ export default function About({ personalInfo, initialExperiences, initialSkills,
                 <div className="w-full bg-neutral-100 dark:bg-neutral-800 h-4 border-2 border-neutral-900 dark:border-neutral-700">
                   <div
                     className="bg-accent h-full transition-all duration-1000"
-                    style={{ width: `${skill.level}%` }}
+                    style={{ width: `${skill.level}% ` }}
                   ></div>
                 </div>
               </div>
@@ -114,7 +121,7 @@ export default function About({ personalInfo, initialExperiences, initialSkills,
       </section>
 
       {/* Experience Section */}
-      <section className="py-32 px-4 bg-secondary dark:bg-primary">
+      <section className="py-32 px-4 bg-secondary dark:bg-primary border-b border-neutral-200 dark:border-neutral-800">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-4xl md:text-6xl font-black tracking-tighter text-neutral-900 dark:text-secondary mb-20 uppercase">Experience</h2>
           <div className="space-y-12">
@@ -133,6 +140,32 @@ export default function About({ personalInfo, initialExperiences, initialSkills,
           </div>
         </div>
       </section>
+
+      {/* Achievements Section */}
+      {achievements.length > 0 && (
+        <section className="py-32 px-4 bg-neutral-50 dark:bg-primary">
+          <div className="max-w-7xl mx-auto">
+            <h2 className="text-4xl md:text-6xl font-black tracking-tighter text-neutral-900 dark:text-secondary mb-20 uppercase">Achievements</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+              {achievements.map((achievement) => (
+                <div key={achievement.id} className="bg-white dark:bg-primary p-10 border-4 border-neutral-900 dark:border-neutral-800 flex items-start gap-8 group hover:translate-x-2 transition-transform">
+                  <div className="w-16 h-16 bg-neutral-900 dark:bg-accent flex items-center justify-center text-white shrink-0">
+                    {getAchievementIcon(achievement.icon)}
+                  </div>
+                  <div>
+                    <div className="flex justify-between items-start mb-2">
+                      <h3 className="text-2xl font-black text-neutral-900 dark:text-white uppercase tracking-tighter">{achievement.title}</h3>
+                      <span className="text-accent font-black">{achievement.year}</span>
+                    </div>
+                    <p className="text-neutral-500 font-bold uppercase tracking-widest text-xs mb-4">{achievement.organization}</p>
+                    <p className="text-neutral-600 dark:text-neutral-400 font-medium leading-relaxed">{achievement.description}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* CTA Section */}
       <section className="py-40 px-4 bg-accent text-white">
@@ -156,10 +189,11 @@ export default function About({ personalInfo, initialExperiences, initialSkills,
 
 export const getStaticProps: GetStaticProps = async () => {
   try {
-    const [personalInfo, experiences, skills, stats] = await Promise.all([
+    const [personalInfo, experiences, skills, achievements, stats] = await Promise.all([
       portfolioService.getPersonalInfo(),
       portfolioService.getExperiences(),
       portfolioService.getSkills(),
+      portfolioService.getAchievements(),
       portfolioService.getDashboardStats()
     ]);
 
@@ -168,6 +202,7 @@ export const getStaticProps: GetStaticProps = async () => {
         personalInfo,
         initialExperiences: experiences,
         initialSkills: skills,
+        initialAchievements: achievements,
         totalProjects: stats.projects || 0
       },
     };
@@ -177,6 +212,7 @@ export const getStaticProps: GetStaticProps = async () => {
         personalInfo: null,
         initialExperiences: [],
         initialSkills: [],
+        initialAchievements: [],
         totalProjects: 0
       },
     };

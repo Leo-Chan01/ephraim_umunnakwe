@@ -52,6 +52,17 @@ export interface Skill {
   created_at?: string;
 }
 
+export interface Achievement {
+  id?: number;
+  title: string;
+  organization: string;
+  year: string;
+  description?: string;
+  icon?: string;
+  order_index?: number;
+  created_at?: string;
+}
+
 export interface PersonalInfo {
   id?: number;
   name: string;
