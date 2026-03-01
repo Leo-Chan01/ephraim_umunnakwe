@@ -5,6 +5,7 @@ import { isAuthenticated, isAuthenticatedSync } from '../../lib/auth';
 import { AdminLayout } from '../../components/admin';
 import { Skill } from '../../types/portfolio';
 import { portfolioService } from '../../lib/supabase';
+import { SortableList } from '../../components/admin/SortableList';
 
 export default function AdminSkills() {
     const [skills, setSkills] = useState<Skill[]>([]);
@@ -66,7 +67,12 @@ export default function AdminSkills() {
                 const updated = await portfolioService.updateSkill(editingSkill.id, skill);
                 setSkills(skills.map(s => s.id === editingSkill.id ? updated : s));
             } else {
-                const created = await portfolioService.createSkill(skill);
+                // Set order_index for new skill
+                const newSkill = {
+                    ...skill,
+                    order_index: skills.length > 0 ? Math.max(...skills.map(s => s.order_index || 0)) + 1 : 0
+                };
+                const created = await portfolioService.createSkill(newSkill);
                 setSkills([...skills, created]);
             }
             setShowForm(false);
@@ -74,6 +80,24 @@ export default function AdminSkills() {
         } catch (error) {
             console.error('Error saving skill:', error);
             alert('Failed to save skill');
+        }
+    };
+
+    const handleReorder = async (reorderedSkills: Skill[]) => {
+        const originalSkills = [...skills];
+        setSkills(reorderedSkills);
+
+        try {
+            const updates = reorderedSkills.map((s, index) => ({
+                id: s.id!,
+                order_index: index,
+            }));
+
+            await portfolioService.updateOrder('skills', updates);
+        } catch (error) {
+            console.error('Error updating skill order:', error);
+            setSkills(originalSkills);
+            alert('Failed to save skill order');
         }
     };
 
@@ -107,9 +131,12 @@ export default function AdminSkills() {
                     <p className="text-neutral-400 font-black uppercase tracking-widest text-xs">Syncing artifacts...</p>
                 </div>
             ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {skills.map((skill) => (
-                        <div key={skill.id} className="bg-white dark:bg-primary border-4 border-neutral-900 dark:border-neutral-800 p-8 hover:translate-x-1 hover:-translate-y-1 transition-transform group">
+                <SortableList
+                    items={skills}
+                    onReorder={handleReorder}
+                    className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+                    renderItem={(skill) => (
+                        <div className="bg-white dark:bg-primary border-4 border-neutral-900 dark:border-neutral-800 p-8 hover:translate-x-1 hover:-translate-y-1 transition-transform h-full group">
                             <div className="flex justify-between items-start mb-6">
                                 <div className="bg-neutral-900 dark:bg-accent p-3 text-white">
                                     <Award size={20} />
@@ -130,7 +157,10 @@ export default function AdminSkills() {
                                 </div>
                             </div>
                             <h3 className="text-2xl font-black text-neutral-900 dark:text-white uppercase tracking-tighter mb-2">{skill.name}</h3>
-                            <p className="text-neutral-500 font-bold uppercase tracking-widest text-[10px] mb-6">{skill.category || 'GENERAL'}</p>
+                            <div className="flex justify-between items-center mb-6">
+                                <p className="text-neutral-500 font-bold uppercase tracking-widest text-[10px]">{skill.category || 'GENERAL'}</p>
+                                <span className="text-[10px] text-neutral-300">ORD: {skill.order_index}</span>
+                            </div>
 
                             <div className="space-y-4">
                                 <div className="flex justify-between items-end">
@@ -145,8 +175,8 @@ export default function AdminSkills() {
                                 </div>
                             </div>
                         </div>
-                    ))}
-                </div>
+                    )}
+                />
             )}
 
             {showForm && (

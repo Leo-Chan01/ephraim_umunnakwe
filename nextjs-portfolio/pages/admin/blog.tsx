@@ -6,6 +6,8 @@ import { AdminLayout } from '../../components/admin';
 import { BlogPost } from '../../types/portfolio';
 import { portfolioService } from '../../lib/supabase';
 import { adminService } from '../../lib/admin-service';
+import { SortableList } from '../../components/admin/SortableList';
+import { verticalListSortingStrategy } from '@dnd-kit/sortable';
 
 export default function AdminBlog() {
     const [posts, setPosts] = useState<BlogPost[]>([]);
@@ -68,7 +70,12 @@ export default function AdminBlog() {
                 const updated = await adminService.updateBlogPost(post.id!, post);
                 setPosts(posts.map(p => p.id === post.id ? updated : p));
             } else {
-                const created = await adminService.createBlogPost(post);
+                // Set order_index for new post
+                const newPost = {
+                    ...post,
+                    order_index: posts.length > 0 ? Math.max(...posts.map(p => p.order_index || 0)) + 1 : 0
+                };
+                const created = await adminService.createBlogPost(newPost);
                 setPosts([...posts, created]);
             }
             setShowForm(false);
@@ -76,6 +83,24 @@ export default function AdminBlog() {
         } catch (error) {
             console.error('Error saving post:', error);
             alert('Failed to save post');
+        }
+    };
+
+    const handleReorder = async (reorderedPosts: BlogPost[]) => {
+        const originalPosts = [...posts];
+        setPosts(reorderedPosts);
+
+        try {
+            const updates = reorderedPosts.map((p, index) => ({
+                id: p.id!,
+                order_index: index,
+            }));
+
+            await portfolioService.updateOrder('blog_posts', updates);
+        } catch (error) {
+            console.error('Error updating blog order:', error);
+            setPosts(originalPosts);
+            alert('Failed to save blog order');
         }
     };
 
@@ -109,9 +134,13 @@ export default function AdminBlog() {
                     <p className="text-neutral-400 font-black uppercase tracking-widest text-xs">Syncing reports...</p>
                 </div>
             ) : (
-                <div className="grid grid-cols-1 gap-6">
-                    {posts.map((post) => (
-                        <div key={post.id} className="bg-white dark:bg-primary border-4 border-neutral-900 dark:border-neutral-800 p-8 flex flex-col md:flex-row justify-between items-center group hover:bg-neutral-900 transition-all duration-300">
+                <SortableList
+                    items={posts}
+                    onReorder={handleReorder}
+                    strategy={verticalListSortingStrategy}
+                    className="grid grid-cols-1 gap-6"
+                    renderItem={(post) => (
+                        <div className="bg-white dark:bg-primary border-4 border-neutral-900 dark:border-neutral-800 p-8 flex flex-col md:flex-row justify-between items-center group hover:bg-neutral-900 transition-all duration-300">
                             <div className="flex items-center gap-8 w-full md:w-auto">
                                 <div className="w-16 h-16 bg-neutral-100 dark:bg-neutral-900 flex items-center justify-center shrink-0 border-2 border-neutral-200 dark:border-neutral-800 group-hover:bg-white transition-colors">
                                     <FileText className="text-neutral-400 group-hover:text-accent" />
@@ -125,6 +154,7 @@ export default function AdminBlog() {
                                             {post.is_published ? <Check size={12} /> : <X size={12} />}
                                             {post.is_published ? 'Published' : 'Draft'}
                                         </span>
+                                        <span className="text-[10px] text-neutral-300">ORD: {post.order_index}</span>
                                     </div>
                                 </div>
                             </div>
@@ -154,13 +184,13 @@ export default function AdminBlog() {
                                 </button>
                             </div>
                         </div>
-                    ))}
-
-                    {posts.length === 0 && (
-                        <div className="py-20 text-center border-4 border-dashed border-neutral-100 dark:border-neutral-800">
-                            <p className="text-neutral-400 font-black uppercase tracking-widest text-xs">No entries found in archive.</p>
-                        </div>
                     )}
+                />
+            )}
+
+            {posts.length === 0 && !isLoading && (
+                <div className="py-20 text-center border-4 border-dashed border-neutral-100 dark:border-neutral-800">
+                    <p className="text-neutral-400 font-black uppercase tracking-widest text-xs">No entries found in archive.</p>
                 </div>
             )}
 

@@ -5,6 +5,7 @@ import { isAuthenticated, isAuthenticatedSync } from '../../lib/auth';
 import { AdminLayout } from '../../components/admin';
 import { ServiceItem } from '../../types/portfolio';
 import { portfolioService } from '../../lib/supabase';
+import { SortableList } from '../../components/admin/SortableList';
 
 export default function AdminServices() {
     const [services, setServices] = useState<ServiceItem[]>([]);
@@ -66,7 +67,12 @@ export default function AdminServices() {
                 const updated = await portfolioService.updateService(editingService.id, service);
                 setServices(services.map(s => s.id === editingService.id ? updated : s));
             } else {
-                const created = await portfolioService.createService(service);
+                // Set order_index for new service
+                const newService = {
+                    ...service,
+                    order_index: services.length > 0 ? Math.max(...services.map(s => s.order_index || 0)) + 1 : 0
+                };
+                const created = await portfolioService.createService(newService);
                 setServices([...services, created]);
             }
             setShowForm(false);
@@ -74,6 +80,24 @@ export default function AdminServices() {
         } catch (error) {
             console.error('Error saving service:', error);
             alert('Failed to save service');
+        }
+    };
+
+    const handleReorder = async (reorderedServices: ServiceItem[]) => {
+        const originalServices = [...services];
+        setServices(reorderedServices);
+
+        try {
+            const updates = reorderedServices.map((s, index) => ({
+                id: s.id!,
+                order_index: index,
+            }));
+
+            await portfolioService.updateOrder('services', updates);
+        } catch (error) {
+            console.error('Error updating service order:', error);
+            setServices(originalServices);
+            alert('Failed to save service order');
         }
     };
 
@@ -119,9 +143,12 @@ export default function AdminServices() {
                     <p className="text-neutral-400 font-black uppercase tracking-widest text-xs">Syncing artifacts...</p>
                 </div>
             ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-10">
-                    {services.map((service) => (
-                        <div key={service.id || service.title} className="bg-white dark:bg-primary border-4 border-neutral-900 dark:border-neutral-800 flex flex-col group hover:translate-x-1 hover:-translate-y-1 transition-transform p-8">
+                <SortableList
+                    items={services}
+                    onReorder={handleReorder}
+                    className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-10"
+                    renderItem={(service) => (
+                        <div className="bg-white dark:bg-primary border-4 border-neutral-900 dark:border-neutral-800 flex flex-col h-full group hover:translate-x-1 hover:-translate-y-1 transition-transform p-8">
                             <div className="flex justify-between items-start mb-6">
                                 <div className="w-12 h-12 bg-neutral-900 dark:bg-accent flex items-center justify-center text-white">
                                     {getIcon(service.icon)}
@@ -161,8 +188,8 @@ export default function AdminServices() {
                                 </div>
                             </div>
                         </div>
-                    ))}
-                </div>
+                    )}
+                />
             )}
 
             {showForm && (

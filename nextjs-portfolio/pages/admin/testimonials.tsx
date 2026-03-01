@@ -5,6 +5,7 @@ import { isAuthenticated, isAuthenticatedSync } from '../../lib/auth';
 import { AdminLayout } from '../../components/admin';
 import { Testimonial } from '../../types/portfolio';
 import { portfolioService } from '../../lib/supabase';
+import { SortableList } from '../../components/admin/SortableList';
 import { adminService } from '../../lib/admin-service';
 
 export default function AdminTestimonials() {
@@ -63,11 +64,16 @@ export default function AdminTestimonials() {
 
   const handleSave = async (testimonial: Testimonial) => {
     try {
-      if (editingTestimonial) {
-        const updated = await adminService.updateTestimonial(testimonial.id!, testimonial);
-        setTestimonials(testimonials.map(t => t.id === testimonial.id ? updated : t));
+      if (editingTestimonial?.id) {
+        const updated = await portfolioService.updateTestimonial(editingTestimonial.id, testimonial);
+        setTestimonials(testimonials.map(t => t.id === editingTestimonial.id ? updated : t));
       } else {
-        const created = await adminService.createTestimonial(testimonial);
+        // Set order_index for new testimonial
+        const newTestimonial = {
+          ...testimonial,
+          order_index: testimonials.length > 0 ? Math.max(...testimonials.map(t => t.order_index || 0)) + 1 : 0
+        };
+        const created = await portfolioService.createTestimonial(newTestimonial);
         setTestimonials([...testimonials, created]);
       }
       setShowForm(false);
@@ -75,6 +81,24 @@ export default function AdminTestimonials() {
     } catch (error) {
       console.error('Error saving testimonial:', error);
       alert('Failed to save testimonial');
+    }
+  };
+
+  const handleReorder = async (reorderedTestimonials: Testimonial[]) => {
+    const originalTestimonials = [...testimonials];
+    setTestimonials(reorderedTestimonials);
+
+    try {
+      const updates = reorderedTestimonials.map((t, index) => ({
+        id: t.id!,
+        order_index: index,
+      }));
+
+      await portfolioService.updateOrder('testimonials', updates);
+    } catch (error) {
+      console.error('Error updating testimonial order:', error);
+      setTestimonials(originalTestimonials);
+      alert('Failed to save testimonial order');
     }
   };
 
@@ -105,20 +129,25 @@ export default function AdminTestimonials() {
       {isLoading ? (
         <div className="py-20 text-center border-4 border-dashed border-neutral-100 dark:border-neutral-800">
           <div className="animate-spin w-12 h-12 border-t-4 border-accent mx-auto mb-6"></div>
-          <p className="text-neutral-400 font-black uppercase tracking-widest text-xs">Retrieving database items...</p>
+          <p className="text-neutral-400 font-black uppercase tracking-widest text-xs">Syncing artifacts...</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {testimonials.map((testimonial) => (
-            <div key={testimonial.id} className="bg-white dark:bg-primary p-10 border-4 border-neutral-900 dark:border-neutral-800 group hover:translate-x-1 hover:-translate-y-1 transition-transform">
-              <div className="flex justify-between items-start mb-8">
-                <div className="flex items-center space-x-4">
-                  <div className="w-14 h-14 bg-neutral-900 dark:bg-accent flex items-center justify-center text-white border-2 border-neutral-800">
-                    <User size={24} />
-                  </div>
+        <SortableList
+          items={testimonials}
+          onReorder={handleReorder}
+          className="grid grid-cols-1 md:grid-cols-2 gap-10"
+          renderItem={(testimonial) => (
+            <div className="bg-white dark:bg-primary border-4 border-neutral-900 dark:border-neutral-800 p-8 flex flex-col h-full group hover:translate-x-1 hover:-translate-y-1 transition-transform relative">
+              <div className="flex justify-between items-start mb-6">
+                <div className="flex items-center gap-4">
+                  {testimonial.avatar_url ? (
+                    <img src={testimonial.avatar_url} alt={testimonial.author} className="w-16 h-16 border-4 border-neutral-900 dark:border-neutral-800 object-cover" />
+                  ) : (
+                    <div className="w-16 h-16 bg-neutral-100 dark:bg-neutral-900 border-4 border-neutral-900 dark:border-neutral-800" />
+                  )}
                   <div>
-                    <h3 className="text-xl font-black text-neutral-900 dark:text-white uppercase tracking-tight">{testimonial.author}</h3>
-                    <p className="text-xs font-black text-accent uppercase tracking-widest">{testimonial.role}</p>
+                    <h3 className="text-xl font-black text-neutral-900 dark:text-white uppercase tracking-tighter">{testimonial.author}</h3>
+                    <p className="text-accent font-bold uppercase tracking-widest text-[10px]">{testimonial.role}</p>
                   </div>
                 </div>
                 <div className="flex space-x-2">
@@ -136,31 +165,22 @@ export default function AdminTestimonials() {
                   </button>
                 </div>
               </div>
-
-              <div className="relative mb-8">
-                <Quote className="absolute -top-4 -left-4 text-neutral-100 dark:text-neutral-900 w-12 h-12 -z-10" />
-                <p className="text-neutral-600 dark:text-neutral-400 font-medium leading-relaxed italic line-clamp-4 text-lg">
-                  "{testimonial.message}"
-                </p>
-              </div>
-
-              <div className="flex items-center justify-between pt-8 border-t-2 border-neutral-50 dark:border-neutral-900">
-                <div className="flex items-center space-x-1">
+              <p className="text-neutral-500 dark:text-neutral-400 font-medium text-sm italic mb-8 flex-1">
+                "{testimonial.message}"
+              </p>
+              <div className="flex justify-between items-center pt-6 border-t-2 border-neutral-50 dark:border-neutral-900">
+                <div className="flex text-accent">
                   {[...Array(5)].map((_, i) => (
-                    <Star
-                      key={i}
-                      size={14}
-                      className={i < testimonial.rating ? 'text-accent fill-accent' : 'text-neutral-200 dark:text-neutral-800'}
-                    />
+                    <svg key={i} className={`w-4 h-4 ${i < testimonial.rating ? 'fill-current' : 'text-neutral-200 dark:text-neutral-800'}`} viewBox="0 0 20 20">
+                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                    </svg>
                   ))}
                 </div>
-                <span className="text-[10px] font-black uppercase tracking-widest text-neutral-400">
-                  Registered: {testimonial.created_at ? new Date(testimonial.created_at).toLocaleDateString() : 'Unknown'}
-                </span>
+                <span className="text-[10px] text-neutral-300">ORD: {testimonial.order_index}</span>
               </div>
             </div>
-          ))}
-        </div>
+          )}
+        />
       )}
 
       {showForm && (

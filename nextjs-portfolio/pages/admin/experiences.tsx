@@ -5,6 +5,8 @@ import { isAuthenticated, isAuthenticatedSync } from '../../lib/auth';
 import { AdminLayout } from '../../components/admin';
 import { Experience } from '../../types/portfolio';
 import { portfolioService } from '../../lib/supabase';
+import { SortableList } from '../../components/admin/SortableList';
+import { verticalListSortingStrategy } from '@dnd-kit/sortable';
 
 export default function AdminExperiences() {
     const [experiences, setExperiences] = useState<Experience[]>([]);
@@ -66,7 +68,12 @@ export default function AdminExperiences() {
                 const updated = await portfolioService.updateExperience(editingExperience.id, experience);
                 setExperiences(experiences.map(exp => exp.id === editingExperience.id ? updated : exp));
             } else {
-                const created = await portfolioService.createExperience(experience);
+                // Set order_index for new experience
+                const newExperience = {
+                    ...experience,
+                    order_index: experiences.length > 0 ? Math.max(...experiences.map(e => e.order_index || 0)) + 1 : 0
+                };
+                const created = await portfolioService.createExperience(newExperience);
                 setExperiences([...experiences, created]);
             }
             setShowForm(false);
@@ -74,6 +81,24 @@ export default function AdminExperiences() {
         } catch (error) {
             console.error('Error saving experience:', error);
             alert('Failed to save experience');
+        }
+    };
+
+    const handleReorder = async (reorderedExperiences: Experience[]) => {
+        const originalExperiences = [...experiences];
+        setExperiences(reorderedExperiences);
+
+        try {
+            const updates = reorderedExperiences.map((e, index) => ({
+                id: e.id!,
+                order_index: index,
+            }));
+
+            await portfolioService.updateOrder('experiences', updates);
+        } catch (error) {
+            console.error('Error updating experience order:', error);
+            setExperiences(originalExperiences);
+            alert('Failed to save experience order');
         }
     };
 
@@ -107,9 +132,13 @@ export default function AdminExperiences() {
                     <p className="text-neutral-400 font-black uppercase tracking-widest text-xs">Syncing artifacts...</p>
                 </div>
             ) : (
-                <div className="space-y-6">
-                    {experiences.map((experience) => (
-                        <div key={experience.id} className="bg-white dark:bg-primary border-4 border-neutral-900 dark:border-neutral-800 p-8 hover:translate-x-1 hover:-translate-y-1 transition-transform group">
+                <SortableList
+                    items={experiences}
+                    onReorder={handleReorder}
+                    strategy={verticalListSortingStrategy}
+                    className="space-y-6"
+                    renderItem={(experience) => (
+                        <div className="bg-white dark:bg-primary border-4 border-neutral-900 dark:border-neutral-800 p-8 hover:translate-x-1 hover:-translate-y-1 transition-transform group">
                             <div className="flex flex-col md:flex-row justify-between gap-6">
                                 <div className="space-y-4 flex-1">
                                     <div className="flex items-center gap-4">
@@ -126,6 +155,7 @@ export default function AdminExperiences() {
                                             <Calendar size={14} />
                                             {experience.period}
                                         </div>
+                                        <div className="ml-auto text-[10px] text-neutral-300">ORD: {experience.order_index}</div>
                                     </div>
                                     <p className="text-neutral-500 dark:text-neutral-400 font-medium text-sm leading-relaxed max-w-4xl">
                                         {experience.description}
@@ -147,8 +177,8 @@ export default function AdminExperiences() {
                                 </div>
                             </div>
                         </div>
-                    ))}
-                </div>
+                    )}
+                />
             )}
 
             {showForm && (

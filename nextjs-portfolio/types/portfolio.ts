@@ -11,6 +11,7 @@ export interface Project {
   preview_image?: string;
   project_url?: string;
   github_url?: string;
+  order_index?: number;
   created_at?: string;
   updated_at?: string;
 }
@@ -22,6 +23,7 @@ export interface Testimonial {
   message: string;
   rating: number;
   avatar_url?: string;
+  order_index?: number;
   created_at: string;
 }
 
@@ -86,6 +88,7 @@ export interface BlogPost {
   featured_image?: string;
   is_published: boolean;
   read_time: number;
+  order_index?: number;
   created_at?: string;
   updated_at?: string;
 }

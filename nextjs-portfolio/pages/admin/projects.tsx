@@ -6,6 +6,7 @@ import { AdminLayout } from '../../components/admin';
 import { Project } from '../../types/portfolio';
 import { portfolioService } from '../../lib/supabase';
 import { adminService } from '../../lib/admin-service';
+import { SortableList } from '../../components/admin/SortableList';
 
 export default function AdminProjects() {
   const [projects, setProjects] = useState<Project[]>([]);
@@ -75,7 +76,12 @@ export default function AdminProjects() {
         const updated = await adminService.updateProject(project.id!, project);
         setProjects(projects.map(p => p.id === project.id ? updated : p));
       } else {
-        const created = await adminService.createProject(project);
+        // Set order_index for new project
+        const newProject = {
+          ...project,
+          order_index: projects.length > 0 ? Math.max(...projects.map(p => p.order_index || 0)) + 1 : 0
+        };
+        const created = await adminService.createProject(newProject);
         setProjects([...projects, created]);
       }
       setShowForm(false);
@@ -83,6 +89,26 @@ export default function AdminProjects() {
     } catch (error) {
       console.error('Error saving project:', error);
       alert('Failed to save project');
+    }
+  };
+
+  const handleReorder = async (reorderedProjects: Project[]) => {
+    const originalProjects = [...projects];
+    // Optimistic update
+    setProjects(reorderedProjects);
+
+    try {
+      const updates = reorderedProjects.map((p, index) => ({
+        id: p.id!,
+        order_index: index,
+      }));
+
+      await portfolioService.updateOrder('projects', updates);
+    } catch (error) {
+      console.error('Error updating project order:', error);
+      // Revert if failed
+      setProjects(originalProjects);
+      alert('Failed to save project order');
     }
   };
 
@@ -116,9 +142,12 @@ export default function AdminProjects() {
           <p className="text-neutral-400 font-black uppercase tracking-widest text-xs">Syncing artifacts...</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-10">
-          {projects.map((project) => (
-            <div key={project.id} className="bg-white dark:bg-primary border-4 border-neutral-900 dark:border-neutral-800 flex flex-col group hover:translate-x-1 hover:-translate-y-1 transition-transform">
+        <SortableList
+          items={projects}
+          onReorder={handleReorder}
+          className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-10"
+          renderItem={(project) => (
+            <div className="bg-white dark:bg-primary border-4 border-neutral-900 dark:border-neutral-800 flex flex-col h-full group hover:translate-x-1 hover:-translate-y-1 transition-transform">
               {/* Preview image block */}
               <div className="h-48 bg-neutral-100 dark:bg-neutral-900 border-b-4 border-neutral-900 dark:border-neutral-800 relative overflow-hidden">
                 {project.preview_image ? (
@@ -184,14 +213,14 @@ export default function AdminProjects() {
                       </a>
                     )}
                     <span className="ml-auto text-[10px] font-black uppercase tracking-widest text-neutral-300">
-                      PRTY: {project.priority}
+                      ORD: {project.order_index}
                     </span>
                   </div>
                 </div>
               </div>
             </div>
-          ))}
-        </div>
+          )}
+        />
       )}
 
       {showForm && (

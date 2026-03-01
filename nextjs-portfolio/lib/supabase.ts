@@ -67,6 +67,13 @@ export const portfolioService = {
     }
   },
 
+  async updateOrder(table: string, items: { id: number; order_index: number }[]) {
+    const updates = items.map(item =>
+      supabase.from(table).update({ order_index: item.order_index }).eq('id', item.id)
+    );
+    await Promise.all(updates);
+  },
+
   // Image upload functionality
   async uploadProjectImage(file: File): Promise<string> {
     try {
@@ -150,7 +157,7 @@ export const portfolioService = {
       const { data, error } = await supabase
         .from('projects')
         .select('*')
-        .order('created_at', { ascending: false });
+        .order('order_index', { ascending: true });
 
       if (error) {
         console.warn('Projects fetch error (possibly due to RLS):', error);
@@ -186,7 +193,7 @@ export const portfolioService = {
       const { data, error } = await supabase
         .from('testimonials')
         .select('*')
-        .order('created_at', { ascending: false });
+        .order('order_index', { ascending: true });
 
       if (error) throw error;
 
@@ -285,7 +292,7 @@ export const portfolioService = {
       let query = supabase
         .from('blog_posts')
         .select('*')
-        .order('created_at', { ascending: false });
+        .order('order_index', { ascending: true });
 
       if (onlyPublished) {
         query = query.eq('is_published', true);

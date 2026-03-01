@@ -5,6 +5,7 @@ import { AdminLayout } from '../../components/admin';
 import { Achievement } from '../../types/portfolio';
 import { portfolioService } from '../../lib/supabase';
 import { isAuthenticated } from '../../lib/auth';
+import { SortableList } from '../../components/admin/SortableList';
 
 export default function AdminAchievements() {
     const [achievements, setAchievements] = useState<Achievement[]>([]);
@@ -92,8 +93,26 @@ export default function AdminAchievements() {
             year: new Date().getFullYear().toString(),
             description: '',
             icon: 'Award',
-            order_index: achievements.length
+            order_index: achievements.length > 0 ? Math.max(...achievements.map(a => a.order_index || 0)) + 1 : 0
         });
+    };
+
+    const handleReorder = async (reorderedAchievements: Achievement[]) => {
+        const originalAchievements = [...achievements];
+        setAchievements(reorderedAchievements);
+
+        try {
+            const updates = reorderedAchievements.map((a, index) => ({
+                id: a.id!,
+                order_index: index,
+            }));
+
+            await portfolioService.updateOrder('achievements', updates);
+        } catch (error) {
+            console.error('Error updating achievement order:', error);
+            setAchievements(originalAchievements);
+            alert('Failed to save achievement order');
+        }
     };
 
     const icons = [
@@ -134,9 +153,12 @@ export default function AdminAchievements() {
                     <p className="text-neutral-400 font-black uppercase tracking-widest text-xs">Accessing achievement database...</p>
                 </div>
             ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    {achievements.map((achievement) => (
-                        <div key={achievement.id} className="bg-white dark:bg-primary border-4 border-neutral-900 dark:border-neutral-800 p-8 hover:translate-x-2 transition-transform shadow-[8px_8px_0px_0px_rgba(0,0,0,0.05)]">
+                <SortableList
+                    items={achievements}
+                    onReorder={handleReorder}
+                    className="grid grid-cols-1 md:grid-cols-2 gap-8"
+                    renderItem={(achievement) => (
+                        <div className="bg-white dark:bg-primary border-4 border-neutral-900 dark:border-neutral-800 p-8 hover:translate-x-2 transition-transform shadow-[8px_8px_0px_0px_rgba(0,0,0,0.05)] h-full group">
                             <div className="flex justify-between items-start mb-6">
                                 <div className="w-12 h-12 bg-neutral-900 dark:bg-accent flex items-center justify-center text-white">
                                     {icons.find(i => i.name === achievement.icon)?.icon || <Award size={20} />}
@@ -154,11 +176,14 @@ export default function AdminAchievements() {
                                 <h3 className="text-xl font-black text-neutral-900 dark:text-white uppercase tracking-tighter">{achievement.title}</h3>
                                 <span className="text-accent font-black">{achievement.year}</span>
                             </div>
-                            <p className="text-neutral-500 font-bold uppercase tracking-widest text-xs mb-4">{achievement.organization}</p>
+                            <div className="flex justify-between items-center mb-4">
+                                <p className="text-neutral-500 font-bold uppercase tracking-widest text-xs">{achievement.organization}</p>
+                                <span className="text-[10px] text-neutral-300">ORD: {achievement.order_index}</span>
+                            </div>
                             <p className="text-neutral-600 dark:text-neutral-400 font-medium line-clamp-3">{achievement.description}</p>
                         </div>
-                    ))}
-                </div>
+                    )}
+                />
             )}
 
             {/* Modal */}
