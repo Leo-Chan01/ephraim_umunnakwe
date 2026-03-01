@@ -38,6 +38,26 @@ export default function Blog({ posts: initialPosts }: BlogProps) {
     ? posts
     : posts.filter(post => post.category === filter);
 
+  const [email, setEmail] = useState('');
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [message, setMessage] = useState('');
+
+  const handleSubscribe = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email) return;
+
+    setStatus('loading');
+    try {
+      await portfolioService.subscribeToNewsletter(email);
+      setStatus('success');
+      setMessage('SECURE TRANSMISSION SUCCESSFUL. WELCOME TO THE NETWORK.');
+      setEmail('');
+    } catch (error: any) {
+      setStatus('error');
+      setMessage(error.message || 'TRANSMISSION INTERRUPTED. PLEASE TRY AGAIN.');
+    }
+  };
+
   return (
     <Layout title="Blog - Ephraim Umunnakwe">
       <RefreshButton onRefresh={refreshData} isRefreshing={isRefreshing} />
@@ -131,24 +151,39 @@ export default function Blog({ posts: initialPosts }: BlogProps) {
                 Get Daily<br />Insights
               </h2>
               <p className="text-2xl text-neutral-600 dark:text-neutral-400 font-medium leading-relaxed">
-                Join our architectural network for technical deep-dives
+                Join my architectural network for technical deep-dives
                 delivered straight to your inbox.
               </p>
             </div>
             <div className="bg-white dark:bg-primary p-12 border-4 border-neutral-900 dark:border-neutral-800">
-              <div className="flex flex-col gap-6">
+              <form onSubmit={handleSubscribe} className="flex flex-col gap-6">
                 <input
                   type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   placeholder="USER@DOMAIN.COM"
+                  required
                   className="w-full bg-neutral-100 dark:bg-neutral-900 border-2 border-neutral-200 dark:border-neutral-800 text-neutral-900 dark:text-white placeholder-neutral-300 dark:placeholder-neutral-700 px-6 py-5 focus:outline-none focus:border-accent font-bold transition-all"
                 />
-                <button className="w-full bg-neutral-900 dark:bg-accent text-white py-6 border-4 border-neutral-900 dark:border-accent font-black text-xl uppercase tracking-widest hover:bg-transparent hover:text-neutral-900 dark:hover:text-white transition-all">
-                  Join Network
+                <button
+                  type="submit"
+                  disabled={status === 'loading'}
+                  className="w-full bg-neutral-900 dark:bg-accent text-white py-6 border-4 border-neutral-900 dark:border-accent font-black text-xl uppercase tracking-widest hover:bg-transparent hover:text-neutral-900 dark:hover:text-white transition-all disabled:opacity-50"
+                >
+                  {status === 'loading' ? 'PROCESSING...' : 'Join Network'}
                 </button>
-              </div>
-              <p className="mt-6 text-xs font-black uppercase tracking-widest text-neutral-400 text-center">
-                Secure Transmission Guaranteed. No Spam.
-              </p>
+              </form>
+              {message && (
+                <p className={`mt-6 text-xs font-black uppercase tracking-widest text-center ${status === 'error' ? 'text-red-500' : 'text-accent'
+                  }`}>
+                  {message}
+                </p>
+              )}
+              {!message && (
+                <p className="mt-6 text-xs font-black uppercase tracking-widest text-neutral-400 text-center">
+                  Secure Transmission Guaranteed. No Spam.
+                </p>
+              )}
             </div>
           </div>
         </div>

@@ -775,4 +775,22 @@ export const portfolioService = {
       throw error;
     }
   },
+
+  async subscribeToNewsletter(email: string): Promise<void> {
+    try {
+      const { error } = await supabase
+        .from('newsletter_subscriptions')
+        .insert([{ email, created_at: new Date().toISOString() }]);
+
+      if (error) {
+        if (error.code === '23505') {
+          throw new Error('This email is already subscribed.');
+        }
+        throw error;
+      }
+    } catch (error) {
+      console.error('Error subscribing to newsletter:', error);
+      throw error;
+    }
+  },
 };

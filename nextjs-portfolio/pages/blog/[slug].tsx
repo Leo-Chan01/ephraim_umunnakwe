@@ -28,6 +28,28 @@ export default function BlogPostDetail({ post }: BlogPostProps) {
         );
     }
 
+    const [shareStatus, setShareStatus] = React.useState<'idle' | 'copied'>('idle');
+
+    const handleShare = async () => {
+        const shareData = {
+            title: post.title,
+            text: post.excerpt,
+            url: window.location.href,
+        };
+
+        try {
+            if (navigator.share) {
+                await navigator.share(shareData);
+            } else {
+                await navigator.clipboard.writeText(window.location.href);
+                setShareStatus('copied');
+                setTimeout(() => setShareStatus('idle'), 2000);
+            }
+        } catch (error) {
+            console.error('Error sharing:', error);
+        }
+    };
+
     return (
         <Layout title={`${post.title} - Ephraim Umunnakwe`}>
             <Head>
@@ -62,9 +84,12 @@ export default function BlogPostDetail({ post }: BlogPostProps) {
                             <Clock size={16} className="text-accent" />
                             {post.read_time} Min Read
                         </div>
-                        <button className="flex items-center gap-3 hover:text-neutral-900 dark:hover:text-white transition-colors">
+                        <button
+                            onClick={handleShare}
+                            className="flex items-center gap-3 hover:text-neutral-900 dark:hover:text-white transition-colors"
+                        >
                             <Share2 size={16} className="text-accent" />
-                            Share Report
+                            {shareStatus === 'copied' ? 'Link Copied' : 'Share Report'}
                         </button>
                     </div>
                 </div>
