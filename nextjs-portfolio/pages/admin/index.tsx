@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { Briefcase, MessageSquare, Star, Eye, ChevronRight, Plus } from 'lucide-react';
 import { isAuthenticated, isAuthenticatedSync } from '../../lib/auth';
 import { AdminLayout } from '../../components/admin';
+import { portfolioService } from '../../lib/supabase';
 import Link from 'next/link';
 
 export default function AdminDashboard() {
@@ -31,12 +32,8 @@ export default function AdminDashboard() {
         }
 
         // Load dashboard stats
-        setStats({
-          projects: 12,
-          testimonials: 8,
-          messages: 24,
-          views: 1250
-        });
+        const liveStats = await portfolioService.getDashboardStats();
+        setStats(liveStats);
       } catch (error) {
         console.error('Auth check failed:', error);
         router.push('/admin/login');

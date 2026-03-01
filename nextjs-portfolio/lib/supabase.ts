@@ -1,5 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
-import { Project, Testimonial, SocialLink, PersonalInfo, BlogPost, ServiceItem } from '../types/portfolio';
+import { Project, Testimonial, SocialLink, PersonalInfo, BlogPost, ServiceItem, Experience, Skill } from '../types/portfolio';
 
 const supabaseUrl = 'https://cecsvrwibdvncrxbbctr.supabase.co';
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNlY3N2cndpYmR2bmNyeGJiY3RyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1MjA3ODEsImV4cCI6MjA3MDA5Njc4MX0.dqSqaL37yCozA39pb61rnVzHmU0Jo_RH8vfisACAqS4';
@@ -858,6 +858,170 @@ export const portfolioService = {
     } catch (error) {
       console.error('Error deleting service:', error);
       throw error;
+    }
+  },
+
+  async getExperiences(): Promise<Experience[]> {
+    try {
+      if (!isOnline) await testConnection();
+      const { data, error } = await supabase
+        .from('experiences')
+        .select('*')
+        .order('order_index', { ascending: true });
+
+      if (error) throw error;
+      return data || [];
+    } catch (error) {
+      console.error('Error fetching experiences:', error);
+      return [];
+    }
+  },
+
+  async createExperience(experience: Omit<Experience, 'id'>): Promise<Experience> {
+    try {
+      await testConnection();
+      const { data, error } = await supabase
+        .from('experiences')
+        .insert([experience])
+        .select()
+        .single();
+
+      if (error) throw error;
+      return data;
+    } catch (error) {
+      console.error('Error creating experience:', error);
+      throw error;
+    }
+  },
+
+  async updateExperience(id: number, updates: Partial<Experience>): Promise<Experience> {
+    try {
+      await testConnection();
+      const { data, error } = await supabase
+        .from('experiences')
+        .update({ ...updates, updated_at: new Date().toISOString() })
+        .eq('id', id)
+        .select()
+        .single();
+
+      if (error) throw error;
+      return data;
+    } catch (error) {
+      console.error('Error updating experience:', error);
+      throw error;
+    }
+  },
+
+  async deleteExperience(id: number): Promise<void> {
+    try {
+      await testConnection();
+      const { error } = await supabase
+        .from('experiences')
+        .delete()
+        .eq('id', id);
+
+      if (error) throw error;
+    } catch (error) {
+      console.error('Error deleting experience:', error);
+      throw error;
+    }
+  },
+
+  async getSkills(): Promise<Skill[]> {
+    try {
+      if (!isOnline) await testConnection();
+      const { data, error } = await supabase
+        .from('skills')
+        .select('*')
+        .order('order_index', { ascending: true });
+
+      if (error) throw error;
+      return data || [];
+    } catch (error) {
+      console.error('Error fetching skills:', error);
+      return [];
+    }
+  },
+
+  async createSkill(skill: Omit<Skill, 'id'>): Promise<Skill> {
+    try {
+      await testConnection();
+      const { data, error } = await supabase
+        .from('skills')
+        .insert([skill])
+        .select()
+        .single();
+
+      if (error) throw error;
+      return data;
+    } catch (error) {
+      console.error('Error creating skill:', error);
+      throw error;
+    }
+  },
+
+  async updateSkill(id: number, updates: Partial<Skill>): Promise<Skill> {
+    try {
+      await testConnection();
+      const { data, error } = await supabase
+        .from('skills')
+        .update({ ...updates, updated_at: new Date().toISOString() })
+        .eq('id', id)
+        .select()
+        .single();
+
+      if (error) throw error;
+      return data;
+    } catch (error) {
+      console.error('Error updating skill:', error);
+      throw error;
+    }
+  },
+
+  async deleteSkill(id: number): Promise<void> {
+    try {
+      await testConnection();
+      const { error } = await supabase
+        .from('skills')
+        .delete()
+        .eq('id', id);
+
+      if (error) throw error;
+    } catch (error) {
+      console.error('Error deleting skill:', error);
+      throw error;
+    }
+  },
+
+  async getDashboardStats() {
+    try {
+      if (!isOnline) await testConnection();
+
+      // Get counts for dashboard
+      const [
+        { count: projectsCount },
+        { count: testimonialsCount },
+        { count: messagesCount }
+      ] = await Promise.all([
+        supabase.from('projects').select('*', { count: 'exact', head: true }),
+        supabase.from('testimonials').select('*', { count: 'exact', head: true }),
+        supabase.from('contact_messages').select('*', { count: 'exact', head: true })
+      ]);
+
+      return {
+        projects: projectsCount || 0,
+        testimonials: testimonialsCount || 0,
+        messages: messagesCount || 0,
+        views: 1250 // Still dummy until we implement view tracking
+      };
+    } catch (error) {
+      console.error('Error getting dashboard stats:', error);
+      return {
+        projects: 0,
+        testimonials: 0,
+        messages: 0,
+        views: 0
+      };
     }
   },
 };

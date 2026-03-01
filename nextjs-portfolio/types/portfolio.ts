@@ -25,12 +25,31 @@ export interface Testimonial {
   created_at: string;
 }
 
+export interface Experience {
+  id?: number;
+  title: string;
+  company: string;
+  period: string;
+  description: string;
+  order_index?: number;
+  created_at?: string;
+}
+
 export interface SocialLink {
   platform: string; // Primary key
   url: string;
   is_visible: boolean;
   created_at?: string;
   updated_at?: string;
+}
+
+export interface Skill {
+  id?: number;
+  name: string;
+  level: number;
+  category?: string;
+  order_index?: number;
+  created_at?: string;
 }
 
 export interface PersonalInfo {
@@ -41,6 +60,7 @@ export interface PersonalInfo {
   phone: string;
   location: string;
   bio: string;
+  years_of_experience?: number;
   profile_image_url?: string;
   updated_at?: string;
 }

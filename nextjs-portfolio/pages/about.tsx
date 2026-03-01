@@ -1,15 +1,45 @@
 import { GetStaticProps } from 'next';
 import { Link, User } from 'lucide-react';
+import { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import { portfolioService } from '../lib/supabase';
-import { PersonalInfo } from '../types/portfolio';
+import { PersonalInfo, Experience, Skill } from '../types/portfolio';
 
 interface AboutProps {
   personalInfo: PersonalInfo | null;
+  initialExperiences: Experience[];
+  initialSkills: Skill[];
+  totalProjects: number;
 }
 
-export default function About({ personalInfo }: AboutProps) {
-  const skills = [
+export default function About({ personalInfo, initialExperiences, initialSkills, totalProjects }: AboutProps) {
+  const [experiences, setExperiences] = useState<Experience[]>(initialExperiences);
+  const [skills, setSkills] = useState<Skill[]>(initialSkills);
+  const [projectCount, setProjectCount] = useState<number>(totalProjects);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [expData, skillData, stats] = await Promise.all([
+          portfolioService.getExperiences(),
+          portfolioService.getSkills(),
+          portfolioService.getDashboardStats()
+        ]);
+
+        if (expData && expData.length > 0) setExperiences(expData);
+        if (skillData && skillData.length > 0) setSkills(skillData);
+        if (stats && stats.projects > 0) setProjectCount(stats.projects);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    if (!initialExperiences?.length || !initialSkills?.length || totalProjects === 0) {
+      fetchData();
+    }
+  }, [initialExperiences, initialSkills, totalProjects]);
+
+  const skills_list = [
     { name: 'Flutter/Dart', level: 90 },
     { name: 'React Native', level: 87 },
     { name: 'Next.js', level: 80 },
@@ -17,27 +47,6 @@ export default function About({ personalInfo }: AboutProps) {
     { name: 'Python', level: 80 },
     { name: 'TypeScript', level: 89 },
     { name: 'PostgreSQL', level: 85 },
-  ];
-
-  const experience = [
-    {
-      title: 'Flutter Developer',
-      company: 'Coder\'s Triangle',
-      period: 'Apr 2025 – Present',
-      description: 'Collaborated with a cross-functional team to maintain and enhance \'Confide\' (Social Media App) and \'CTLearn\' (Ed-Tech Platform). Integrated push and in-app notifications using Firebase Cloud Messaging, improving user engagement by 25%. Implemented secure user authentication and optimized app performance, reducing ANR rates to below 0.5%.'
-    },
-    {
-      title: 'Senior Flutter Developer',
-      company: 'Xeno Technologies',
-      period: 'Oct 2023 – Jan 2025',
-      description: 'Developed and maintained a cross-platform crypto mining application using Flutter, achieving over 150k installations and 17k+ daily active users. Implemented JWT-based authentication, notifications using FCM and OneSignal, and CRUD API operations. Optimized app performance to achieve less than 1% ANR reports and a 4.0 rating on the Play Store.'
-    },
-    {
-      title: 'Flutter Developer',
-      company: 'ProjKonnect',
-      period: 'Apr 2023 – Nov 2024',
-      description: 'Built a scalable Ed-Tech Flutter application with features like notifications, chat, video streaming, media download, and payment integration. Deployed application on Play Store and App Store; currently runs on over 500 devices nationwide. Integrated third-party services such as Paystack for in-app purchases and secured user data using encryption algorithms.'
-    }
   ];
 
   return (
@@ -55,11 +64,11 @@ export default function About({ personalInfo }: AboutProps) {
               </p>
               <div className="grid grid-cols-2 gap-6">
                 <div className="bg-neutral-100 dark:bg-neutral-800/50 p-8 border-2 border-neutral-900 dark:border-neutral-700">
-                  <div className="text-5xl font-black text-accent mb-2">20+</div>
+                  <div className="text-5xl font-black text-accent mb-2">{projectCount}+</div>
                   <div className="text-neutral-600 dark:text-neutral-400 font-bold uppercase tracking-widest text-sm">Projects</div>
                 </div>
                 <div className="bg-neutral-100 dark:bg-neutral-800/50 p-8 border-2 border-neutral-900 dark:border-neutral-700">
-                  <div className="text-5xl font-black text-neutral-900 dark:text-secondary mb-2">8+</div>
+                  <div className="text-5xl font-black text-neutral-900 dark:text-secondary mb-2">{personalInfo?.years_of_experience || 8}+</div>
                   <div className="text-neutral-600 dark:text-neutral-400 font-bold uppercase tracking-widest text-sm">Years</div>
                 </div>
               </div>
@@ -87,7 +96,7 @@ export default function About({ personalInfo }: AboutProps) {
           <h2 className="text-4xl md:text-6xl font-black tracking-tighter text-neutral-900 dark:text-secondary mb-20 uppercase">Skills</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {skills.map((skill) => (
-              <div key={skill.name} className="bg-white dark:bg-primary p-8 border-2 border-neutral-900 dark:border-neutral-800">
+              <div key={skill.id || skill.name} className="bg-white dark:bg-primary p-8 border-2 border-neutral-900 dark:border-neutral-800">
                 <div className="flex justify-between items-end mb-4">
                   <span className="text-xl font-black uppercase tracking-tight text-neutral-900 dark:text-secondary">{skill.name}</span>
                   <span className="text-accent font-black">{skill.level}%</span>
@@ -109,8 +118,8 @@ export default function About({ personalInfo }: AboutProps) {
         <div className="max-w-7xl mx-auto">
           <h2 className="text-4xl md:text-6xl font-black tracking-tighter text-neutral-900 dark:text-secondary mb-20 uppercase">Experience</h2>
           <div className="space-y-12">
-            {experience.map((exp, index) => (
-              <div key={index} className="p-10 border-2 border-neutral-900 dark:border-neutral-800 hover:bg-neutral-900 hover:text-white dark:hover:bg-secondary dark:hover:text-primary transition-all duration-300 group">
+            {experiences.map((exp, index) => (
+              <div key={exp.id || index} className="p-10 border-2 border-neutral-900 dark:border-neutral-800 hover:bg-neutral-900 hover:text-white dark:hover:bg-secondary dark:hover:text-primary transition-all duration-300 group">
                 <div className="flex flex-col md:flex-row md:justify-between md:items-start mb-6">
                   <div>
                     <h3 className="text-3xl font-black uppercase tracking-tight mb-2">{exp.title}</h3>
@@ -147,13 +156,29 @@ export default function About({ personalInfo }: AboutProps) {
 
 export const getStaticProps: GetStaticProps = async () => {
   try {
-    const personalInfo = await portfolioService.getPersonalInfo();
+    const [personalInfo, experiences, skills, stats] = await Promise.all([
+      portfolioService.getPersonalInfo(),
+      portfolioService.getExperiences(),
+      portfolioService.getSkills(),
+      portfolioService.getDashboardStats()
+    ]);
+
     return {
-      props: { personalInfo },
+      props: {
+        personalInfo,
+        initialExperiences: experiences,
+        initialSkills: skills,
+        totalProjects: stats.projects || 0
+      },
     };
   } catch (error) {
     return {
-      props: { personalInfo: null },
+      props: {
+        personalInfo: null,
+        initialExperiences: [],
+        initialSkills: [],
+        totalProjects: 0
+      },
     };
   }
 };
