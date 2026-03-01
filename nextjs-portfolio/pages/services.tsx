@@ -1,53 +1,50 @@
+import React, { useState, useEffect } from 'react';
+import { GetStaticProps } from 'next';
 import Layout from '../components/Layout';
-import { Smartphone as Mobile, Globe, Zap, ShoppingCart, Lightbulb, Wrench, Check } from 'lucide-react';
+import RefreshButton from '../components/RefreshButton';
+import { portfolioService } from '../lib/supabase';
+import { ServiceItem } from '../types/portfolio';
+import { Smartphone as Mobile, Globe, Zap, ShoppingCart, Lightbulb, Wrench } from 'lucide-react';
 
-export default function Services() {
-  const services = [
-    {
-      title: 'Web Development',
-      description: 'Modern, responsive websites built with React, Next.js, and cutting-edge technologies.',
-      features: ['Responsive Design', 'SEO Optimization', 'Performance Focused', 'Modern UI/UX'],
-      icon: 'Globe',
-      price: 'Starting at $1,500'
-    },
-    {
-      title: 'Mobile App Development',
-      description: 'Cross-platform mobile applications using Flutter and React Native.',
-      features: ['iOS & Android', 'Native Performance', 'Custom UI Design', 'App Store Deployment'],
-      icon: 'Mobile',
-      price: 'Starting at $2,000'
-    },
-    {
-      title: 'API Development',
-      description: 'Robust backend APIs and microservices for your applications.',
-      features: ['RESTful APIs', 'Database Design', 'Authentication', 'Documentation'],
-      icon: 'Zap',
-      price: 'Starting at $1,500'
-    },
-    {
-      title: 'E-commerce Solutions',
-      description: 'Complete online stores with payment integration and inventory management.',
-      features: ['Payment Gateway', 'Inventory System', 'Admin Dashboard', 'Mobile Responsive'],
-      icon: 'ShoppingCart',
-      price: 'Starting at $4,000'
-    },
-    {
-      title: 'Technical Consulting',
-      description: 'Expert advice on technology stack, architecture, and development strategy.',
-      features: ['Technology Assessment', 'Architecture Planning', 'Code Review', 'Team Training'],
-      icon: 'Lightbulb',
-      price: '$150/hour'
-    },
-    {
-      title: 'Maintenance & Support',
-      description: 'Ongoing support, updates, and maintenance for your applications.',
-      features: ['Bug Fixes', 'Security Updates', 'Performance Optimization', '24/7 Support'],
-      icon: 'Wrench',
-      price: 'Custom Packages'
+interface ServicesProps {
+  initialServices: ServiceItem[];
+}
+
+export default function Services({ initialServices }: ServicesProps) {
+  const [services, setServices] = useState<ServiceItem[]>(initialServices);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
+  const refreshData = async () => {
+    setIsRefreshing(true);
+    try {
+      const data = await portfolioService.getServices();
+      setServices(data);
+    } catch (error) {
+      console.error('Error refreshing services:', error);
+    } finally {
+      setIsRefreshing(false);
     }
-  ];
+  };
 
-  const process = [
+  useEffect(() => {
+    if (initialServices.length === 0) {
+      refreshData();
+    }
+  }, []);
+
+  const getIcon = (iconName: string) => {
+    switch (iconName) {
+      case 'Globe': return <Globe size={32} />;
+      case 'Mobile': return <Mobile size={32} />;
+      case 'Zap': return <Zap size={32} />;
+      case 'ShoppingCart': return <ShoppingCart size={32} />;
+      case 'Lightbulb': return <Lightbulb size={32} />;
+      case 'Wrench': return <Wrench size={32} />;
+      default: return <Globe size={32} />;
+    }
+  };
+
+  const processSteps = [
     {
       step: '01',
       title: 'Discovery',
@@ -82,6 +79,8 @@ export default function Services() {
 
   return (
     <Layout title="Services - Ephraim Umunnakwe">
+      <RefreshButton onRefresh={refreshData} isRefreshing={isRefreshing} />
+
       {/* Hero Section */}
       <section className="mt-16 py-32 px-4 bg-secondary dark:bg-primary border-b border-neutral-200 dark:border-neutral-800">
         <div className="max-w-7xl mx-auto">
@@ -99,15 +98,10 @@ export default function Services() {
       <section className="py-32 px-4 bg-neutral-50 dark:bg-primary border-b border-neutral-200 dark:border-neutral-800">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
-            {services.map((service, index) => (
-              <div key={index} className="bg-white dark:bg-primary border-4 border-neutral-900 dark:border-neutral-800 p-10 flex flex-col h-full hover:bg-neutral-900 hover:text-white dark:hover:bg-secondary dark:hover:text-primary transition-all duration-300 group">
+            {services.map((service) => (
+              <div key={service.id || service.title} className="bg-white dark:bg-primary border-4 border-neutral-900 dark:border-neutral-800 p-10 flex flex-col h-full hover:bg-neutral-900 hover:text-white dark:hover:bg-secondary dark:hover:text-primary transition-all duration-300 group">
                 <div className="w-16 h-16 bg-neutral-900 dark:bg-accent flex items-center justify-center text-white mb-8 group-hover:bg-white group-hover:text-neutral-900 transition-colors">
-                  {service.icon === 'Globe' && <Globe size={32} />}
-                  {service.icon === 'Mobile' && <Mobile size={32} />}
-                  {service.icon === 'Zap' && <Zap size={32} />}
-                  {service.icon === 'ShoppingCart' && <ShoppingCart size={32} />}
-                  {service.icon === 'Lightbulb' && <Lightbulb size={32} />}
-                  {service.icon === 'Wrench' && <Wrench size={32} />}
+                  {getIcon(service.icon)}
                 </div>
                 <h3 className="text-3xl font-black uppercase tracking-tight mb-6">{service.title}</h3>
                 <p className="text-neutral-600 dark:text-neutral-400 group-hover:text-neutral-300 font-medium text-lg mb-8 leading-relaxed">{service.description}</p>
@@ -143,7 +137,7 @@ export default function Services() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-20">
-            {process.map((item, index) => (
+            {processSteps.map((item, index) => (
               <div key={index} className="relative pt-12 border-t-2 border-neutral-900 dark:border-neutral-800">
                 <span className="absolute top-0 left-0 -translate-y-1/2 bg-accent text-white px-4 py-1 font-black text-sm uppercase tracking-widest">
                   Step {item.step}
@@ -182,3 +176,20 @@ export default function Services() {
     </Layout>
   );
 }
+
+export const getStaticProps: GetStaticProps = async () => {
+  try {
+    const services = await portfolioService.getServices();
+    return {
+      props: {
+        initialServices: services,
+      },
+    };
+  } catch (error) {
+    return {
+      props: {
+        initialServices: [],
+      },
+    };
+  }
+};

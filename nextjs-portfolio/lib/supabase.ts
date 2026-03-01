@@ -1,5 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
-import { Project, Testimonial, SocialLink, PersonalInfo, BlogPost } from '../types/portfolio';
+import { Project, Testimonial, SocialLink, PersonalInfo, BlogPost, ServiceItem } from '../types/portfolio';
 
 const supabaseUrl = 'https://cecsvrwibdvncrxbbctr.supabase.co';
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNlY3N2cndpYmR2bmNyeGJiY3RyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ1MjA3ODEsImV4cCI6MjA3MDA5Njc4MX0.dqSqaL37yCozA39pb61rnVzHmU0Jo_RH8vfisACAqS4';
@@ -790,6 +790,73 @@ export const portfolioService = {
       }
     } catch (error) {
       console.error('Error subscribing to newsletter:', error);
+      throw error;
+    }
+  },
+
+  async getServices(): Promise<ServiceItem[]> {
+    try {
+      if (!isOnline) await testConnection();
+
+      const { data, error } = await supabase
+        .from('services')
+        .select('*')
+        .order('order_index', { ascending: true });
+
+      if (error) throw error;
+      return data || [];
+    } catch (error) {
+      console.error('Error fetching services:', error);
+      return [];
+    }
+  },
+
+  async createService(service: Omit<ServiceItem, 'id'>): Promise<ServiceItem> {
+    try {
+      await testConnection();
+      const { data, error } = await supabase
+        .from('services')
+        .insert([service])
+        .select()
+        .single();
+
+      if (error) throw error;
+      return data;
+    } catch (error) {
+      console.error('Error creating service:', error);
+      throw error;
+    }
+  },
+
+  async updateService(id: number, updates: Partial<ServiceItem>): Promise<ServiceItem> {
+    try {
+      await testConnection();
+      const { data, error } = await supabase
+        .from('services')
+        .update({ ...updates, updated_at: new Date().toISOString() })
+        .eq('id', id)
+        .select()
+        .single();
+
+      if (error) throw error;
+      return data;
+    } catch (error) {
+      console.error('Error updating service:', error);
+      throw error;
+    }
+  },
+
+  async deleteService(id: number): Promise<void> {
+    try {
+      await testConnection();
+      const { error } = await supabase
+        .from('services')
+        .delete()
+        .eq('id', id);
+
+      if (error) throw error;
+    } catch (error) {
+      console.error('Error deleting service:', error);
       throw error;
     }
   },

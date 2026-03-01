@@ -11,7 +11,8 @@ import {
   Star,
   ExternalLink,
   LogOut,
-  Layers
+  Layers,
+  Wrench
 } from 'lucide-react';
 
 
@@ -31,6 +32,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children, title = 'Admin' }) 
   const navItems = [
     { name: 'Dashboard', href: '/admin', icon: <LayoutDashboard size={20} /> },
     { name: 'Projects', href: '/admin/projects', icon: <Briefcase size={20} /> },
+    { name: 'Services', href: '/admin/services', icon: <Wrench size={20} /> },
     { name: 'Blog', href: '/admin/blog', icon: <Layers size={20} /> },
     { name: 'Testimonials', href: '/admin/testimonials', icon: <Star size={20} /> },
     { name: 'Profile', href: '/admin/profile', icon: <User size={20} /> },

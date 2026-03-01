@@ -58,3 +58,14 @@ export interface BlogPost {
   created_at?: string;
   updated_at?: string;
 }
+
+export interface ServiceItem {
+  id?: number;
+  title: string;
+  description: string;
+  features: string[];
+  icon: string;
+  price: string;
+  order_index?: number;
+  created_at?: string;
+}

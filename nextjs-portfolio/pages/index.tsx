@@ -86,26 +86,26 @@ export default function Home({ projects: initialProjects, testimonials: initialT
       <RefreshButton onRefresh={refreshData} isRefreshing={isRefreshing} />
 
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center px-4 overflow-hidden bg-secondary dark:bg-primary">
+      <section className="relative min-h-screen flex items-start pt-32 md:items-center md:pt-0 px-4 overflow-hidden bg-secondary dark:bg-primary">
         {/* Architectural grid background */}
         <div className="absolute inset-0 opacity-[0.05] dark:opacity-[0.1]"
           style={{ backgroundImage: 'linear-gradient(to right, #000 1px, transparent 1px), linear-gradient(to bottom, #000 1px, transparent 1px)', backgroundSize: '60px 60px' }} />
 
         <div className="relative z-10 max-w-7xl mx-auto w-full">
-          <div className="mb-16">
-            <div className="w-32 h-32 bg-neutral-900 dark:bg-accent flex items-center justify-center text-4xl font-black text-white">
+          <div className="mb-12 md:mb-16">
+            <div className="w-20 h-20 md:w-32 md:h-32 bg-neutral-900 dark:bg-accent flex items-center justify-center text-2xl md:text-4xl font-black text-white">
               {personalInfo?.name?.split(' ').map(word => word[0]).join('').toUpperCase() || 'EU'}
             </div>
           </div>
 
-          <h1 className="text-7xl md:text-[10rem] font-black tracking-tightest text-neutral-900 dark:text-secondary mb-12 uppercase leading-[0.85]">
+          <h1 className="text-5xl sm:text-7xl md:text-[10rem] font-black tracking-tightest text-neutral-900 dark:text-secondary mb-8 md:mb-12 uppercase leading-[0.9] md:leading-[0.85]">
             ENGINEERING<br />
             <span className="text-accent">EXCELLENCE</span>
           </h1>
 
-          <div className="max-w-3xl text-2xl md:text-3xl text-neutral-600 dark:text-neutral-400 mb-16 font-medium leading-relaxed">
-            <p className="mb-6">{personalInfo?.title || 'Architectural Software Engineer'}</p>
-            <p className="text-xl opacity-70 max-w-2xl">
+          <div className="max-w-3xl text-xl md:text-3xl text-neutral-600 dark:text-neutral-400 mb-12 md:mb-16 font-medium leading-relaxed">
+            <p className="mb-4 md:mb-6">{personalInfo?.title || 'Architectural Software Engineer'}</p>
+            <p className="text-lg md:text-xl opacity-70 max-w-2xl">
               {personalInfo?.bio || 'High-performance digital products engineered with Swiss precision and modern aesthetics.'}
             </p>
           </div>
