@@ -1047,18 +1047,22 @@ export const portfolioService = {
       const [
         { count: projectsCount },
         { count: testimonialsCount },
-        { count: messagesCount }
+        { count: messagesCount },
+        { count: viewsCount, error: viewsError }
       ] = await Promise.all([
         supabase.from('projects').select('*', { count: 'exact', head: true }),
         supabase.from('testimonials').select('*', { count: 'exact', head: true }),
-        supabase.from('contact_messages').select('*', { count: 'exact', head: true })
+        supabase.from('contact_messages').select('*', { count: 'exact', head: true }),
+        supabase.from('page_views').select('*', { count: 'exact', head: true })
       ]);
+
+      if (viewsError) console.warn('Error counting page views:', viewsError.message);
 
       return {
         projects: projectsCount || 0,
         testimonials: testimonialsCount || 0,
         messages: messagesCount || 0,
-        views: 1250 // Still dummy until we implement view tracking
+        views: viewsCount || 0
       };
     } catch (error) {
       console.error('Error getting dashboard stats:', error);
