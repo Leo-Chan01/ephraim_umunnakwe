@@ -1,4 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
+import { compressImage } from '../utils/compressImage';
 import { Project, Testimonial, SocialLink, PersonalInfo, BlogPost, ServiceItem, Experience, Skill, Achievement } from '../types/portfolio';
 
 const supabaseUrl = 'https://cecsvrwibdvncrxbbctr.supabase.co';
@@ -148,9 +149,12 @@ export const portfolioService = {
   },
 
   // Upload an image used in a blog post (featured image or inline)
-  async uploadBlogImage(file: File): Promise<string> {
-    if (!file) throw new Error('No file provided');
-    if (!file.type.startsWith('image/')) throw new Error('File must be an image');
+  async uploadBlogImage(originalFile: File): Promise<string> {
+    if (!originalFile) throw new Error('No file provided');
+    if (!originalFile.type.startsWith('image/')) throw new Error('File must be an image');
+
+    // Keep images small enough for link-preview crawlers (WhatsApp drops large og:images)
+    const file = await compressImage(originalFile);
     if (file.size > 5 * 1024 * 1024) throw new Error('File size must be less than 5MB');
 
     const fileExt = (file.name.split('.').pop() || 'png').toLowerCase();
