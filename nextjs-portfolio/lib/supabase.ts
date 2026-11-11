@@ -126,6 +126,24 @@ export const portfolioService = {
     }
   },
 
+  // Upload an image used in a blog post (featured image or inline)
+  async uploadBlogImage(file: File): Promise<string> {
+    if (!file) throw new Error('No file provided');
+    if (!file.type.startsWith('image/')) throw new Error('File must be an image');
+    if (file.size > 5 * 1024 * 1024) throw new Error('File size must be less than 5MB');
+
+    const fileExt = (file.name.split('.').pop() || 'png').toLowerCase();
+    const filePath = `blog/${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`;
+
+    const { error } = await supabase.storage
+      .from('product_preview_images')
+      .upload(filePath, file, { cacheControl: '31536000', upsert: false, contentType: file.type });
+
+    if (error) throw new Error(`Upload failed: ${error.message}`);
+
+    return supabase.storage.from('product_preview_images').getPublicUrl(filePath).data.publicUrl;
+  },
+
   // Delete project image
   async deleteProjectImage(imageUrl: string): Promise<void> {
     try {

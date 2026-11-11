@@ -11,12 +11,20 @@ interface LayoutProps {
   children: ReactNode;
   title?: string;
   description?: string;
+  /** Preview image for link shares (absolute URL or a path under /public) */
+  image?: string;
+  /** Path of this page, e.g. /blog/my-post/ — used for og:url and canonical */
+  path?: string;
+  type?: 'website' | 'article';
 }
 
-export default function Layout({ 
-  children, 
+export default function Layout({
+  children,
   title,
-  description
+  description,
+  image,
+  path,
+  type = 'website'
 }: LayoutProps) {
   const [personalInfo, setPersonalInfo] = useState<PersonalInfo | null>(null);
   const [socialLinks, setSocialLinks] = useState<SocialLink[]>([]);
@@ -44,12 +52,17 @@ export default function Layout({
   const pageDescription = description || personalInfo?.bio || 'Ephraim Ekene Umunnakwe - Senior Flutter Developer specializing in mobile and web applications. Expert in Flutter, Dart, Next.js, Node.js, and modern web technologies.';
   const siteName = 'Ephraim Umunnakwe Portfolio';
   const siteUrl = 'https://phenomenalephraim.web.app';
+  const pageUrl = path ? `${siteUrl}${path.startsWith('/') ? path : `/${path}`}` : siteUrl;
+  const rawImage = image || personalInfo?.profile_image_url;
+  const pageImage = rawImage
+    ? (/^https?:\/\//.test(rawImage) ? rawImage : `${siteUrl}${rawImage.startsWith('/') ? rawImage : `/${rawImage}`}`)
+    : undefined;
 
   return (
     <>
       <Head>
         <title>{pageTitle}</title>
-        <meta name="description" content={pageDescription} />
+        <meta key="description" name="description" content={pageDescription} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
 
         {/* Author and Keywords */}
@@ -57,28 +70,25 @@ export default function Layout({
         <meta name="keywords" content="Ephraim Umunnakwe, Ephraim Ekene Umunnakwe, Flutter Developer, Mobile Developer, Software Engineer, Web Developer, Next.js, React, Node.js, TypeScript, Dart, Firebase, Supabase, Full Stack Developer, Nigeria Developer" />
 
         {/* Open Graph / Facebook */}
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content={siteUrl} />
-        <meta property="og:title" content={pageTitle} />
-        <meta property="og:description" content={pageDescription} />
+        <meta key="og:type" property="og:type" content={type} />
+        <meta key="og:url" property="og:url" content={pageUrl} />
+        <meta key="og:title" property="og:title" content={pageTitle} />
+        <meta key="og:description" property="og:description" content={pageDescription} />
         <meta property="og:site_name" content={siteName} />
-        {personalInfo?.profile_image_url && (
-          <meta property="og:image" content={personalInfo.profile_image_url} />
-        )}
+        {pageImage && <meta key="og:image" property="og:image" content={pageImage} />}
+        {pageImage && <meta key="og:image:alt" property="og:image:alt" content={pageTitle} />}
 
         {/* Twitter */}
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:url" content={siteUrl} />
-        <meta name="twitter:title" content={pageTitle} />
-        <meta name="twitter:description" content={pageDescription} />
-        {personalInfo?.profile_image_url && (
-          <meta name="twitter:image" content={personalInfo.profile_image_url} />
-        )}
+        <meta key="twitter:card" name="twitter:card" content={pageImage ? 'summary_large_image' : 'summary'} />
+        <meta key="twitter:url" name="twitter:url" content={pageUrl} />
+        <meta key="twitter:title" name="twitter:title" content={pageTitle} />
+        <meta key="twitter:description" name="twitter:description" content={pageDescription} />
+        {pageImage && <meta key="twitter:image" name="twitter:image" content={pageImage} />}
 
         {/* Additional SEO */}
         <meta name="robots" content="index, follow" />
         <meta name="googlebot" content="index, follow" />
-        <link rel="canonical" href={siteUrl} />
+        <link key="canonical" rel="canonical" href={pageUrl} />
         <link rel="icon" href="/favicon.ico" />
 
         {/* JSON-LD Structured Data */}

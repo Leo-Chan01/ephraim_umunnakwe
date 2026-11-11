@@ -1,18 +1,74 @@
 import React from 'react';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 import Layout from '../../components/Layout';
 import { portfolioService } from '../../lib/supabase';
 import { BlogPost } from '../../types/portfolio';
 import { Calendar, Tag, Clock, ArrowLeft, Share2 } from 'lucide-react';
 import Link from 'next/link';
-import ReactMarkdown from 'react-markdown';
+import MarkdownContent from '../../components/MarkdownContent';
 
 interface BlogPostProps {
     post: BlogPost | null;
+    fallbackImage?: string | null;
 }
 
-export default function BlogPostDetail({ post }: BlogPostProps) {
+// Placeholder page generated at build time. Firebase serves it for any
+// /blog/<slug> that didn't exist at build time, and the post is fetched client-side.
+const PLACEHOLDER_SLUG = '_';
+
+function getSlugFromLocation(): string | null {
+    const match = window.location.pathname.match(/^\/blog\/([^/]+)\/?$/);
+    if (!match) return null;
+    const slug = decodeURIComponent(match[1]);
+    return slug === PLACEHOLDER_SLUG ? null : slug;
+}
+
+export default function BlogPostDetail({ post: initialPost, fallbackImage }: BlogPostProps) {
+    const router = useRouter();
+    const [post, setPost] = React.useState<BlogPost | null>(initialPost ?? null);
+    const [loading, setLoading] = React.useState(!initialPost);
+    const [shareStatus, setShareStatus] = React.useState<'idle' | 'copied'>('idle');
+
+    React.useEffect(() => {
+        const slug = getSlugFromLocation();
+        if (!slug) {
+            setLoading(false);
+            return;
+        }
+
+        let cancelled = false;
+        if (!initialPost || initialPost.slug !== slug) {
+            setPost(null);
+            setLoading(true);
+        }
+
+        // Always refetch so edits made after the last build show up
+        portfolioService.getBlogPostBySlug(slug).then((fresh) => {
+            if (cancelled) return;
+            if (fresh) setPost(fresh);
+            else if (!initialPost || initialPost.slug !== slug) setPost(null);
+            setLoading(false);
+        });
+
+        return () => {
+            cancelled = true;
+        };
+    }, [router.asPath, initialPost]);
+
+    if (loading) {
+        return (
+            <Layout>
+                <div className="min-h-screen flex items-center justify-center">
+                    <p className="text-xs font-black uppercase tracking-widest text-neutral-400 animate-pulse">
+                        Retrieving Report...
+                    </p>
+                </div>
+            </Layout>
+        );
+    }
+
     if (!post) {
         return (
             <Layout>
@@ -27,8 +83,6 @@ export default function BlogPostDetail({ post }: BlogPostProps) {
             </Layout>
         );
     }
-
-    const [shareStatus, setShareStatus] = React.useState<'idle' | 'copied'>('idle');
 
     const handleShare = async () => {
         const shareData = {
@@ -51,9 +105,17 @@ export default function BlogPostDetail({ post }: BlogPostProps) {
     };
 
     return (
-        <Layout title={`${post.title} - Ephraim Umunnakwe`}>
+        <Layout
+            title={`${post.title} - Ephraim Umunnakwe`}
+            description={post.excerpt || undefined}
+            image={post.featured_image || fallbackImage || undefined}
+            path={`/blog/${encodeURIComponent(post.slug)}/`}
+            type="article"
+        >
             <Head>
-                <meta name="description" content={post.excerpt} />
+                {post.created_at && (
+                    <meta key="article:published_time" property="article:published_time" content={post.created_at} />
+                )}
             </Head>
 
             {/* Hero Section */}
@@ -111,14 +173,7 @@ export default function BlogPostDetail({ post }: BlogPostProps) {
             {/* Content Section */}
             <section className="py-20 px-4 bg-white dark:bg-primary">
                 <div className="max-w-3xl mx-auto">
-                    <div className="prose prose-neutral dark:prose-invert prose-2xl max-w-none 
-            prose-headings:font-black prose-headings:uppercase prose-headings:tracking-tighter
-            prose-p:font-medium prose-p:leading-relaxed prose-p:text-neutral-600 dark:prose-p:text-neutral-400
-            prose-a:text-accent prose-a:no-underline hover:prose-a:underline
-            prose-strong:font-black prose-strong:text-neutral-900 dark:prose-strong:text-white
-            prose-blockquote:border-l-8 prose-blockquote:border-accent prose-blockquote:bg-neutral-50 dark:prose-blockquote:bg-neutral-900 prose-blockquote:p-8 prose-blockquote:font-bold prose-blockquote:not-italic py-10">
-                        <ReactMarkdown>{post.content}</ReactMarkdown>
-                    </div>
+                    <MarkdownContent content={post.content} className="py-10" />
 
                     <div className="mt-20 pt-20 border-t-4 border-neutral-900 dark:border-neutral-800">
                         <div className="flex justify-between items-center">
@@ -160,29 +215,34 @@ export default function BlogPostDetail({ post }: BlogPostProps) {
 export const getStaticPaths: GetStaticPaths = async () => {
     try {
         const posts = await portfolioService.getBlogPosts();
-        const paths = posts.map((post) => ({
-            params: { slug: post.slug },
-        }));
+        const paths = posts
+            .filter((post) => post.slug && post.slug !== PLACEHOLDER_SLUG)
+            .map((post) => ({ params: { slug: post.slug } }));
 
-        return { paths, fallback: false };
+        return { paths: [...paths, { params: { slug: PLACEHOLDER_SLUG } }], fallback: false };
     } catch (error) {
-        return { paths: [], fallback: false };
+        return { paths: [{ params: { slug: PLACEHOLDER_SLUG } }], fallback: false };
     }
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
     const slug = params?.slug as string;
+    if (slug === PLACEHOLDER_SLUG) {
+        return { props: { post: null } };
+    }
+
     try {
-        const post = await portfolioService.getBlogPostBySlug(slug);
-
-        if (!post) {
-            return { notFound: true };
-        }
-
+        const [post, personalInfo] = await Promise.all([
+            portfolioService.getBlogPostBySlug(slug),
+            portfolioService.getPersonalInfo().catch(() => null),
+        ]);
         return {
-            props: { post },
+            props: {
+                post: post ?? null,
+                fallbackImage: personalInfo?.profile_image_url || null,
+            },
         };
     } catch (error) {
-        return { notFound: true };
+        return { props: { post: null } };
     }
 };
