@@ -5,7 +5,8 @@ import { useRouter } from 'next/router';
 import Layout from '../../components/Layout';
 import { portfolioService } from '../../lib/supabase';
 import { BlogPost } from '../../types/portfolio';
-import { Calendar, Tag, Clock, ArrowLeft, Share2 } from 'lucide-react';
+import { Calendar, Tag, Clock, ArrowLeft } from 'lucide-react';
+import ShareButtons from '../../components/ShareButtons';
 import Link from 'next/link';
 import MarkdownContent from '../../components/MarkdownContent';
 
@@ -29,7 +30,6 @@ export default function BlogPostDetail({ post: initialPost, fallbackImage }: Blo
     const router = useRouter();
     const [post, setPost] = React.useState<BlogPost | null>(initialPost ?? null);
     const [loading, setLoading] = React.useState(!initialPost);
-    const [shareStatus, setShareStatus] = React.useState<'idle' | 'copied'>('idle');
 
     React.useEffect(() => {
         const slug = getSlugFromLocation();
@@ -84,26 +84,6 @@ export default function BlogPostDetail({ post: initialPost, fallbackImage }: Blo
         );
     }
 
-    const handleShare = async () => {
-        const shareData = {
-            title: post.title,
-            text: post.excerpt,
-            url: window.location.href,
-        };
-
-        try {
-            if (navigator.share) {
-                await navigator.share(shareData);
-            } else {
-                await navigator.clipboard.writeText(window.location.href);
-                setShareStatus('copied');
-                setTimeout(() => setShareStatus('idle'), 2000);
-            }
-        } catch (error) {
-            console.error('Error sharing:', error);
-        }
-    };
-
     return (
         <Layout
             title={`${post.title} - Ephraim Umunnakwe`}
@@ -146,13 +126,9 @@ export default function BlogPostDetail({ post: initialPost, fallbackImage }: Blo
                             <Clock size={16} className="text-accent" />
                             {post.read_time} Min Read
                         </div>
-                        <button
-                            onClick={handleShare}
-                            className="flex items-center gap-3 hover:text-neutral-900 dark:hover:text-white transition-colors"
-                        >
-                            <Share2 size={16} className="text-accent" />
-                            {shareStatus === 'copied' ? 'Link Copied' : 'Share Report'}
-                        </button>
+                    </div>
+                    <div className="mt-10">
+                        <ShareButtons slug={post.slug} title={post.title} excerpt={post.excerpt} />
                     </div>
                 </div>
             </section>
@@ -175,7 +151,12 @@ export default function BlogPostDetail({ post: initialPost, fallbackImage }: Blo
                 <div className="max-w-3xl mx-auto">
                     <MarkdownContent content={post.content} className="py-10" />
 
-                    <div className="mt-20 pt-20 border-t-4 border-neutral-900 dark:border-neutral-800">
+                    <div className="mt-16 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+                        <p className="text-xs font-black uppercase tracking-widest text-neutral-400">Found this useful? Share it</p>
+                        <ShareButtons slug={post.slug} title={post.title} excerpt={post.excerpt} />
+                    </div>
+
+                    <div className="mt-16 pt-20 border-t-4 border-neutral-900 dark:border-neutral-800">
                         <div className="flex justify-between items-center">
                             <div className="space-y-4">
                                 <p className="text-xs font-black uppercase tracking-widest text-neutral-400">Written By</p>

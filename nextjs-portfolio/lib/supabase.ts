@@ -126,6 +126,27 @@ export const portfolioService = {
     }
   },
 
+  // Views + shares per blog post slug (admin only; returns {} for anonymous callers)
+  async getBlogPostStats(): Promise<Record<string, { views: number; unique_views: number; shares: number }>> {
+    const { data, error } = await supabase.rpc('blog_post_stats');
+    if (error) {
+      console.warn('Error loading blog stats:', error.message);
+      return {};
+    }
+    const stats: Record<string, { views: number; unique_views: number; shares: number }> = {};
+    for (const row of (data || []) as { slug: string; views: number; unique_views: number; shares: number }[]) {
+      let slug = row.slug;
+      try { slug = decodeURIComponent(slug); } catch { /* keep raw */ }
+      const prev = stats[slug] || { views: 0, unique_views: 0, shares: 0 };
+      stats[slug] = {
+        views: prev.views + Number(row.views),
+        unique_views: prev.unique_views + Number(row.unique_views),
+        shares: prev.shares + Number(row.shares),
+      };
+    }
+    return stats;
+  },
+
   // Upload an image used in a blog post (featured image or inline)
   async uploadBlogImage(file: File): Promise<string> {
     if (!file) throw new Error('No file provided');

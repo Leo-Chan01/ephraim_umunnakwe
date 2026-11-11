@@ -31,6 +31,23 @@ function markSeen(path: string): boolean {
   }
 }
 
+export type ShareMethod = 'native' | 'copy' | 'x' | 'linkedin' | 'whatsapp' | 'facebook';
+
+/** Records that a blog post was shared via one of the share buttons. Never throws. */
+export async function trackShare(slug: string, method: ShareMethod): Promise<void> {
+  if (typeof window === 'undefined') return;
+  try {
+    const { error } = await supabase.from('blog_shares').insert({
+      slug,
+      method,
+      session_id: getSessionId(),
+    });
+    if (error) console.warn('Share tracking failed:', error.message);
+  } catch (error) {
+    console.warn('Share tracking failed:', error);
+  }
+}
+
 /**
  * Records a page view in Supabase. Skips admin pages and repeat views
  * of the same path within a browser session (so refreshes don't inflate counts).

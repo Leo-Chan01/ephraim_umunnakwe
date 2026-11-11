@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { Edit, Trash2, Plus, FileText, Calendar, Tag, Check, X, Eye } from 'lucide-react';
+import { Edit, Trash2, Plus, FileText, Calendar, Tag, Check, X, Eye, Users, Share2 } from 'lucide-react';
 import { isAuthenticated, isAuthenticatedSync } from '../../../lib/auth';
 import { AdminLayout } from '../../../components/admin';
 import { BlogPost } from '../../../types/portfolio';
@@ -13,6 +13,7 @@ import { verticalListSortingStrategy } from '@dnd-kit/sortable';
 export default function AdminBlog() {
     const [posts, setPosts] = useState<BlogPost[]>([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [stats, setStats] = useState<Record<string, { views: number; unique_views: number; shares: number }>>({});
     const [mounted, setMounted] = useState(false);
     const router = useRouter();
 
@@ -38,8 +39,12 @@ export default function AdminBlog() {
         setIsLoading(true);
         try {
             // Fetch all posts, even unpublished ones
-            const data = await portfolioService.getBlogPosts(false);
+            const [data, postStats] = await Promise.all([
+                portfolioService.getBlogPosts(false),
+                portfolioService.getBlogPostStats(),
+            ]);
             setPosts(data);
+            setStats(postStats);
         } catch (error) {
             console.error('Error loading posts:', error);
         }
@@ -119,12 +124,21 @@ export default function AdminBlog() {
                                 </div>
                                 <div className="space-y-2">
                                     <h3 className="text-2xl font-black text-neutral-900 dark:text-white uppercase tracking-tighter group-hover:text-white">{post.title}</h3>
-                                    <div className="flex items-center gap-6 text-[10px] font-black uppercase tracking-widest text-neutral-400">
+                                    <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-[10px] font-black uppercase tracking-widest text-neutral-400">
                                         <span className="flex items-center gap-2"><Calendar size={12} /> {post.created_at ? new Date(post.created_at).toLocaleDateString() : 'Draft'} </span>
                                         <span className="flex items-center gap-2"><Tag size={12} /> {post.category || 'Uncategorized'}</span>
                                         <span className={`flex items-center gap-2 ${post.is_published ? 'text-green-500' : 'text-orange-500'}`}>
                                             {post.is_published ? <Check size={12} /> : <X size={12} />}
                                             {post.is_published ? 'Published' : 'Draft'}
+                                        </span>
+                                        <span className="flex items-center gap-2" title="Total views">
+                                            <Eye size={12} /> {(stats[post.slug]?.views ?? 0).toLocaleString()} views
+                                        </span>
+                                        <span className="flex items-center gap-2" title="Unique readers (one per browser session)">
+                                            <Users size={12} /> {(stats[post.slug]?.unique_views ?? 0).toLocaleString()} readers
+                                        </span>
+                                        <span className="flex items-center gap-2" title="Shares via the share buttons">
+                                            <Share2 size={12} /> {(stats[post.slug]?.shares ?? 0).toLocaleString()} shares
                                         </span>
                                         <span className="text-[10px] text-neutral-300">ORD: {post.order_index}</span>
                                     </div>
